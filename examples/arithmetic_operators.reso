@@ -1,0 +1,60 @@
+def main() -> i32:
+    println("=== Arithmetic Operators in Reso ===")
+
+    # Integer Arithmetic
+    println("=== Integer Arithmetic ===")
+
+    var a: i32 = 15
+    var b: i32 = 4
+
+    # Basic arithmetic operations
+    var sum = a + b                     # Addition: 19
+    var difference = a - b              # Subtraction: 11
+    var product = a * b                 # Multiplication: 60
+    var quotient = a div b              # Division: 3 (truncated towards zero)
+    var remainder = a rem b             # Remainder: 3 (sign of dividend)
+    var modulus = a mod b               # Modulo: 3 (always non-negative)
+
+    println("a = ".append(a.to_string()).append(", b = ").append(b.to_string()))
+    println("Addition (a + b): ".append(sum.to_string()))
+    println("Subtraction (a - b): ".append(difference.to_string()))
+    println("Multiplication (a * b): ".append(product.to_string()))
+    println("Division (a div b): ".append(quotient.to_string()))
+    println("Remainder (a rem b): ".append(remainder.to_string()))
+    println("Modulo (a mod b): ".append(modulus.to_string()))
+
+    # Negative number examples
+    println("=== Negative Number Examples ===")
+
+    var neg_a: i32 = -15
+    var neg_b: i32 = 4
+
+    var neg_quotient = neg_a div neg_b  # -3 (truncated towards zero)
+    var neg_remainder = neg_a rem neg_b # -3 (sign follows dividend)
+    var neg_modulus = neg_a mod neg_b   # 1 (always non-negative)
+
+    println("neg_a = ".append(neg_a.to_string()).append(", neg_b = ").append(neg_b.to_string()))
+    println("Division (neg_a div neg_b): ".append(neg_quotient.to_string()))
+    println("Remainder (neg_a rem neg_b): ".append(neg_remainder.to_string()))
+    println("Modulo (neg_a mod neg_b): ".append(neg_modulus.to_string()))
+
+    # Floating-Point Arithmetic
+    println("=== Floating-Point Arithmetic ===")
+
+    var x: f64 = 10.5
+    var y: f64 = 3.2
+
+    var float_sum = x + y               # 13.7
+    var float_diff = x - y              # 7.3
+    var float_product = x * y           # 33.6
+    var float_division = x div y        # 3.28125 (true division)
+    var float_remainder = x rem y       # 1.1 (floating-point remainder)
+    var float_modulus = x mod y         # 1.1 (same as rem for positive numbers)
+
+    println("x = ".append(x.to_string()).append(", y = ").append(y.to_string()))
+    println("Addition (x + y): ".append(float_sum.to_string()))
+    println("Subtraction (x - y): ".append(float_diff.to_string()))
+    println("Multiplication (x * y): ".append(float_product.to_string()))
+    println("Division (x div y): ".append(float_division.to_string()))
+    println("Remainder (x rem y): ".append(float_remainder.to_string()))
+    println("Modulo (x mod y): ".append(float_modulus.to_string()))

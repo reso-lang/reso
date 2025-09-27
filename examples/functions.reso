@@ -1,0 +1,161 @@
+# Simple function with no parameters and no return value (unit type)
+def greet():
+    println("Hello, Reso!")
+
+# Function with parameters and return type
+def add(a: i32, b: i32) -> i32:
+    return a + b
+
+# Function with explicit return type annotation
+def subtract(x: i32, y: i32) -> i32:
+    var result: i32 = x - y
+    return result
+
+# Function that returns a boolean
+def is_even(number: i32) -> bool:
+    return (number rem 2) == 0
+
+# Function with multiple parameters of different types
+def format_person_info(name: String, age: i32, height: f64) -> String:
+    return (name.append(" is ")
+        .append(age.to_string())
+        .append(" years old and ")
+        .append(height.to_string())
+        .append("m tall"))
+
+# Function that performs calculations
+def calculate_area(length: f64, width: f64) -> f64:
+    return length * width
+
+# Function that returns early based on condition
+def find_max(a: i32, b: i32, c: i32) -> i32:
+    if a >= b and a >= c:
+        return a
+    
+    if b >= c:
+        return b
+    
+    return c
+
+# Function that returns the unit type
+def print_numbers(count: i32) -> ():
+    var i: i32 = 1
+    while i <= count:
+        println("Number: ".append(i.to_string()))
+        i += 1
+    return ()
+
+# Function that uses other functions
+def calculate_and_print(x: i32, y: i32):
+    var sum = add(x, y)
+    var difference = subtract(x, y)
+    
+    println("Sum: ".append(sum.to_string()))
+    println("Difference: ".append(difference.to_string()))
+    
+    if is_even(sum):
+        println("Sum is even")
+    else:
+        println("Sum is odd")
+
+# Function with complex logic
+def classify_number(num: i32) -> String:
+    if num == 0:
+        return "zero"
+    else if num > 0:
+        if is_even(num):
+            return "positive even"
+        else:
+            return "positive odd"
+    else:
+        if is_even(num):
+            return "negative even"
+        else:
+            return "negative odd"
+
+# Recursive function
+def fibonacci(n: i32) -> i32:
+    if n <= 1:
+        return n
+
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Main function - program entry point
+def main() -> i32:
+    println("=== Functions in Reso ===")
+    
+    # Calling functions with no parameters
+    println("=== Simple Function Calls ===")
+    greet()
+    
+    # Calling functions with parameters
+    println("=== Functions with Parameters ===")
+    var sum = add(15, 25)
+    var diff = subtract(50, 20)
+    
+    println("15 + 25 = ".append(sum.to_string()))
+    println("50 - 20 = ".append(diff.to_string()))
+    
+    # Boolean returning functions
+    println("=== Boolean Functions ===")
+    var num1: i32 = 42
+    var num2: i32 = 17
+    
+    println(num1.to_string().append(" is even: ").
+        append(is_even(num1).to_string()))
+    println(num2.to_string().append(" is even: ")
+        .append(is_even(num2).to_string()))
+    
+    # String returning functions
+    println("=== String Functions ===")
+    var info = format_person_info("Alice", 30, 1.65)
+    println(info)
+    
+    # Mathematical functions
+    println("=== Mathematical Functions ===")
+    var area = calculate_area(5.0, 3.5)
+    println("Rectangle area (5.0 x 3.5): ".append(area.to_string()))
+    
+    # Functions with multiple return paths
+    println("=== Multiple Return Paths ===")
+    var max_val = find_max(10, 25, 15)
+    println("Max of 10, 25, 15: ".append(max_val.to_string()))
+    
+    # Classification function
+    println("=== Number Classification ===")
+    var numbers: Vector<i32> = Vector()
+    numbers.add(0)
+    numbers.add(7)
+    numbers.add(-4)
+    numbers.add(12)
+    
+    var i: usize = 0
+    while i < numbers/size.get():
+        var num = numbers/{i}.get()
+        var classification = classify_number(num)
+        println(num.to_string().append(" is ")
+            .append(classification))
+        i += 1
+
+    # Function composition
+    println("=== Function Composition ===")
+    calculate_and_print(20, 8)
+    
+    # Small Fibonacci demonstration (be careful with larger values)
+    println("=== Fibonacci ===")
+    var fib_nums: Vector<i32> = Vector()
+    fib_nums.add(0)
+    fib_nums.add(1)
+    fib_nums.add(2)
+    fib_nums.add(3)
+    fib_nums.add(4)
+    fib_nums.add(5)
+    
+    i = 0
+    while i < fib_nums/size.get():
+        var n = fib_nums/{i}.get()
+        var fib_n = fibonacci(n)
+        println("Fibonacci(".append(n.to_string())
+            .append(") = ")
+            .append(fib_n.to_string()))
+        i += 1

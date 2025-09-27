@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+}
+
+allprojects {
+    group = 'com.reso'
+    version = '0.0.1'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+
+    dependencies {
+        implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+        testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
+        testImplementation 'org.assertj:assertj-core:3.27.6'
+
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    checkstyle {
+        toolVersion = '9.3'
+        configFile = rootProject.file('checkstyle.xml')
+        ignoreFailures = true
+        showViolations = true
+    }
+
+    checkstyleMain {
+        source = 'src/main/java'
+    }
+
+    checkstyleTest {
+        source = 'src/test/java'
+    }
+}

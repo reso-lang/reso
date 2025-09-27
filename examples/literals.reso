@@ -1,0 +1,121 @@
+def main() -> i32:
+    # Integer Literals
+    println("=== Integer Literals ===")
+    
+    # Decimal literals
+    var decimal = 42
+    var large_decimal = 1_000_000        # Underscores for readability
+    var negative = -123
+    
+    # Hexadecimal literals (0x or 0X prefix)
+    var hex_value = 0xFF                 # 255 in decimal
+    var hex_large = 0x1A_2B_3C           # Underscores allowed
+    var negative_hex = -0xFF             # Negative hex
+    
+    # Binary literals (0b or 0B prefix)
+    var binary = 0b1010_1111             # 175 in decimal
+    var binary_byte = 0b11111111         # 255 in decimal
+    
+    # Octal literals (0o or 0O prefix)
+    var octal = 0o755                    # 493 in decimal
+    var octal_large = 0o1_777            # 1023 in decimal
+    
+    println("Decimal: ".append(decimal.to_string()))
+    println("Large decimal: ".append(large_decimal.to_string()))
+    println("Hex value: ".append(hex_value.to_string()))
+    println("Binary value: ".append(binary.to_string()))
+    println("Octal value: ".append(octal.to_string()))
+    
+    # Floating-Point Literals
+    println("=== Floating-Point Literals ===")
+    
+    # Basic decimal notation
+    var simple_float = 3.14
+    var with_underscores = 1_234.567_89
+    
+    # Scientific notation
+    var scientific = 1.23e4             # 12300.0
+    var negative_exp = 2.5e-3           # 0.0025
+    var capital_e = 6.022E23            # Avogadro's number
+    var positive_exp = 1.0e+6           # 1000000.0
+    
+    # Edge cases
+    var just_decimal = .5               # 0.5
+    var no_fraction = 42.               # 42.0
+    var exp_only = 1e10                 # 10000000000.0
+    
+    println("Simple float: ".append(simple_float.to_string()))
+    println("Scientific: ".append(scientific.to_string()))
+    println("Negative exp: ".append(negative_exp.to_string()))
+    println("Just decimal: ".append(just_decimal.to_string()))
+    
+    # String Literals
+    println("=== String Literals ===")
+    
+    # Basic strings
+    var greeting = "Hello, World!"
+    var empty = ""
+    
+    # Strings with escape sequences
+    var with_escapes = "Line 1\nLine 2\tTabbed"
+    var quotes = "She said \"Hello\" to me"
+    var backslash = "Path: C:\\Users\\Name"
+    
+    # Unicode escape sequences
+    var unicode = "Unicode: \u{1F600} \u{2603}"  # 😀 ☃
+    var chinese = "Chinese: \u{4E2D}\u{6587}"    # 中文
+    
+    println("Greeting: ".append(greeting))
+    println("With quotes: ".append(quotes))
+    println("Unicode: ".append(unicode))
+    println("Chinese: ".append(chinese))
+    
+    # Character Literals
+    println("=== Character Literals ===")
+    
+    # Basic characters
+    var letter = 'A'
+    var digit = '7'
+    var symbol = '@'
+    
+    # Escape sequences
+    var newline = '\n'
+    var tab = '\t'
+    var quote = '\''
+    var backslash_char = '\\'
+    
+    # Unicode characters
+    var smiley = '\u{1F600}'            # 😀
+    var chinese_char = '\u{4E2D}'       # 中
+    var euro = '\u{20AC}'               # €
+    
+    println("Letter: ".append(letter.to_string()))
+    println("Symbol: ".append(symbol.to_string()))
+    println("Smiley: ".append(smiley.to_string()))
+    println("Chinese char: ".append(chinese_char.to_string()))
+    println("Euro: ".append(euro.to_string()))
+    
+    # Boolean Literals
+    println("=== Boolean Literals ===")
+    
+    var is_valid = true
+    var is_complete = false
+    
+    println("Is valid: ".append(is_valid.to_string()))
+    println("Is complete: ".append(is_complete.to_string()))
+    
+    # Used in conditions
+    if is_valid:
+        println("Validation passed!")
+    
+    if not is_complete:
+        println("Task is not complete")
+    
+    # Null Literal
+    println("=== Null Literal ===")
+    
+    var ptr: String = null              # Nullable type
+    if ptr == null:
+        println("Pointer is null")
+        ptr = "Initialized"
+        println("Pointer now contains: ".append(ptr))

@@ -1,0 +1,36 @@
+plugins {
+    id 'antlr'
+    id 'application'
+}
+
+dependencies {
+    implementation project(':reso-llvm')
+
+    antlr "org.antlr:antlr4:4.13.0"
+    implementation "org.antlr:antlr4-runtime:4.13.0"
+}
+
+generateGrammarSource {
+    arguments += ["-visitor", "-long-messages", "-package", "com.reso.grammar"]
+
+    outputDirectory = file("${buildDir}/generated-sources/antlr")
+}
+
+application {
+    mainClass = 'com.reso.compiler.core.ResoCompilerMain'
+}
+
+run {
+    workingDir = rootProject.projectDir
+}
+
+sourceSets {
+    main {
+        antlr {
+            srcDirs = ["src/main/antlr4/com/reso/grammar"]
+        }
+        java {
+            srcDirs += "${buildDir}/generated-sources/antlr"
+        }
+    }
+}

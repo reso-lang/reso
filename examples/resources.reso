@@ -1,0 +1,95 @@
+# Define a Customer resource with fields and path-based methods
+resource Customer {
+    pub const id: i64,              # Public immutable field
+    var user_name: String,          # Private mutable field
+    const products: Vector<String>  # Private immutable field
+}:
+    # Root path methods (no path prefix)
+    path:
+        # Public method accessible from outside the file
+        pub def summarize() -> String:
+            return this.id.to_string().append(": ").append(this.user_name)
+        
+        # File-private method
+        def validate() -> bool:
+            return not this.user_name.is_empty()
+
+    # Path for accessing the ID
+    path id:
+        pub def get() -> i64: 
+            return this.id
+
+    # Path for user name operations
+    path user_name:
+        pub def get() -> String:
+            return this.user_name
+
+        pub def set(new_name: String):
+            if not new_name.is_empty():
+                this.user_name = new_name
+
+    # Path for products collection
+    path products:
+        pub def add(product: String):
+            this.products.add(product)
+        
+        pub def count() -> usize:
+            return this.products/size.get()
+        
+        pub def get() -> Vector<String>:
+            return this.products
+
+    # Path with parameter for accessing specific products
+    path products/{index: usize}:
+        pub def get() -> String:
+            return this.products/{index}.get()
+
+# Define an Account resource
+resource Account {
+    pub const account_number: String,
+    var balance: f64
+}:
+    path balance:
+        pub def get() -> f64:
+            return this.balance
+        
+        pub def deposit(amount: f64):
+            if amount > 0.0:
+                this.balance += amount
+        
+        pub def withdraw(amount: f64) -> bool:
+            if amount > 0.0 and this.balance >= amount:
+                this.balance = this.balance - amount
+                return true
+            return false
+
+def main() -> i32:
+    # Create a customer instance using resource initializer
+    var customer = Customer {1, "Alice Johnson", Vector()}
+    
+    # Use path-based method calls
+    customer/user_name.set("Alice Smith")
+    customer/products.add("Laptop")
+    customer/products.add("Mouse")
+    customer/products.add("Keyboard")
+    
+    # Access data through paths
+    println("Customer Summary: ".append(customer.summarize()))
+    println("Customer ID: ".append(customer/id.get().to_string()))
+    println("Customer Name: ".append(customer/user_name.get()))
+    println("Product Count: ".append(customer/products.count().to_string()))
+    println("First Product: ".append(customer/products/{0}.get()))
+    
+    # Create and use an account
+    var account = Account {"ACC-12345", 1000.0}
+    
+    println("Initial Balance: ".append(account/balance.get().to_string()))
+    
+    account/balance.deposit(250.0)
+    println("After Deposit: ".append(account/balance.get().to_string()))
+    
+    var success = account/balance.withdraw(150.0)
+    if success:
+        println("Withdrawal successful. New Balance: ".append(account/balance.get().to_string()))
+    else:
+        println("Withdrawal failed!")

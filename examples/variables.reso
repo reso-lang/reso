@@ -1,0 +1,56 @@
+def main() -> i32:
+    # Mutable variables (can be reassigned)
+    var counter: i32 = 0             # Explicit type annotation
+    var message = "Hello, World!"    # Type inferred as String
+    var temperature = 23.5           # Type inferred as f64
+    var is_active = true             # Type inferred as bool
+
+    # Immutable variables (cannot be reassigned)
+    const pi = 3.14159               # Mathematical constant, type inferred as f64
+    const max_users = 100            # Configuration value, type inferred as i32
+    const app_name = "ResoApp"       # Type inferred as String
+
+    # Variables must be initialized upon declaration
+    var initialized_var: i32 = 42   # Valid: initialized with value
+    # var uninitialized: i32        # Error: variables must be initialized
+
+    # Demonstrate mutable variable reassignment
+    println("Initial counter: ".append(counter.to_string()))
+    counter = counter + 1
+    counter = 5
+    println("Updated counter: ".append(counter.to_string()))
+
+    # Demonstrate mutable variable type consistency
+    message = "Goodbye, World!"     # Valid: same type (String)
+    # message = 123                 # Error: cannot assign i32 to String
+
+    # Show that constants cannot be reassigned
+    println("Pi value: ".append(pi.to_string()))
+    # pi = 3.14                     # Error: constants cannot be reassigned
+
+    # Different variable scopes
+    if true:
+        var local_var: i32 = 10     # Variable local to this block
+        const local_const = "Block" # Constant local to this block
+        var counter: i32 = 20       # Shadows outer counter variable
+
+        println("Local variable: ".append(local_var.to_string()))
+        println("Local constant: ".append(local_const))
+        println("Shadowed counter: ".append(counter.to_string()))
+
+        # Can access outer scope variables
+        println("Outer variable: ".append(message))
+        println("Outer constant: ".append(app_name))
+
+    # local_var is not accessible here (out of scope)
+    # println(local_var.to_string()) # Error: local_var not in scope
+
+    # Complex type examples
+    var numbers: Vector<i32> = Vector()
+    const default_settings = "production"
+
+    # Variables can be used in expressions
+    var result: i32 = counter * 2 + max_users
+
+    println("Result: ".append(result.to_string()))
+    println("App: ".append(app_name))

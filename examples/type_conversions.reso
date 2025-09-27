@@ -1,0 +1,81 @@
+def main() -> i32:
+    println("=== Type Conversions in Reso ===")
+    println("Note: All type conversions must be explicit using 'as'")
+
+    # Integer Conversions
+    println("=== Integer Conversions ===")
+
+    # Widening conversions (smaller to larger)
+    var small: i8 = 42
+    var medium: i16 = small as i16
+    var large: i32 = medium as i32
+    var extra_large: i64 = large as i64
+
+    println("i8 to i16: ".append(small.to_string()).append(" -> ").append(medium.to_string()))
+    println("i16 to i32: ".append(medium.to_string()).append(" -> ").append(large.to_string()))
+    println("i32 to i64: ".append(large.to_string()).append(" -> ").append(extra_large.to_string()))
+
+    # Narrowing conversions (larger to smaller)
+    var big_value: i64 = 1000
+    var narrow_i32: i32 = big_value as i32
+    var narrow_i16: i16 = narrow_i32 as i16
+    var narrow_i8: i8 = narrow_i16 as i8
+
+    println("i64 to i32: ".append(big_value.to_string()).append(" -> ").append(narrow_i32.to_string()))
+    println("i32 to i16: ".append(narrow_i32.to_string()).append(" -> ").append(narrow_i16.to_string()))
+    println("i16 to i8: ".append(narrow_i16.to_string()).append(" -> ").append(narrow_i8.to_string()))
+
+    # Signed to unsigned conversions
+    var signed_val: i32 = -42
+    var unsigned_val: u32 = signed_val as u32
+    println("i32 to u32: ".append(signed_val.to_string()).append(" -> ").append(unsigned_val.to_string()))
+
+    # Unsigned to signed conversions
+    var large_unsigned: u32 = 4294967295  # Max u32 value
+    var as_signed: i32 = large_unsigned as i32
+    println("u32 to i32: ".append(large_unsigned.to_string()).append(" -> ").append(as_signed.to_string()))
+
+    # Float Conversions
+    println("=== Float Conversions ===")
+
+    # Precision extension (f32 to f64)
+    var float32: f32 = 3.14159
+    var float64: f64 = float32 as f64
+    println("f32 to f64: ".append(float32.to_string()).append(" -> ").append(float64.to_string()))
+
+    # Precision reduction (f64 to f32)
+    var precise: f64 = 3.141592653589793
+    var less_precise: f32 = precise as f32
+    println("f64 to f32: ".append(precise.to_string()).append(" -> ").append(less_precise.to_string()))
+
+    # Integer-Float Conversions
+    println("=== Integer-Float Conversions ===")
+
+    # Integer to float
+    var int_val: i32 = 42
+    var as_float32: f32 = int_val as f32
+    var as_float64: f64 = int_val as f64
+    println("i32 to f32: ".append(int_val.to_string()).append(" -> ").append(as_float32.to_string()))
+    println("i32 to f64: ".append(int_val.to_string()).append(" -> ").append(as_float64.to_string()))
+
+    # Float to integer (truncates towards zero)
+    var float_positive: f64 = 42.78
+    var float_negative: f64 = -42.78
+    var int_from_pos: i32 = float_positive as i32  # Results in 42
+    var int_from_neg: i32 = float_negative as i32  # Results in -42
+
+    println("f64 to i32 (positive): ".append(float_positive.to_string()).append(" -> ").append(int_from_pos.to_string()))
+    println("f64 to i32 (negative): ".append(float_negative.to_string()).append(" -> ").append(int_from_neg.to_string()))
+
+    # Character Conversions
+    println("=== Character Conversions ===")
+
+    # Character to integer (Unicode code point)
+    var char_val: char = 'A'
+    var char_code: u32 = char_val as u32
+    println("char to u32: '".append(char_val.to_string()).append("' -> ").append(char_code.to_string()))
+
+    # Integer to character
+    var code: u32 = 65  # ASCII 'A'
+    var from_code: char = code as char
+    println("u32 to char: ".append(code.to_string()).append(" -> '").append(from_code.to_string()).append("'"))
