@@ -121,11 +121,11 @@ public class ResourceUsageTest extends BaseTest {
         String sourceCode = """
             resource Circle{var radius: f64}
             
-            def calculate_area(circle: Circle) -> f64:
+            def calculateArea(circle: Circle) -> f64:
                 return 3.14159 * circle.radius * circle.radius
             
             def main() -> i32:
-                var area: f64 = calculate_area(Circle{5.0})
+                var area: f64 = calculateArea(Circle{5.0})
                 return 0
             """;
 
@@ -138,7 +138,7 @@ public class ResourceUsageTest extends BaseTest {
             IrPatterns.atomicMalloc("Circle_instance", "Circle_struct"),
             IrPatterns.fieldAccess("radius", "Circle_struct", "Circle_instance", 0),
             IrPatterns.store("5.000000e\\+00", "double", "radius"),
-            IrPatterns.functionCall("calculate_area", "calculate_area", "double", List.of())
+            IrPatterns.functionCall("calculateArea", "calculateArea", "double", List.of())
         );
     }
 
@@ -702,14 +702,14 @@ public class ResourceUsageTest extends BaseTest {
             resource Validator{pub var threshold: i32}:
             
                 path:
-                    pub def is_valid(value: i32) -> bool:
+                    pub def isValid(value: i32) -> bool:
                         return value > this.threshold
             
             def main() -> i32:
                 var validator: Validator = Validator{50}
                 var testValue: i32 = 75
             
-                if validator.is_valid(testValue):
+                if validator.isValid(testValue):
                     return 1
                 else:
                     return 0
@@ -721,11 +721,11 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("Validator_is_valid", "is_valid", "i1", List.of(
+            IrPatterns.functionCall("Validator_isValid", "isValid", "i1", List.of(
                 Map.entry("ptr", "%validator"),
                 Map.entry("i32", "%testValue")
             )),
-            IrPatterns.conditionalBranch("is_valid_result", "if_then", "else")
+            IrPatterns.conditionalBranch("isValid_result", "if_then", "else")
         );
     }
 
@@ -735,11 +735,11 @@ public class ResourceUsageTest extends BaseTest {
             resource Config{pub var mode: i32}
             
             def main() -> i32:
-                var config_a: Config = Config{1}
-                var config_b: Config = Config{2}
-                var is_debug: bool = true
-                var mode_value: i32 = (config_a if is_debug else config_b).mode
-                return mode_value
+                var configA: Config = Config{1}
+                var configB: Config = Config{2}
+                var isDebug: bool = true
+                var modeValue: i32 = (configA if isDebug else configB).mode
+                return modeValue
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "ternary_field_access");
@@ -748,7 +748,7 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.select("i1", "is_debug", "ptr", "config_a", "config_b"),
+            IrPatterns.select("i1", "isDebug", "ptr", "configA", "configB"),
             IrPatterns.fieldAccess("mode", "Config_struct", "ternary", 0)
         );
     }
@@ -763,11 +763,11 @@ public class ResourceUsageTest extends BaseTest {
                         return this.id
             
             def main() -> i32:
-                var service_a: Service = Service{10}
-                var service_b: Service = Service{20}
-                var use_a: bool = false
-                var id_value: i32 = (service_a if use_a else service_b)/id.get()
-                return id_value
+                var serviceA: Service = Service{10}
+                var serviceB: Service = Service{20}
+                var useA: bool = false
+                var idValue: i32 = (serviceA if useA else serviceB)/id.get()
+                return idValue
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "ternary_method_call");
@@ -776,7 +776,7 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.select("i1", "use_a", "ptr", "service_a", "service_b"),
+            IrPatterns.select("i1", "useA", "ptr", "serviceA", "serviceB"),
             IrPatterns.functionCall("Service_id_get", "get", "i32", List.of())
         );
     }
@@ -858,8 +858,8 @@ public class ResourceUsageTest extends BaseTest {
             resource TypeMixer{var data: i32}:
             
                 path types:
-                    pub def mix(int_val: i32, float_val: f64, bool_val: bool, char_val: char) -> i32:
-                        return char_val as i32 if bool_val else float_val as i32 + int_val
+                    pub def mix(intVal: i32, floatVal: f64, boolVal: bool, charVal: char) -> i32:
+                        return charVal as i32 if boolVal else floatVal as i32 + intVal
             
             def main() -> i32:
                 var mixer: TypeMixer = TypeMixer{0}
@@ -931,12 +931,12 @@ public class ResourceUsageTest extends BaseTest {
             resource User{pub var id: i32, pub var age: i32}
             
             def main() -> i32:
-                var user_a: User = User{1, 25}
-                var user_b: User = User{2, 30}
+                var userA: User = User{1, 25}
+                var userB: User = User{2, 30}
                 var equal: bool = false
-                equal = user_a == user_b
-                equal = user_a == null
-                equal = null != user_b
+                equal = userA == userB
+                equal = userA == null
+                equal = null != userB
                 equal = null == null
             """;
 
@@ -946,9 +946,9 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.icmp("eq", "ptr", "user_a", "user_b"),
-            IrPatterns.icmp("eq", "ptr", "user_a", "null"),
-            IrPatterns.icmp("ne", "ptr", "null", "user_b"),
+            IrPatterns.icmp("eq", "ptr", "userA", "userB"),
+            IrPatterns.icmp("eq", "ptr", "userA", "null"),
+            IrPatterns.icmp("ne", "ptr", "null", "userB"),
             IrPatterns.store("true", "i1", "equal")
         );
     }
@@ -980,8 +980,8 @@ public class ResourceUsageTest extends BaseTest {
             
             def main() -> i32:
                 var user: User = User{1, 25}
-                var is_user: bool = true
-                var selected_user: User = user if is_user else null
+                var isUser: bool = true
+                var selectedUser: User = user if isUser else null
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "null_ternary");
@@ -990,8 +990,8 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.select("i1", "is_user", "ptr", "user", "null"),
-            IrPatterns.store("ternary", "ptr", "selected_user")
+            IrPatterns.select("i1", "isUser", "ptr", "user", "null"),
+            IrPatterns.store("ternary", "ptr", "selectedUser")
         );
     }
 
@@ -1027,11 +1027,11 @@ public class ResourceUsageTest extends BaseTest {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}
             
-            def process_user(user: User) -> i32:
+            def processUser(user: User) -> i32:
                 return user.age if user != null else -1
             
             def main() -> i32:
-                return process_user(null)
+                return processUser(null)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "null_as_function_argument");
@@ -1040,7 +1040,7 @@ public class ResourceUsageTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.functionCall("process_user", "process_user", "i32", List.of(
+            IrPatterns.functionCall("processUser", "processUser", "i32", List.of(
                 Map.entry("ptr", "null")
             )));
     }
@@ -1208,28 +1208,28 @@ public class ResourceUsageTest extends BaseTest {
             
             def main() -> i32:
                 var res: TestResource = TestResource{5}
-                return res.non_existent_field  # Field doesn't exist
+                return res.nonExistentField  # Field doesn't exist
             """;
 
         String error = compileAndExpectFailure(sourceCode, "access_non_existent_field");
 
-        assertTrue(error.contains("Field 'non_existent_field' not found"),
+        assertTrue(error.contains("Field 'nonExistentField' not found"),
             "Should report non-existent field");
     }
 
     @Test
     public void testCallNonExistentMethod() {
         String sourceCode = """
-            resource TestResource{var data: i32}
+            resource testResource{var data: i32}
             
             def main() -> i32:
-                var res: TestResource = TestResource{5}
-                return res.non_existent_method()  # Method doesn't exist
+                var res: testResource = testResource{5}
+                return res.nonExistentMethod()  # Method doesn't exist
             """;
 
         String error = compileAndExpectFailure(sourceCode, "call_non_existent_method");
 
-        assertTrue(error.contains("Method 'non_existent_method' not found"),
+        assertTrue(error.contains("Method 'nonExistentMethod' not found"),
             "Should report non-existent method");
     }
 
@@ -1241,9 +1241,9 @@ public class ResourceUsageTest extends BaseTest {
             resource ResourceB{var data: i32}
             
             def main() -> i32:
-                var res_a = ResourceA{5}
-                var res_b = ResourceB{5}
-                var equal = res_a == res_b
+                var resA = ResourceA{5}
+                var resB = ResourceB{5}
+                var equal = resA == resB
             """;
 
         String error = compileAndExpectFailure(sourceCode, "call_non_existent_method");

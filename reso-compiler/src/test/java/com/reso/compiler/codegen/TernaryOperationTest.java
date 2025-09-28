@@ -59,8 +59,8 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var condition: bool = true
             var result = 42 if condition else 24
-            var negative_result = -10 if condition else -20
-            var large_result = 1000000 if condition else 999999
+            var negativeResult = -10 if condition else -20
+            var largeResult = 1000000 if condition else 999999
             """);
         String ir = compileAndExpectSuccess(sourceCode, "ternary_integer_literals_only");
 
@@ -70,8 +70,8 @@ public class TernaryOperationTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("condition", "i1"),
             IrPatterns.alloca("result", "i32"),
-            IrPatterns.alloca("negative_result", "i32"),
-            IrPatterns.alloca("large_result", "i32")
+            IrPatterns.alloca("negativeResult", "i32"),
+            IrPatterns.alloca("largeResult", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -86,8 +86,8 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var condition: bool = false
             var result = 3.14 if condition else 2.71
-            var negative_result = -1.5 if condition else -2.5
-            var scientific_result = 1.23e10 if condition else 4.56e-5
+            var negativeResult = -1.5 if condition else -2.5
+            var scientificResult = 1.23e10 if condition else 4.56e-5
             """);
         String ir = compileAndExpectSuccess(sourceCode, "ternary_float_literals_only");
 
@@ -97,8 +97,8 @@ public class TernaryOperationTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("condition", "i1"),
             IrPatterns.alloca("result", "double"),
-            IrPatterns.alloca("negative_result", "double"),
-            IrPatterns.alloca("scientific_result", "double")
+            IrPatterns.alloca("negativeResult", "double"),
+            IrPatterns.alloca("scientificResult", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -135,8 +135,8 @@ public class TernaryOperationTest extends BaseTest {
     public void testTernaryWithCompatibleTypes() {
         String sourceCode = wrapInMainFunction("""
             var condition: bool = true
-            var typed_value: i32 = 100
-            var result = typed_value if condition else 50
+            var typedValue: i32 = 100
+            var result = typedValue if condition else 50
             """);
         String ir = compileAndExpectSuccess(sourceCode, "ternary_compatible_types");
 
@@ -145,12 +145,12 @@ public class TernaryOperationTest extends BaseTest {
 
         assertIrContains(mainFunc,
             IrPatterns.alloca("condition", "i1"),
-            IrPatterns.alloca("typed_value", "i32"),
+            IrPatterns.alloca("typedValue", "i32"),
             IrPatterns.alloca("result", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.select("i1", "condition", "i32", "typed_value", "50")
+            IrPatterns.select("i1", "condition", "i32", "typedValue", "50")
         );
     }
 
@@ -249,8 +249,8 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var counter: i32 = 0
             var limit: i32 = 5
-            var use_limit: bool = true
-            while counter < (limit if use_limit else 10):
+            var useLimit: bool = true
+            while counter < (limit if useLimit else 10):
                 counter = counter + 1
             """);
         String ir = compileAndExpectSuccess(sourceCode, "ternary_in_while_condition");
@@ -261,11 +261,11 @@ public class TernaryOperationTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("counter", "i32"),
             IrPatterns.alloca("limit", "i32"),
-            IrPatterns.alloca("use_limit", "i1")
+            IrPatterns.alloca("useLimit", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.select("i1", "use_limit", "i32", "limit", "10"),
+            IrPatterns.select("i1", "useLimit", "i32", "limit", "10"),
             IrPatterns.icmp("slt", "i32", "counter", "ternary")
         );
     }
@@ -571,8 +571,8 @@ public class TernaryOperationTest extends BaseTest {
             def main() -> i32:
                 var a: i32 = 5
                 var b: i32 = 3
-                var use_add: bool = true
-                var result: i32 = add(a, b) if use_add else multiply(a, b)
+                var useAdd: bool = true
+                var result: i32 = add(a, b) if useAdd else multiply(a, b)
                 return result
             """;
         String ir = compileAndExpectSuccess(sourceCode, "ternary_with_function_calls");
@@ -583,7 +583,7 @@ public class TernaryOperationTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("a", "i32"),
             IrPatterns.alloca("b", "i32"),
-            IrPatterns.alloca("use_add", "i1"),
+            IrPatterns.alloca("useAdd", "i1"),
             IrPatterns.alloca("result", "i32")
         );
 
@@ -592,25 +592,25 @@ public class TernaryOperationTest extends BaseTest {
                 List.of(Map.entry("i32", "a"), Map.entry("i32", "b"))),
             IrPatterns.functionCall("multiply", "i32",
                 List.of(Map.entry("i32", "a"), Map.entry("i32", "b"))),
-            IrPatterns.select("i1", "use_add", "i32", "add", "multiply")
+            IrPatterns.select("i1", "useAdd", "i32", "add", "multiply")
         );
     }
 
     @Test
     public void testTernaryOperationsAsExpressionStatements() {
         String sourceCode = """
-            def get_true_value() -> i32:
+            def getTrueValue() -> i32:
                 return 100
             
-            def get_false_value() -> i32:
+            def getFalseValue() -> i32:
                 return 200
             
-            def get_condition() -> bool:
+            def getCondition() -> bool:
                 return true
             
             def main() -> i32:
-                get_true_value() if get_condition() else get_false_value()
-                42 if true else get_false_value()
+                getTrueValue() if getCondition() else getFalseValue()
+                42 if true else getFalseValue()
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "ternary_expression_statements");
@@ -619,27 +619,27 @@ public class TernaryOperationTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.functionCall("get_condition", "i1", Collections.emptyList()),
-            IrPatterns.functionCall("get_true_value", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_false_value", "i32", Collections.emptyList()),
-            IrPatterns.select("i1", "get_condition", "i32", "get_true_value", "get_false_value"),
-            IrPatterns.functionCall("get_false_value", "i32", Collections.emptyList()),
-            IrPatterns.select("i1", "true", "i32", "42", "get_false_value")
+            IrPatterns.functionCall("getCondition", "i1", Collections.emptyList()),
+            IrPatterns.functionCall("getTrueValue", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getFalseValue", "i32", Collections.emptyList()),
+            IrPatterns.select("i1", "getCondition", "i32", "getTrueValue", "getFalseValue"),
+            IrPatterns.functionCall("getFalseValue", "i32", Collections.emptyList()),
+            IrPatterns.select("i1", "true", "i32", "42", "getFalseValue")
         );
     }
 
     @Test
     public void testWithUnitFunctionError() {
         String sourceCode = """
-            def unit_a():
+            def unitA():
                 return
             
-            def unit_b() -> ():
+            def unitB() -> ():
                 return
             
             def main() -> i32:
                 var condition: bool = true
-                unit_a() if condition else unit_b()
+                unitA() if condition else unitB()
             """;
         String ir = compileAndExpectSuccess(sourceCode, "ternary_with_unit_functions");
 
@@ -647,9 +647,9 @@ public class TernaryOperationTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.functionCall("unit_a", "%unit", Collections.emptyList()),
-            IrPatterns.functionCall("unit_b", "%unit", Collections.emptyList()),
-            IrPatterns.select("i1", "condition", "%unit", "unit_a", "unit_b")
+            IrPatterns.functionCall("unitA", "%unit", Collections.emptyList()),
+            IrPatterns.functionCall("unitB", "%unit", Collections.emptyList()),
+            IrPatterns.select("i1", "condition", "%unit", "unitA", "unitB")
         );
     }
 
@@ -661,9 +661,9 @@ public class TernaryOperationTest extends BaseTest {
     public void testIncompatibleTypesError() {
         String sourceCode = wrapInMainFunction("""
             var condition: bool = true
-            var int_val: i32 = 10
-            var float_val: f64 = 5.5
-            var result: i32 = int_val if condition else float_val
+            var intVal: i32 = 10
+            var floatVal: f64 = 5.5
+            var result: i32 = intVal if condition else floatVal
             """);
         String errors = compileAndExpectFailure(sourceCode, "incompatible_types_ternary");
 
@@ -726,9 +726,9 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var condition1: bool = true
             var condition2: bool = false
-            var int_val: i32 = 10
-            var bool_val: bool = true
-            var result: i32 = (int_val ? condition2 : bool_val) if condition1 else 20
+            var intVal: i32 = 10
+            var boolVal: bool = true
+            var result: i32 = (intVal ? condition2 : boolVal) if condition1 else 20
             """);
         String errors = compileAndExpectFailure(sourceCode, "incompatible_nested_ternary");
 

@@ -53,20 +53,20 @@ public final class BuiltinRegister {
 
     // Configuration for primitive types and their string conversion
     private static final Map<String, PrimitiveToStringConfig> PRIMITIVE_CONFIGS = Map.ofEntries(
-        Map.entry("i8", new PrimitiveToStringConfig(I8, "%d", 5, "int8_to_string")),
-        Map.entry("i16", new PrimitiveToStringConfig(I16, "%d", 7, "int16_to_string")),
-        Map.entry("i32", new PrimitiveToStringConfig(I32, "%d", 12, "int32_to_string")),
-        Map.entry("i64", new PrimitiveToStringConfig(I64, "%lld", 21, "int64_to_string")),
-        Map.entry("isize", new PrimitiveToStringConfig(ISIZE, "%lld", 21, "isize_to_string")),
-        Map.entry("u8", new PrimitiveToStringConfig(U8, "%u", 4, "uint8_to_string")),
-        Map.entry("u16", new PrimitiveToStringConfig(U16, "%u", 6, "uint16_to_string")),
-        Map.entry("u32", new PrimitiveToStringConfig(U32, "%u", 11, "uint32_to_string")),
-        Map.entry("u64", new PrimitiveToStringConfig(U64, "%llu", 21, "uint64_to_string")),
-        Map.entry("usize", new PrimitiveToStringConfig(USIZE, "%llu", 21, "usize_to_string")),
-        Map.entry("f32", new PrimitiveToStringConfig(F32, "%.6f", 48, "float32_to_string")),
-        Map.entry("f64", new PrimitiveToStringConfig(F64, "%.15f", 64, "float64_to_string")),
-        Map.entry("char", new PrimitiveToStringConfig(CHAR, "%c", 2, "char_to_string")),
-        Map.entry("bool", new PrimitiveToStringConfig(BOOL, "%s", 6, "bool_to_string"))
+        Map.entry("i8", new PrimitiveToStringConfig(I8, "%d", 5, "int8_toString")),
+        Map.entry("i16", new PrimitiveToStringConfig(I16, "%d", 7, "int16_toString")),
+        Map.entry("i32", new PrimitiveToStringConfig(I32, "%d", 12, "int32_toString")),
+        Map.entry("i64", new PrimitiveToStringConfig(I64, "%lld", 21, "int64_toString")),
+        Map.entry("isize", new PrimitiveToStringConfig(ISIZE, "%lld", 21, "isize_toString")),
+        Map.entry("u8", new PrimitiveToStringConfig(U8, "%u", 4, "uint8_toString")),
+        Map.entry("u16", new PrimitiveToStringConfig(U16, "%u", 6, "uint16_toString")),
+        Map.entry("u32", new PrimitiveToStringConfig(U32, "%u", 11, "uint32_toString")),
+        Map.entry("u64", new PrimitiveToStringConfig(U64, "%llu", 21, "uint64_toString")),
+        Map.entry("usize", new PrimitiveToStringConfig(USIZE, "%llu", 21, "usize_toString")),
+        Map.entry("f32", new PrimitiveToStringConfig(F32, "%.6f", 48, "float32_toString")),
+        Map.entry("f64", new PrimitiveToStringConfig(F64, "%.15f", 64, "float64_toString")),
+        Map.entry("char", new PrimitiveToStringConfig(CHAR, "%c", 2, "char_toString")),
+        Map.entry("bool", new PrimitiveToStringConfig(BOOL, "%s", 6, "bool_toString"))
     );
 
     /**
@@ -87,7 +87,7 @@ public final class BuiltinRegister {
     public static void registerBuiltinResources(@Nonnull CodeGenerationContext context) {
         registerVectorResource(context);
 
-        // Register all primitive types with to_string methods
+        // Register all primitive types with toString methods
         registeri8(context);
         registeri16(context);
         registeri32(context);
@@ -116,7 +116,7 @@ public final class BuiltinRegister {
     /**
      * Registers the i8 type with its methods.
      * i8 methods:
-     * - int8.to_string() -> String
+     * - int8.toString() -> String
      */
     private static void registeri8(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "i8");
@@ -125,7 +125,7 @@ public final class BuiltinRegister {
     /**
      * Registers the i16 type with its methods.
      * i16 methods:
-     * - int16.to_string() -> String
+     * - int16.toString() -> String
      */
     private static void registeri16(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "i16");
@@ -134,7 +134,7 @@ public final class BuiltinRegister {
     /**
      * Registers the i32 type with its methods.
      * i32 methods:
-     * - int32.to_string() -> String
+     * - int32.toString() -> String
      */
     private static void registeri32(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "i32");
@@ -143,7 +143,7 @@ public final class BuiltinRegister {
     /**
      * Registers the i64 type with its methods.
      * i64 methods:
-     * - int64.to_string() -> String
+     * - int64.toString() -> String
      */
     private static void registeri64(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "i64");
@@ -152,7 +152,7 @@ public final class BuiltinRegister {
     /**
      * Registers the isize type with its methods.
      * isize methods:
-     * - isize.to_string() -> String
+     * - isize.toString() -> String
      */
     private static void registerisize(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "isize");
@@ -161,7 +161,7 @@ public final class BuiltinRegister {
     /**
      * Registers the u8 type with its methods.
      * u8 methods:
-     * - uint8.to_string() -> String
+     * - uint8.toString() -> String
      */
     private static void registeru8(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "u8");
@@ -170,7 +170,7 @@ public final class BuiltinRegister {
     /**
      * Registers the u16 type with its methods.
      * u16 methods:
-     * - uint16.to_string() -> String
+     * - uint16.toString() -> String
      */
     private static void registeru16(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "u16");
@@ -179,7 +179,7 @@ public final class BuiltinRegister {
     /**
      * Registers the u32 type with its methods.
      * u32 methods:
-     * - uint32.to_string() -> String
+     * - uint32.toString() -> String
      */
     private static void registeru32(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "u32");
@@ -188,7 +188,7 @@ public final class BuiltinRegister {
     /**
      * Registers the u64 type with its methods.
      * u64 methods:
-     * - uint64.to_string() -> String
+     * - uint64.toString() -> String
      */
     private static void registeru64(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "u64");
@@ -197,7 +197,7 @@ public final class BuiltinRegister {
     /**
      * Registers the usize type with its methods.
      * usize methods:
-     * - usize.to_string() -> String
+     * - usize.toString() -> String
      */
     private static void registerusize(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "usize");
@@ -206,7 +206,7 @@ public final class BuiltinRegister {
     /**
      * Registers the f32 type with its methods.
      * f32 methods:
-     * - float32.to_string() -> String
+     * - float32.toString() -> String
      */
     private static void registerf32(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "f32");
@@ -215,7 +215,7 @@ public final class BuiltinRegister {
     /**
      * Registers the f64 type with its methods.
      * f64 methods:
-     * - float64.to_string() -> String
+     * - float64.toString() -> String
      */
     private static void registerf64(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "f64");
@@ -224,7 +224,7 @@ public final class BuiltinRegister {
     /**
      * Registers the char type with its methods.
      * char methods:
-     * - char.to_string() -> String
+     * - char.toString() -> String
      */
     private static void registerChar(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "char");
@@ -233,7 +233,7 @@ public final class BuiltinRegister {
     /**
      * Registers the bool type with its methods.
      * bool methods:
-     * - bool.to_string() -> String
+     * - bool.toString() -> String
      */
     private static void registerBool(@Nonnull CodeGenerationContext context) {
         registerPrimitiveWithToString(context, "bool");
@@ -242,7 +242,7 @@ public final class BuiltinRegister {
     /**
      * Registers the unit type with its methods.
      * unit methods:
-     * - unit.to_string() -> String
+     * - unit.toString() -> String
      */
     private static void registerUnit(@Nonnull CodeGenerationContext context) {
         ResoType unitType = context.getTypeSystem().getType(UNIT);
@@ -470,7 +470,7 @@ public final class BuiltinRegister {
     }
 
     /**
-     * Generic method to register a primitive type with its to_string method.
+     * Generic method to register a primitive type with its toString method.
      *
      * @param context  The code generation context
      * @param typeName The name of the primitive type
@@ -497,11 +497,11 @@ public final class BuiltinRegister {
     }
 
     /**
-     * Creates the to_string() method symbol for any primitive type.
+     * Creates the toString() method symbol for any primitive type.
      *
      * @param context The code generation context
      * @param config  The configuration for the primitive type
-     * @return The method symbol for to_string()
+     * @return The method symbol for toString()
      */
     private static MethodSymbol createToStringMethodSymbol(
         @Nonnull CodeGenerationContext context,
@@ -512,7 +512,7 @@ public final class BuiltinRegister {
         IrValue irValue = createPrimitiveToStringFunction(context, config);
 
         return new MethodSymbol(
-            "to_string",
+            "toString",
             context.getTypeSystem().getResourceType("String"),
             parameters,
             irValue,
@@ -522,12 +522,12 @@ public final class BuiltinRegister {
     }
 
     /**
-     * Creates the IR function value for primitive.to_string() method.
+     * Creates the IR function value for primitive.toString() method.
      * Uses snprintf to convert a primitive value to a String.
      *
      * @param context The code generation context
      * @param config  The configuration for the primitive type
-     * @return The IR function value for the to_string method
+     * @return The IR function value for the toString method
      */
     private static IrValue createPrimitiveToStringFunction(
         @Nonnull CodeGenerationContext context,
@@ -560,7 +560,7 @@ public final class BuiltinRegister {
     }
 
     /**
-     * Generates the body of a primitive to_string function.
+     * Generates the body of a primitive toString function.
      *
      * @param context          The code generation context
      * @param wrapperFunction  The wrapper function to generate body for
@@ -876,10 +876,10 @@ public final class BuiltinRegister {
     }
 
     /**
-     * Creates the to_string() method symbol for unit type.
+     * Creates the toString() method symbol for unit type.
      *
      * @param context The code generation context
-     * @return The method symbol for to_string()
+     * @return The method symbol for toString()
      */
     private static MethodSymbol createUnitToStringMethodSymbol(
         @Nonnull CodeGenerationContext context) {
@@ -887,7 +887,7 @@ public final class BuiltinRegister {
         List<PathSegment> pathSegments = List.of();
 
         return new MethodSymbol(
-            "to_string",
+            "toString",
             context.getTypeSystem().getResourceType("String"),
             parameters,
             null,
@@ -901,7 +901,7 @@ public final class BuiltinRegister {
      * Always returns the string "()".
      *
      * @param context The code generation context
-     * @return The IR function value for the to_string method
+     * @return The IR function value for the toString method
      */
     private static ResoValue createUnitString(@Nonnull CodeGenerationContext context) {
         return context.getExpressionGenerator().getLiteralGenerator()

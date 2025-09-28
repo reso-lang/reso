@@ -62,7 +62,7 @@ public class ResourceDefinitionTest extends BaseTest {
             resource Product{
                 pub var name: String,
                 var price: f64,
-                pub const in_stock: bool,
+                pub const inStock: bool,
                 const id: i32,
                 const unit: ()
             }
@@ -743,10 +743,10 @@ public class ResourceDefinitionTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "def no_params() -> i32: return 42",
-        "def one_param(x: i32) -> i32: return x",
-        "def two_params(x: i32, y: i32) -> i32: return x + y",
-        "def multiple_params(a: i32, b: bool, c: String, d: f64) -> i32: return a"
+        "def noParams() -> i32: return 42",
+        "def oneParam(x: i32) -> i32: return x",
+        "def twoParams(x: i32, y: i32) -> i32: return x + y",
+        "def multipleParams(a: i32, b: bool, c: String, d: f64) -> i32: return a"
     })
     public void testMethodParameterVariations(String methodDef) {
         String sourceCode = String.format("""

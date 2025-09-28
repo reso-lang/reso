@@ -72,7 +72,7 @@ public class VectorTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var numbers: Vector<i32> = Vector()
             var size: usize = numbers/size.get()
-            var empty_check: bool = size == 0
+            var emptyCheck: bool = size == 0
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_size_access");
 
@@ -82,7 +82,7 @@ public class VectorTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("numbers", "ptr"),
             IrPatterns.alloca("size", usizeType),
-            IrPatterns.alloca("empty_check", "i1")
+            IrPatterns.alloca("emptyCheck", "i1")
         );
 
         // Verify inline size access (no function call)
@@ -473,7 +473,7 @@ public class VectorTest extends BaseTest {
     @Test
     public void testVectorAsReturnValue() {
         String sourceCode = """
-            def create_vector() -> Vector<i32>:
+            def createVector() -> Vector<i32>:
                 var vec: Vector<i32> = Vector()
                 vec.add(1)
                 vec.add(2)
@@ -481,14 +481,14 @@ public class VectorTest extends BaseTest {
                 return vec
             
             def main() -> i32:
-                var result: Vector<i32> = create_vector()
+                var result: Vector<i32> = createVector()
                 var size: usize = result/size.get()
                 return size as i32
             """;
         String ir = compileAndExpectSuccess(sourceCode, "vector_as_return_value");
 
         assertIrContains(ir,
-            IrPatterns.functionDefinition("create_vector", "ptr"),
+            IrPatterns.functionDefinition("createVector", "ptr"),
             IrPatterns.functionDefinition("main", "i32")
         );
 
@@ -497,14 +497,14 @@ public class VectorTest extends BaseTest {
 
         assertIrContainsInOrder(mainFunc,
             IrPatterns.alloca("result", "ptr"),
-            IrPatterns.functionCall("create_vector", "ptr", Collections.emptyList()),
-            IrPatterns.store("create_vector_result", "ptr", "result"),
+            IrPatterns.functionCall("createVector", "ptr", Collections.emptyList()),
+            IrPatterns.store("createVector_result", "ptr", "result"),
             // Inline size access on returned vector
             IrPatterns.load("ptr", "result"),
             IrPatterns.fieldAccess("size_ptr", "Vector<i32>", "result_value", 1)
         );
 
-        String createVectorFunc = extractFunction(ir, "create_vector");
+        String createVectorFunc = extractFunction(ir, "createVector");
         assertNotNull(createVectorFunc, "create_vector function should be present in the IR");
 
         assertIrContainsInOrder(createVectorFunc,
@@ -586,8 +586,8 @@ public class VectorTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var vec1: Vector<i32> = Vector()
             var vec2: Vector<i32> = Vector()
-            var is_equal: bool = vec1 == vec2
-            var is_not_equal: bool = vec1 != vec2
+            var isEqual: bool = vec1 == vec2
+            var isNotEqual: bool = vec1 != vec2
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_comparison");
 
@@ -604,8 +604,8 @@ public class VectorTest extends BaseTest {
     public void testUntypedVectorComparison() {
         String sourceCode = wrapInMainFunction("""
             var vec1: Vector<i32> = Vector()
-            var is_equal: bool = vec1 == Vector()
-            var is_not_equal: bool = vec1 != Vector()
+            var isEqual: bool = vec1 == Vector()
+            var isNotEqual: bool = vec1 != Vector()
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_comparison");
 
@@ -622,8 +622,8 @@ public class VectorTest extends BaseTest {
     public void testNullVectorComparison() {
         String sourceCode = wrapInMainFunction("""
             var vec1: Vector<i32> = Vector()
-            var is_equal: bool = vec1 == null
-            var is_not_equal: bool = vec1 != null
+            var isEqual: bool = vec1 == null
+            var isNotEqual: bool = vec1 != null
             """);
         String ir = compileAndExpectSuccess(sourceCode, "null_vector_comparison");
 
@@ -640,8 +640,8 @@ public class VectorTest extends BaseTest {
     public void testVectorComparisonWithNull() {
         String sourceCode = wrapInMainFunction("""
             var vec: Vector<i32> = Vector()
-            var is_equal: bool = vec == null
-            var is_not_equal: bool = vec != null
+            var isEqual: bool = vec == null
+            var isNotEqual: bool = vec != null
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_comparison_with_null");
 
@@ -670,9 +670,9 @@ public class VectorTest extends BaseTest {
             row2.add(4)
             matrix.add(row1)
             matrix.add(row2)
-            var matrix_size: usize = matrix/size.get()
-            var first_row: Vector<i32> = matrix[0].get()
-            var first_element: i32 = first_row[0].get()
+            var matrixSize: usize = matrix/size.get()
+            var firstRow: Vector<i32> = matrix[0].get()
+            var firstElement: i32 = firstRow[0].get()
             """);
         String ir = compileAndExpectSuccess(sourceCode, "nested_vector_types");
 
@@ -683,9 +683,9 @@ public class VectorTest extends BaseTest {
             IrPatterns.alloca("matrix", "ptr"),
             IrPatterns.alloca("row1", "ptr"),
             IrPatterns.alloca("row2", "ptr"),
-            IrPatterns.alloca("matrix_size", usizeType),
-            IrPatterns.alloca("first_row", "ptr"),
-            IrPatterns.alloca("first_element", "i32")
+            IrPatterns.alloca("matrixSize", usizeType),
+            IrPatterns.alloca("firstRow", "ptr"),
+            IrPatterns.alloca("firstElement", "i32")
         );
 
         // Verify nested vector creation and access
@@ -699,10 +699,10 @@ public class VectorTest extends BaseTest {
             IrPatterns.load("ptr", "matrix"),
             IrPatterns.fieldAccess("elements_ptr", "Vector<Vector>", "matrix_value", 0),
             IrPatterns.load("ptr", "element_ptr"),
-            IrPatterns.store("element", "ptr", "first_row"),
+            IrPatterns.store("element", "ptr", "firstRow"),
             // Access element from nested vector
-            IrPatterns.load("ptr", "first_row"),
-            IrPatterns.fieldAccess("elements_ptr", "Vector<i32>", "first_row_value", 0),
+            IrPatterns.load("ptr", "firstRow"),
+            IrPatterns.fieldAccess("elements_ptr", "Vector<i32>", "firstRow_value", 0),
             IrPatterns.load("i32", "element_ptr")
         );
     }
@@ -753,12 +753,12 @@ public class VectorTest extends BaseTest {
     @Test
     public void testUntypedVectorConstructorError() {
         String sourceCode = wrapInMainFunction("""
-            var untyped_vector = Vector()
+            var untypedVector = Vector()
             """);
         String errors = compileAndExpectFailure(sourceCode, "untyped_vector_constructor");
 
         assertErrorContains(errors,
-            "Cannot infer type for variable untyped_vector"
+            "Cannot infer type for variable untypedVector"
         );
     }
 

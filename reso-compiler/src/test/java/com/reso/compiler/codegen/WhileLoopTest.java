@@ -128,7 +128,7 @@ public class WhileLoopTest extends BaseTest {
                 if i == 3:
                     break
                     var unreachable: i32 = 42
-            var after_loop: i32 = i
+            var afterLoop: i32 = i
             """);
 
         // This should produce warnings about unreachable code
@@ -334,7 +334,7 @@ public class WhileLoopTest extends BaseTest {
     @Test
     public void testWhileWithFunctionCalls() {
         String sourceCode = """
-            def should_continue(x: i32) -> bool:
+            def shouldContinue(x: i32) -> bool:
                 return x < 10
             
             def process(value: i32) -> i32:
@@ -344,7 +344,7 @@ public class WhileLoopTest extends BaseTest {
                 var i: i32 = 0
                 var result: i32 = 0
             
-                while should_continue(i):
+                while shouldContinue(i):
                     result = process(i)
                     i = i + 1
             
@@ -357,11 +357,11 @@ public class WhileLoopTest extends BaseTest {
 
         assertIrContains(mainFunc,
             // Function calls in condition and body
-            IrPatterns.functionCall("should_continue", "i1", List.of()),
+            IrPatterns.functionCall("shouldContinue", "i1", List.of()),
             IrPatterns.functionCall("process", "i32", List.of()),
 
             // While loop structure
-            IrPatterns.conditionalBranch("should_continue_result", "while_body", "while_end")
+            IrPatterns.conditionalBranch("shouldContinue_result", "while_body", "while_end")
         );
     }
 
@@ -478,12 +478,12 @@ public class WhileLoopTest extends BaseTest {
             var total: i32 = 0
             
             while i < 3:
-                var outer_val: i32 = i * 10
+                var outerVal: i32 = i * 10
                 var j: i32 = 0
             
                 while j < 2:
-                    var inner_val: i32 = j * 5
-                    total = total + outer_val + inner_val
+                    var innerVal: i32 = j * 5
+                    total = total + outerVal + innerVal
                     j = j + 1
             
                 i = i + 1
@@ -498,9 +498,9 @@ public class WhileLoopTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("i", "i32"),
             IrPatterns.alloca("total", "i32"),
-            IrPatterns.alloca("outer_val", "i32"),
+            IrPatterns.alloca("outerVal", "i32"),
             IrPatterns.alloca("j", "i32"),
-            IrPatterns.alloca("inner_val", "i32"),
+            IrPatterns.alloca("innerVal", "i32"),
             IrPatterns.alloca("result", "i32")
         );
     }
@@ -517,7 +517,7 @@ public class WhileLoopTest extends BaseTest {
                 x = x - 1  # Modifies inner x
                 break  # Exit to avoid infinite loop with outer x
             
-            var final_x: i32 = x  # Should use outer x (still 10)
+            var finalX: i32 = x  # Should use outer x (still 10)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "while_variable_shadowing");
 
@@ -528,7 +528,7 @@ public class WhileLoopTest extends BaseTest {
             IrPatterns.alloca("x", "i32"),
             IrPatterns.alloca("x2", "i32"),  // Second allocation for shadowed variable
             IrPatterns.alloca("result", "i32"),
-            IrPatterns.alloca("final_x", "i32")
+            IrPatterns.alloca("finalX", "i32")
         );
     }
 
@@ -538,17 +538,17 @@ public class WhileLoopTest extends BaseTest {
             var counter: i32 = 0
             
             while counter < 3:
-                var loop_var: i32 = counter * 2
+                var loopVar: i32 = counter * 2
                 counter = counter + 1
             
-            var result: i32 = loop_var  # Error: loop_var not in scope
+            var result: i32 = loopVar  # Error: loopVar not in scope
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "while_variable_not_accessible");
 
-        assertTrue(errors.contains("loop_var")
+        assertTrue(errors.contains("loopVar")
                 && errors.contains("not defined"),
-            "Should report error that 'loop_var' variable is not defined outside while block");
+            "Should report error that 'loopVar' variable is not defined outside while block");
     }
 
     @Test
@@ -557,27 +557,27 @@ public class WhileLoopTest extends BaseTest {
             var i: i32 = 0
             
             while i < 2:
-                var outer_temp: i32 = i
+                var outerTemp: i32 = i
                 var j: i32 = 0
             
                 while j < 2:
-                    var inner_temp: i32 = j
+                    var innerTemp: i32 = j
                     j = j + 1
             
-                var result1: i32 = inner_temp  # Error: inner_temp not in scope
+                var result1: i32 = innerTemp  # Error: innerTemp not in scope
                 i = i + 1
             
-            var result2: i32 = outer_temp  # Error: outer_temp not in scope
+            var result2: i32 = outerTemp  # Error: outerTemp not in scope
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "nested_while_variable_error");
 
-        assertTrue(errors.contains("inner_temp")
+        assertTrue(errors.contains("innerTemp")
                 && errors.contains("not defined"),
-            "Should report error that 'inner_temp' variable is not defined in outer while scope");
-        assertTrue(errors.contains("outer_temp")
+            "Should report error that 'innerTemp' variable is not defined in outer while scope");
+        assertTrue(errors.contains("outerTemp")
                 && errors.contains("not defined"),
-            "Should report error that 'outer_temp' variable is not defined outside while block");
+            "Should report error that 'outerTemp' variable is not defined outside while block");
     }
 
     @Test

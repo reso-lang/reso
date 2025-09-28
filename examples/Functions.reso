@@ -12,23 +12,23 @@ def subtract(x: i32, y: i32) -> i32:
     return result
 
 # Function that returns a boolean
-def is_even(number: i32) -> bool:
+def isEven(number: i32) -> bool:
     return (number rem 2) == 0
 
 # Function with multiple parameters of different types
-def format_person_info(name: String, age: i32, height: f64) -> String:
+def formatPersonInfo(name: String, age: i32, height: f64) -> String:
     return (name.append(" is ")
-        .append(age.to_string())
+        .append(age.toString())
         .append(" years old and ")
-        .append(height.to_string())
+        .append(height.toString())
         .append("m tall"))
 
 # Function that performs calculations
-def calculate_area(length: f64, width: f64) -> f64:
+def calculateArea(length: f64, width: f64) -> f64:
     return length * width
 
 # Function that returns early based on condition
-def find_max(a: i32, b: i32, c: i32) -> i32:
+def findMax(a: i32, b: i32, c: i32) -> i32:
     if a >= b and a >= c:
         return a
     
@@ -38,37 +38,37 @@ def find_max(a: i32, b: i32, c: i32) -> i32:
     return c
 
 # Function that returns the unit type
-def print_numbers(count: i32) -> ():
+def printNumbers(count: i32) -> ():
     var i: i32 = 1
     while i <= count:
-        println("Number: ".append(i.to_string()))
+        println("Number: ".append(i.toString()))
         i += 1
     return ()
 
 # Function that uses other functions
-def calculate_and_print(x: i32, y: i32):
+def calculateAndPrint(x: i32, y: i32):
     var sum = add(x, y)
     var difference = subtract(x, y)
     
-    println("Sum: ".append(sum.to_string()))
-    println("Difference: ".append(difference.to_string()))
+    println("Sum: ".append(sum.toString()))
+    println("Difference: ".append(difference.toString()))
     
-    if is_even(sum):
+    if isEven(sum):
         println("Sum is even")
     else:
         println("Sum is odd")
 
 # Function with complex logic
-def classify_number(num: i32) -> String:
+def classifyNumber(num: i32) -> String:
     if num == 0:
         return "zero"
     else if num > 0:
-        if is_even(num):
+        if isEven(num):
             return "positive even"
         else:
             return "positive odd"
     else:
-        if is_even(num):
+        if isEven(num):
             return "negative even"
         else:
             return "negative odd"
@@ -93,33 +93,33 @@ def main() -> i32:
     var sum = add(15, 25)
     var diff = subtract(50, 20)
     
-    println("15 + 25 = ".append(sum.to_string()))
-    println("50 - 20 = ".append(diff.to_string()))
+    println("15 + 25 = ".append(sum.toString()))
+    println("50 - 20 = ".append(diff.toString()))
     
     # Boolean returning functions
     println("=== Boolean Functions ===")
     var num1: i32 = 42
     var num2: i32 = 17
     
-    println(num1.to_string().append(" is even: ").
-        append(is_even(num1).to_string()))
-    println(num2.to_string().append(" is even: ")
-        .append(is_even(num2).to_string()))
+    println(num1.toString().append(" is even: ").
+        append(isEven(num1).toString()))
+    println(num2.toString().append(" is even: ")
+        .append(isEven(num2).toString()))
     
     # String returning functions
     println("=== String Functions ===")
-    var info = format_person_info("Alice", 30, 1.65)
+    var info = formatPersonInfo("Alice", 30, 1.65)
     println(info)
     
     # Mathematical functions
     println("=== Mathematical Functions ===")
-    var area = calculate_area(5.0, 3.5)
-    println("Rectangle area (5.0 x 3.5): ".append(area.to_string()))
+    var area = calculateArea(5.0, 3.5)
+    println("Rectangle area (5.0 x 3.5): ".append(area.toString()))
     
     # Functions with multiple return paths
     println("=== Multiple Return Paths ===")
-    var max_val = find_max(10, 25, 15)
-    println("Max of 10, 25, 15: ".append(max_val.to_string()))
+    var maxVal = findMax(10, 25, 15)
+    println("Max of 10, 25, 15: ".append(maxVal.toString()))
     
     # Classification function
     println("=== Number Classification ===")
@@ -132,30 +132,30 @@ def main() -> i32:
     var i: usize = 0
     while i < numbers/size.get():
         var num = numbers[i].get()
-        var classification = classify_number(num)
-        println(num.to_string().append(" is ")
+        var classification = classifyNumber(num)
+        println(num.toString().append(" is ")
             .append(classification))
         i += 1
 
     # Function composition
     println("=== Function Composition ===")
-    calculate_and_print(20, 8)
+    calculateAndPrint(20, 8)
     
     # Small Fibonacci demonstration (be careful with larger values)
     println("=== Fibonacci ===")
-    var fib_nums: Vector<i32> = Vector()
-    fib_nums.add(0)
-    fib_nums.add(1)
-    fib_nums.add(2)
-    fib_nums.add(3)
-    fib_nums.add(4)
-    fib_nums.add(5)
+    var fibNums: Vector<i32> = Vector()
+    fibNums.add(0)
+    fibNums.add(1)
+    fibNums.add(2)
+    fibNums.add(3)
+    fibNums.add(4)
+    fibNums.add(5)
     
     i = 0
-    while i < fib_nums/size.get():
-        var n = fib_nums[i].get()
-        var fib_n = fibonacci(n)
-        println("Fibonacci(".append(n.to_string())
+    while i < fibNums/size.get():
+        var n = fibNums[i].get()
+        var fibN = fibonacci(n)
+        println("Fibonacci(".append(n.toString())
             .append(") = ")
-            .append(fib_n.to_string()))
+            .append(fibN.toString()))
         i += 1

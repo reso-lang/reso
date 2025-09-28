@@ -230,8 +230,8 @@ public class VariableTest extends BaseTest {
     @Test
     public void testf32Boundaries() {
         String normalRange = wrapInMainFunction("""
-            var min_normal: f32 = 1.1754943E+38
-            var max_normal: f32 = 3.402823E38
+            var minNormal: f32 = 1.1754943E+38
+            var maxNormal: f32 = 3.402823E38
             var negative: f32 = -3.402823e-38
             """);
         String ir = compileAndExpectSuccess(normalRange, "float32_boundaries");
@@ -240,14 +240,14 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("min_normal", "float"),
-            IrPatterns.alloca("max_normal", "float"),
+            IrPatterns.alloca("minNormal", "float"),
+            IrPatterns.alloca("maxNormal", "float"),
             IrPatterns.alloca("negative", "float")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x47D61BCCA0000000", "float", "min_normal"),
-            IrPatterns.store("0x47EFFFFFA0000000", "float", "max_normal"),
+            IrPatterns.store("0x47D61BCCA0000000", "float", "minNormal"),
+            IrPatterns.store("0x47EFFFFFA0000000", "float", "maxNormal"),
             IrPatterns.store("0xB827288DC0000000", "float", "negative")
         );
     }
@@ -255,8 +255,8 @@ public class VariableTest extends BaseTest {
     @Test
     public void testf64Boundaries() {
         String normalRange = wrapInMainFunction("""
-            var min_normal: f64 = 2.225074e-308
-            var max_normal: f64 = 1.797693e+308
+            var minNormal: f64 = 2.225074e-308
+            var maxNormal: f64 = 1.797693e+308
             var negative: f64 = -1.797693e+308
             """);
         String ir = compileAndExpectSuccess(normalRange, "float64_boundaries");
@@ -265,14 +265,14 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("min_normal", "double"),
-            IrPatterns.alloca("max_normal", "double"),
+            IrPatterns.alloca("minNormal", "double"),
+            IrPatterns.alloca("maxNormal", "double"),
             IrPatterns.alloca("negative", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x1000001111E1E5", "double", "min_normal"),
-            IrPatterns.store("0x7FEFFFFFD7B9609A", "double", "max_normal"),
+            IrPatterns.store("0x1000001111E1E5", "double", "minNormal"),
+            IrPatterns.store("0x7FEFFFFFD7B9609A", "double", "maxNormal"),
             IrPatterns.store("0xFFEFFFFFD7B9609A", "double", "negative")
         );
     }
@@ -280,8 +280,8 @@ public class VariableTest extends BaseTest {
     @Test
     public void testBooleanVariableDeclaration() {
         String sourceCode = wrapInMainFunction("""
-            var is_true: bool = true
-            var is_false: bool = false
+            var isTrue: bool = true
+            var isFalse: bool = false
             """);
         String ir = compileAndExpectSuccess(sourceCode, "boolean_declaration");
 
@@ -289,24 +289,24 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("is_true", "i1"),
-            IrPatterns.alloca("is_false", "i1")
+            IrPatterns.alloca("isTrue", "i1"),
+            IrPatterns.alloca("isFalse", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("true", "i1", "is_true"),
-            IrPatterns.store("false", "i1", "is_false")
+            IrPatterns.store("true", "i1", "isTrue"),
+            IrPatterns.store("false", "i1", "isFalse")
         );
     }
 
     @Test
     public void testCharacterLiteralBoundaries() {
         String sourceCode = wrapInMainFunction("""
-            var min_char: char = '\0'         # Null character
-            var max_char: char = '\\u{FF}'       # Max ASCII
-            var regular_char: char = 'A'       # Regular ASCII
-            var unicode_char: char = '\\u{0041}' # Unicode A
-            var max_unicode_char: char = '\\u{10FFFF}' # Max Unicode
+            var minChar: char = '\0'         # Null character
+            var maxChar: char = '\\u{FF}'       # Max aSCII
+            var regularChar: char = 'A'       # Regular aSCII
+            var unicodeChar: char = '\\u{0041}' # Unicode A
+            var maxUnicodeChar: char = '\\u{10FFFF}' # Max Unicode
             """);
         String ir = compileAndExpectSuccess(sourceCode, "char_boundaries");
 
@@ -314,19 +314,19 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("min_char", "i32"),
-            IrPatterns.alloca("max_char", "i32"),
-            IrPatterns.alloca("regular_char", "i32"),
-            IrPatterns.alloca("unicode_char", "i32"),
-            IrPatterns.alloca("max_unicode_char", "i32")
+            IrPatterns.alloca("minChar", "i32"),
+            IrPatterns.alloca("maxChar", "i32"),
+            IrPatterns.alloca("regularChar", "i32"),
+            IrPatterns.alloca("unicodeChar", "i32"),
+            IrPatterns.alloca("maxUnicodeChar", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0", "i32", "min_char"), // '\0'
-            IrPatterns.store("255", "i32", "max_char"), // '\\u{FF}'
-            IrPatterns.store("65", "i32", "regular_char"), // 'A'
-            IrPatterns.store("65", "i32", "unicode_char"), // '\\u{0041}' (Unicode A)
-            IrPatterns.store("1114111", "i32", "max_unicode_char") // '\\u{10FFFF}' (Max Unicode)
+            IrPatterns.store("0", "i32", "minChar"), // '\0'
+            IrPatterns.store("255", "i32", "maxChar"), // '\\u{FF}'
+            IrPatterns.store("65", "i32", "regularChar"), // 'A'
+            IrPatterns.store("65", "i32", "unicodeChar"), // '\\u{0041}' (Unicode A)
+            IrPatterns.store("1114111", "i32", "maxUnicodeChar") // '\\u{10FFFF}' (Max Unicode)
         );
     }
 
@@ -336,7 +336,7 @@ public class VariableTest extends BaseTest {
 
     @Test
     public void testUntypedIntegerInference() {
-        String sourceCode = wrapInMainFunction("var auto_int = 42");
+        String sourceCode = wrapInMainFunction("var autoInt = 42");
         String ir = compileAndExpectSuccess(sourceCode, "untyped_int_inference");
 
         String mainFunc = extractFunction(ir, "main");
@@ -344,14 +344,14 @@ public class VariableTest extends BaseTest {
 
         // Should default to i32
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.alloca("auto_int", "i32"),
-            IrPatterns.store("42", "i32", "auto_int")
+            IrPatterns.alloca("autoInt", "i32"),
+            IrPatterns.store("42", "i32", "autoInt")
         );
     }
 
     @Test
     public void testUntypedFloatInference() {
-        String sourceCode = wrapInMainFunction("var auto_float = 3.14");
+        String sourceCode = wrapInMainFunction("var autoFloat = 3.14");
         String ir = compileAndExpectSuccess(sourceCode, "untyped_float_inference");
 
         String mainFunc = extractFunction(ir, "main");
@@ -359,22 +359,22 @@ public class VariableTest extends BaseTest {
 
         // Should default to f64
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.alloca("auto_float", "double"),
-            IrPatterns.store("3.140000e\\+00", "double", "auto_float")
+            IrPatterns.alloca("autoFloat", "double"),
+            IrPatterns.store("3.140000e\\+00", "double", "autoFloat")
         );
     }
 
     @Test
     public void testUntypedBooleanInference() {
-        String sourceCode = wrapInMainFunction("var auto_bool = true");
+        String sourceCode = wrapInMainFunction("var autoBool = true");
         String ir = compileAndExpectSuccess(sourceCode, "untyped_bool_inference");
 
         String mainFunc = extractFunction(ir, "main");
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.alloca("auto_bool", "i1"),
-            IrPatterns.store("true", "i1", "auto_bool")
+            IrPatterns.alloca("autoBool", "i1"),
+            IrPatterns.store("true", "i1", "autoBool")
         );
     }
 
@@ -410,9 +410,9 @@ public class VariableTest extends BaseTest {
     @Test
     public void testMixedTypeDeclarations() {
         String sourceCode = wrapInMainFunction("""
-            var int_var: i32 = 42
-            var float_var: f64 = 3.14
-            var bool_var: bool = true
+            var intVar: i32 = 42
+            var floatVar: f64 = 3.14
+            var boolVar: bool = true
             """);
         String ir = compileAndExpectSuccess(sourceCode, "mixed_type_declarations");
 
@@ -420,15 +420,15 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int_var", "i32"),
-            IrPatterns.alloca("float_var", "double"),
-            IrPatterns.alloca("bool_var", "i1")
+            IrPatterns.alloca("intVar", "i32"),
+            IrPatterns.alloca("floatVar", "double"),
+            IrPatterns.alloca("boolVar", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("42", "i32", "int_var"),
-            IrPatterns.store("3.140000e\\+00", "double", "float_var"),
-            IrPatterns.store("true", "i1", "bool_var")
+            IrPatterns.store("42", "i32", "intVar"),
+            IrPatterns.store("3.140000e\\+00", "double", "floatVar"),
+            IrPatterns.store("true", "i1", "boolVar")
         );
     }
 
@@ -471,11 +471,11 @@ public class VariableTest extends BaseTest {
     @Test
     public void testZeroValueDeclarations() {
         String sourceCode = wrapInMainFunction("""
-            var zero_int: i32 = 0
-            var zero_float: f64 = 0.0
-            var false_bool: bool = false
+            var zeroInt: i32 = 0
+            var zeroFloat: f64 = 0.0
+            var falseBool: bool = false
             var unit : () = ()
-            var zero_unit = ()
+            var zeroUnit = ()
             """);
         String ir = compileAndExpectSuccess(sourceCode, "zero_value_declarations");
 
@@ -483,27 +483,27 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("zero_int", "i32"),
-            IrPatterns.alloca("zero_float", "double"),
-            IrPatterns.alloca("false_bool", "i1"),
+            IrPatterns.alloca("zeroInt", "i32"),
+            IrPatterns.alloca("zeroFloat", "double"),
+            IrPatterns.alloca("falseBool", "i1"),
             IrPatterns.alloca("unit", "%unit"),
-            IrPatterns.alloca("zero_unit", "%unit")
+            IrPatterns.alloca("zeroUnit", "%unit")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0", "i32", "zero_int"),
-            IrPatterns.store("0.000000e\\+00", "double", "zero_float"),
-            IrPatterns.store("false", "i1", "false_bool"),
+            IrPatterns.store("0", "i32", "zeroInt"),
+            IrPatterns.store("0.000000e\\+00", "double", "zeroFloat"),
+            IrPatterns.store("false", "i1", "falseBool"),
             IrPatterns.store("zeroinitializer", "%unit", "unit"),
-            IrPatterns.store("zeroinitializer", "%unit", "zero_unit")
+            IrPatterns.store("zeroinitializer", "%unit", "zeroUnit")
         );
     }
 
     @Test
     public void testNegativeValueDeclarations() {
         String sourceCode = wrapInMainFunction("""
-            var neg_int: i32 = -42
-            var neg_float: f64 = -3.14
+            var negInt: i32 = -42
+            var negFloat: f64 = -3.14
             """);
         String ir = compileAndExpectSuccess(sourceCode, "negative_value_declarations");
 
@@ -511,13 +511,13 @@ public class VariableTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("neg_int", "i32"),
-            IrPatterns.alloca("neg_float", "double")
+            IrPatterns.alloca("negInt", "i32"),
+            IrPatterns.alloca("negFloat", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("-42", "i32", "neg_int"),
-            IrPatterns.store("-3.140000e\\+00", "double", "neg_float")
+            IrPatterns.store("-42", "i32", "negInt"),
+            IrPatterns.store("-3.140000e\\+00", "double", "negFloat")
         );
     }
 
@@ -539,7 +539,7 @@ public class VariableTest extends BaseTest {
     @Test
     public void testInvalidCharacterLiteral() {
         String sourceCode =
-            wrapInMainFunction("var invalid_char: char = '\\u{110000}'"); // Out of Unicode range
+            wrapInMainFunction("var invalidChar: char = '\\u{110000}'"); // Out of Unicode range
         String errors = compileAndExpectFailure(sourceCode, "invalid_character_literal");
 
         assertFalse(errors.isEmpty(), "Should report error for invalid character literal");
@@ -649,8 +649,8 @@ public class VariableTest extends BaseTest {
     @Test
     public void testf32Tof64Error() {
         String sourceCode = wrapInMainFunction("""
-            var f32_val: f32 = 3.14
-            var f64_val: f64 = f32
+            var f32Val: f32 = 3.14
+            var f64Val: f64 = f32
             """);
         String errors = compileAndExpectFailure(sourceCode, "float32_to_float64_error");
 
@@ -660,8 +660,8 @@ public class VariableTest extends BaseTest {
     @Test
     public void testf64Tof32Error() {
         String sourceCode = wrapInMainFunction("""
-            var f64_val: f64 = 3.14159
-            var f32_val: f32 = f64
+            var f64Val: f64 = 3.14159
+            var f32Val: f32 = f64
             """);
         String errors = compileAndExpectFailure(sourceCode, "float64_to_float32_error");
 
@@ -687,8 +687,8 @@ public class VariableTest extends BaseTest {
     @MethodSource("allNumericTypes")
     public void testBoolToNumericTypeError(String numericType) {
         String sourceCode = wrapInMainFunction("""
-            var bool_var: bool = true
-            var num_var: %s = bool_var
+            var boolVar: bool = true
+            var numVar: %s = boolVar
             """.formatted(numericType));
         String errors =
             compileAndExpectFailure(sourceCode, "bool_to_" + numericType.toLowerCase() + "_error");
@@ -701,8 +701,8 @@ public class VariableTest extends BaseTest {
     @MethodSource("numericTypesWithValues")
     public void testNumericTypeToBoolError(String numericType, String value) {
         String sourceCode = wrapInMainFunction("""
-            var num_var: %s = %s
-            var bool_var: bool = num_var
+            var numVar: %s = %s
+            var boolVar: bool = numVar
             """.formatted(numericType, value));
         String errors =
             compileAndExpectFailure(sourceCode, numericType.toLowerCase() + "_to_bool_error");
@@ -729,8 +729,8 @@ public class VariableTest extends BaseTest {
     @MethodSource("numericTypesWithValues")
     public void testNumericTypeToCharError(String numericType, String value) {
         String sourceCode = wrapInMainFunction("""
-            var num_var: %s = %s
-            var char_var: char = num_var
+            var numVar: %s = %s
+            var charVar: char = numVar
             """.formatted(numericType, value));
         String errors =
             compileAndExpectFailure(sourceCode, numericType.toLowerCase() + "_to_char_error");
@@ -741,7 +741,7 @@ public class VariableTest extends BaseTest {
 
     @Test
     public void testUnitVariableDeclarationError() {
-        String sourceCode = wrapInMainFunction("var unit_var: () = 3");
+        String sourceCode = wrapInMainFunction("var unitVar: () = 3");
         String errors = compileAndExpectFailure(sourceCode, "unit_variable_declaration_error");
 
         assertFalse(errors.isEmpty(),

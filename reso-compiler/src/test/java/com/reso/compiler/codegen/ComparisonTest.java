@@ -29,11 +29,11 @@ public class ComparisonTest extends BaseTest {
             var a: i32 = 10
             var b: i32 = 5
             var equal: bool = a == b
-            var not_equal: bool = a != b
+            var notEqual: bool = a != b
             var greater: bool = a > b
-            var greater_equal: bool = a >= b
+            var greaterEqual: bool = a >= b
             var less: bool = a < b
-            var less_equal: bool = a <= b
+            var lessEqual: bool = a <= b
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_signed_comparisons");
 
@@ -45,11 +45,11 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("a", "i32"),
             IrPatterns.alloca("b", "i32"),
             IrPatterns.alloca("equal", "i1"),
-            IrPatterns.alloca("not_equal", "i1"),
+            IrPatterns.alloca("notEqual", "i1"),
             IrPatterns.alloca("greater", "i1"),
-            IrPatterns.alloca("greater_equal", "i1"),
+            IrPatterns.alloca("greaterEqual", "i1"),
             IrPatterns.alloca("less", "i1"),
-            IrPatterns.alloca("less_equal", "i1")
+            IrPatterns.alloca("lessEqual", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -73,11 +73,11 @@ public class ComparisonTest extends BaseTest {
             var a: u32 = 4294967290
             var b: u32 = 10
             var equal: bool = a == b
-            var not_equal: bool = a != b
+            var notEqual: bool = a != b
             var greater: bool = a > b
-            var greater_equal: bool = a >= b
+            var greaterEqual: bool = a >= b
             var less: bool = a < b
-            var less_equal: bool = a <= b
+            var lessEqual: bool = a <= b
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_unsigned_comparisons");
 
@@ -89,11 +89,11 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("a", "i32"),
             IrPatterns.alloca("b", "i32"),
             IrPatterns.alloca("equal", "i1"),
-            IrPatterns.alloca("not_equal", "i1"),
+            IrPatterns.alloca("notEqual", "i1"),
             IrPatterns.alloca("greater", "i1"),
-            IrPatterns.alloca("greater_equal", "i1"),
+            IrPatterns.alloca("greaterEqual", "i1"),
             IrPatterns.alloca("less", "i1"),
-            IrPatterns.alloca("less_equal", "i1")
+            IrPatterns.alloca("lessEqual", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -117,11 +117,11 @@ public class ComparisonTest extends BaseTest {
             var a: f64 = 10.5
             var b: f64 = 5.2
             var equal: bool = a == b
-            var not_equal: bool = a != b
+            var notEqual: bool = a != b
             var greater: bool = a > b
-            var greater_equal: bool = a >= b
+            var greaterEqual: bool = a >= b
             var less: bool = a < b
-            var less_equal: bool = a <= b
+            var lessEqual: bool = a <= b
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_float_comparisons");
 
@@ -133,11 +133,11 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("a", "double"),
             IrPatterns.alloca("b", "double"),
             IrPatterns.alloca("equal", "i1"),
-            IrPatterns.alloca("not_equal", "i1"),
+            IrPatterns.alloca("notEqual", "i1"),
             IrPatterns.alloca("greater", "i1"),
-            IrPatterns.alloca("greater_equal", "i1"),
+            IrPatterns.alloca("greaterEqual", "i1"),
             IrPatterns.alloca("less", "i1"),
-            IrPatterns.alloca("less_equal", "i1")
+            IrPatterns.alloca("lessEqual", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -213,9 +213,9 @@ public class ComparisonTest extends BaseTest {
             while value <= threshold:
                 value = value * 2.0
             
-            var unsigned_counter: u8 = 255
-            while unsigned_counter >= 1:
-                unsigned_counter = unsigned_counter - 1
+            var unsignedCounter: u8 = 255
+            while unsignedCounter >= 1:
+                unsignedCounter = unsignedCounter - 1
             """);
         String ir = compileAndExpectSuccess(sourceCode, "comparisons_in_while");
 
@@ -227,13 +227,13 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("limit", "i32"),
             IrPatterns.alloca("value", "float"),
             IrPatterns.alloca("threshold", "float"),
-            IrPatterns.alloca("unsigned_counter", "i8")
+            IrPatterns.alloca("unsignedCounter", "i8")
         );
 
         assertIrContainsInOrder(mainFunc,
             IrPatterns.icmp("slt", "i32", "counter", "limit"),       // counter < limit (signed)
             IrPatterns.fcmp("ole", "float", "value", "threshold"),   // value <= threshold (ordered)
-            IrPatterns.icmp("uge", "i8", "unsigned_counter", "1")
+            IrPatterns.icmp("uge", "i8", "unsignedCounter", "1")
         );
     }
 
@@ -292,10 +292,10 @@ public class ComparisonTest extends BaseTest {
             
             var x: f32 = 1.5
             var y: f32 = 2.5
-            var float_result: bool = false
+            var floatResult: bool = false
             
-            float_result = x <= y
-            float_result = x == y
+            floatResult = x <= y
+            floatResult = x == y
             """);
         String ir = compileAndExpectSuccess(sourceCode, "comparisons_in_assignments");
 
@@ -308,7 +308,7 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("result", "i1"),
             IrPatterns.alloca("x", "float"),
             IrPatterns.alloca("y", "float"),
-            IrPatterns.alloca("float_result", "i1")
+            IrPatterns.alloca("floatResult", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -323,30 +323,30 @@ public class ComparisonTest extends BaseTest {
     @Test
     public void testComparisonsInReturnStatements() {
         String sourceCode = """
-            def compare_ints(a: i32, b: i32) -> bool:
+            def compareInts(a: i32, b: i32) -> bool:
                 return a > b
             
-            def compare_floats(x: f64, y: f64) -> bool:
+            def compareFloats(x: f64, y: f64) -> bool:
                 return x <= y
             
-            def compare_unsigned(p: u16, q: u16) -> bool:
+            def compareUnsigned(p: u16, q: u16) -> bool:
                 return p != q
             
             def main() -> i32:
-                var result1: bool = compare_ints(10, 5)
-                var result2: bool = compare_floats(3.14, 2.71)
-                var result3: bool = compare_unsigned(100, 200)
+                var result1: bool = compareInts(10, 5)
+                var result2: bool = compareFloats(3.14, 2.71)
+                var result3: bool = compareUnsigned(100, 200)
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "comparisons_in_return");
 
-        String compareIntsFunc = extractFunction(ir, "compare_ints");
-        String compareFloatsFunc = extractFunction(ir, "compare_floats");
-        String compareUnsignedFunc = extractFunction(ir, "compare_unsigned");
+        String compareIntsFunc = extractFunction(ir, "compareInts");
+        String compareFloatsFunc = extractFunction(ir, "compareFloats");
+        String compareUnsignedFunc = extractFunction(ir, "compareUnsigned");
 
-        assertNotNull(compareIntsFunc, "Should find compare_ints function in IR");
-        assertNotNull(compareFloatsFunc, "Should find compare_floats function in IR");
-        assertNotNull(compareUnsignedFunc, "Should find compare_unsigned function in IR");
+        assertNotNull(compareIntsFunc, "Should find compareInts function in IR");
+        assertNotNull(compareFloatsFunc, "Should find compareFloats function in IR");
+        assertNotNull(compareUnsignedFunc, "Should find compareUnsigned function in IR");
 
         // Check for proper comparison operations in return statements
         assertIrContains(compareIntsFunc,
@@ -684,7 +684,7 @@ public class ComparisonTest extends BaseTest {
             var a: bool = true
             var b: bool = false
             var equal: bool = a == b
-            var not_equal: bool = a != b
+            var notEqual: bool = a != b
             """);
         String ir = compileAndExpectSuccess(sourceCode, "boolean_equality");
 
@@ -695,7 +695,7 @@ public class ComparisonTest extends BaseTest {
             IrPatterns.alloca("a", "i1"),
             IrPatterns.alloca("b", "i1"),
             IrPatterns.alloca("equal", "i1"),
-            IrPatterns.alloca("not_equal", "i1")
+            IrPatterns.alloca("notEqual", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -707,15 +707,15 @@ public class ComparisonTest extends BaseTest {
     @Test
     public void testComparisonWithUnitTypes() {
         String sourceCode = """
-            def unit_a():
+            def unitA():
                 return ()
             
-            def unit_b() -> ():
+            def unitB() -> ():
                 return
             
             def main() -> i32:
-                var equal = unit_a() == unit_b()
-                var not_equal = unit_a() != unit_b()
+                var equal = unitA() == unitB()
+                var notEqual = unitA() != unitB()
             """;
         String ir = compileAndExpectSuccess(sourceCode, "unit_type_comparison");
 
@@ -724,7 +724,7 @@ public class ComparisonTest extends BaseTest {
 
         assertIrContainsInOrder(mainFunc,
             IrPatterns.store("true", "i1", "equal"),
-            IrPatterns.store("false", "i1", "not_equal")
+            IrPatterns.store("false", "i1", "notEqual")
         );
     }
 
@@ -800,15 +800,15 @@ public class ComparisonTest extends BaseTest {
     @Test
     public void testComparisonOperationsAsExpressionStatements() {
         String sourceCode = """
-            def get_left() -> i32:
+            def getLeft() -> i32:
                 return 10
             
-            def get_right() -> i32:
+            def getRight() -> i32:
                 return 20
             
             def main() -> i32:
-                get_left() > get_right()
-                get_left() != 3
+                getLeft() > getRight()
+                getLeft() != 3
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "comparison_expression_statements");
@@ -818,11 +818,11 @@ public class ComparisonTest extends BaseTest {
 
         // All comparison operations should be present
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_left", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_right", "i32", Collections.emptyList()),
-            IrPatterns.icmp("sgt", "i32", "get_left", "get_right"),
-            IrPatterns.functionCall("get_left", "i32", Collections.emptyList()),
-            IrPatterns.icmp("ne", "i32", "get_left", "3")
+            IrPatterns.functionCall("getLeft", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getRight", "i32", Collections.emptyList()),
+            IrPatterns.icmp("sgt", "i32", "getLeft", "getRight"),
+            IrPatterns.functionCall("getLeft", "i32", Collections.emptyList()),
+            IrPatterns.icmp("ne", "i32", "getLeft", "3")
         );
     }
 }

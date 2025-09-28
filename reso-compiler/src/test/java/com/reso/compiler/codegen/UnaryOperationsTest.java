@@ -28,11 +28,11 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testBasicUnaryPlusOperations() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var float_val: f64 = 3.14
-            var plus_int: i32 = +int_val
-            var plus_float: f64 = +float_val
-            var plus_literal: i32 = +123
+            var intVal: i32 = 42
+            var floatVal: f64 = 3.14
+            var plusInt: i32 = +intVal
+            var plusFloat: f64 = +floatVal
+            var plusLiteral: i32 = +123
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_unary_plus");
 
@@ -40,30 +40,30 @@ public class UnaryOperationsTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int_val", "i32"),
-            IrPatterns.alloca("float_val", "double"),
-            IrPatterns.alloca("plus_int", "i32"),
-            IrPatterns.alloca("plus_float", "double"),
-            IrPatterns.alloca("plus_literal", "i32")
+            IrPatterns.alloca("intVal", "i32"),
+            IrPatterns.alloca("floatVal", "double"),
+            IrPatterns.alloca("plusInt", "i32"),
+            IrPatterns.alloca("plusFloat", "double"),
+            IrPatterns.alloca("plusLiteral", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("42", "i32", "int_val"),
-            IrPatterns.store("3.140000e\\+00", "double", "float_val"),
-            IrPatterns.load("i32", "int_val"),     // +int_val (identity operation)
-            IrPatterns.load("double", "float_val"), // +float_val (identity operation)
-            IrPatterns.store("123", "i32", "plus_literal") // +123 (compile-time constant)
+            IrPatterns.store("42", "i32", "intVal"),
+            IrPatterns.store("3.140000e\\+00", "double", "floatVal"),
+            IrPatterns.load("i32", "intVal"),     // +intVal (identity operation)
+            IrPatterns.load("double", "floatVal"), // +floatVal (identity operation)
+            IrPatterns.store("123", "i32", "plusLiteral") // +123 (compile-time constant)
         );
     }
 
     @Test
     public void testBasicUnaryMinusOperations() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var float_val: f64 = 3.14
-            var neg_int: i32 = -int_val
-            var neg_float: f64 = -float_val
-            var neg_literal: i32 = -123
+            var intVal: i32 = 42
+            var floatVal: f64 = 3.14
+            var negInt: i32 = -intVal
+            var negFloat: f64 = -floatVal
+            var negLiteral: i32 = -123
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_unary_minus");
 
@@ -71,30 +71,30 @@ public class UnaryOperationsTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int_val", "i32"),
-            IrPatterns.alloca("float_val", "double"),
-            IrPatterns.alloca("neg_int", "i32"),
-            IrPatterns.alloca("neg_float", "double"),
-            IrPatterns.alloca("neg_literal", "i32")
+            IrPatterns.alloca("intVal", "i32"),
+            IrPatterns.alloca("floatVal", "double"),
+            IrPatterns.alloca("negInt", "i32"),
+            IrPatterns.alloca("negFloat", "double"),
+            IrPatterns.alloca("negLiteral", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("42", "i32", "int_val"),
-            IrPatterns.store("3.140000e\\+00", "double", "float_val"),
-            IrPatterns.load("i32", "int_val"),
-            IrPatterns.unaryNeg("i32", "int_val"),      // Integer negation
-            IrPatterns.load("double", "float_val"),
-            IrPatterns.unaryFNeg("double", "float_val"), // Float negation
-            IrPatterns.store("-123", "i32", "neg_literal") // Compile-time constant
+            IrPatterns.store("42", "i32", "intVal"),
+            IrPatterns.store("3.140000e\\+00", "double", "floatVal"),
+            IrPatterns.load("i32", "intVal"),
+            IrPatterns.unaryNeg("i32", "intVal"),      // Integer negation
+            IrPatterns.load("double", "floatVal"),
+            IrPatterns.unaryFNeg("double", "floatVal"), // Float negation
+            IrPatterns.store("-123", "i32", "negLiteral") // Compile-time constant
         );
     }
 
     @Test
     public void testBasicLogicalNotOperations() {
         String sourceCode = wrapInMainFunction("""
-            var bool_val: bool = true
-            var not_bool: bool = not bool_val
-            var not_literal: bool = not false
+            var boolVal: bool = true
+            var notBool: bool = not boolVal
+            var notLiteral: bool = not false
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_logical_not");
 
@@ -102,27 +102,27 @@ public class UnaryOperationsTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("bool_val", "i1"),
-            IrPatterns.alloca("not_bool", "i1"),
-            IrPatterns.alloca("not_literal", "i1")
+            IrPatterns.alloca("boolVal", "i1"),
+            IrPatterns.alloca("notBool", "i1"),
+            IrPatterns.alloca("notLiteral", "i1")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("true", "i1", "bool_val"),
-            IrPatterns.load("i1", "bool_val"),
-            IrPatterns.logicalNot("i1", "bool_val"),     // Logical NOT with XOR 1
-            IrPatterns.store("true", "i1", "not_literal")     // not false = true
+            IrPatterns.store("true", "i1", "boolVal"),
+            IrPatterns.load("i1", "boolVal"),
+            IrPatterns.logicalNot("i1", "boolVal"),     // Logical nOT with xOR 1
+            IrPatterns.store("true", "i1", "notLiteral")     // not false = true
         );
     }
 
     @Test
     public void testBasicBitwiseNotOperations() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var uint_val: u16 = 255
-            var not_int: i32 = ~int_val
-            var not_uint: u16 = ~uint_val
-            var not_literal: i8 = ~(5 as i8)
+            var intVal: i32 = 42
+            var uintVal: u16 = 255
+            var notInt: i32 = ~intVal
+            var notUint: u16 = ~uintVal
+            var notLiteral: i8 = ~(5 as i8)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_bitwise_not");
 
@@ -130,37 +130,37 @@ public class UnaryOperationsTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int_val", "i32"),
-            IrPatterns.alloca("uint_val", "i16"),
-            IrPatterns.alloca("not_int", "i32"),
-            IrPatterns.alloca("not_uint", "i16"),
-            IrPatterns.alloca("not_literal", "i8")
+            IrPatterns.alloca("intVal", "i32"),
+            IrPatterns.alloca("uintVal", "i16"),
+            IrPatterns.alloca("notInt", "i32"),
+            IrPatterns.alloca("notUint", "i16"),
+            IrPatterns.alloca("notLiteral", "i8")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("42", "i32", "int_val"),
-            IrPatterns.store("255", "i16", "uint_val"),
-            IrPatterns.load("i32", "int_val"),
-            IrPatterns.bitwiseNot("i32", "int_val"),     // Bitwise NOT with XOR all-ones
-            IrPatterns.load("i16", "uint_val"),
-            IrPatterns.bitwiseNot("i16", "uint_val")     // Bitwise NOT with XOR all-ones
+            IrPatterns.store("42", "i32", "intVal"),
+            IrPatterns.store("255", "i16", "uintVal"),
+            IrPatterns.load("i32", "intVal"),
+            IrPatterns.bitwiseNot("i32", "intVal"),     // Bitwise nOT with xOR all-ones
+            IrPatterns.load("i16", "uintVal"),
+            IrPatterns.bitwiseNot("i16", "uintVal")     // Bitwise nOT with xOR all-ones
         );
     }
 
     @Test
     public void testUnaryOperationsAsExpressionStatements() {
         String sourceCode = """
-            def get_value() -> i32:
+            def getValue() -> i32:
                 return 42
             
-            def get_bool() -> bool:
+            def getBool() -> bool:
                 return true
             
             def main() -> i32:
-                -get_value()
-                +get_value()
-                ~get_value()
-                not get_bool()
+                -getValue()
+                +getValue()
+                ~getValue()
+                not getBool()
             """;
         String ir = compileAndExpectSuccess(sourceCode, "unary_expression_statements");
 
@@ -169,13 +169,13 @@ public class UnaryOperationsTest extends BaseTest {
 
         // Verify all unary operations are performed
         assertIrContains(mainFunc,
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.sub("i32", "0", "get_value"), // unary minus: 0 - value
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.sub("i32", "0", "getValue"), // unary minus: 0 - value
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
             // unary plus (identity)
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.bitwiseNot("i32", "get_value"),
-            IrPatterns.logicalNot("i1", "get_bool")
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.bitwiseNot("i32", "getValue"),
+            IrPatterns.logicalNot("i1", "getBool")
         );
     }
 
@@ -328,13 +328,13 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testUnaryOperationsAsFunctionArguments() {
         String sourceCode = """
-            def process_int(value: i32) -> i32:
+            def processInt(value: i32) -> i32:
                 return value * 2
             
-            def process_bool(flag: bool) -> bool:
+            def processBool(flag: bool) -> bool:
                 return flag
             
-            def process_float(num: f64) -> f64:
+            def processFloat(num: f64) -> f64:
                 return num + 1.0
             
             def main() -> i32:
@@ -343,9 +343,9 @@ public class UnaryOperationsTest extends BaseTest {
                 var num: f64 = 3.14
                 var bits: u8 = 7
             
-                var result1: i32 = process_int(-x)
-                var result2: bool = process_bool(not flag)
-                var result3: f64 = process_float(+num)
+                var result1: i32 = processInt(-x)
+                var result2: bool = processBool(not flag)
+                var result3: f64 = processFloat(+num)
                 var result4: u8 = ~bits
             
                 return 0
@@ -358,14 +358,14 @@ public class UnaryOperationsTest extends BaseTest {
         assertIrContainsInOrder(mainFunc,
             IrPatterns.load("i32", "x"),
             IrPatterns.unaryNeg("i32", "x"),
-            IrPatterns.functionCall("process_int", "i32", List.of(Map.entry("i32", "neg_tmp"))),
+            IrPatterns.functionCall("processInt", "i32", List.of(Map.entry("i32", "neg_tmp"))),
 
             IrPatterns.load("i1", "flag"),
             IrPatterns.logicalNot("i1", "flag"),
-            IrPatterns.functionCall("process_bool", "i1", List.of(Map.entry("i1", "not_tmp"))),
+            IrPatterns.functionCall("processBool", "i1", List.of(Map.entry("i1", "not_tmp"))),
 
             IrPatterns.load("double", "num"),
-            IrPatterns.functionCall("process_float", "double", List.of(Map.entry("double", "num"))),
+            IrPatterns.functionCall("processFloat", "double", List.of(Map.entry("double", "num"))),
 
             IrPatterns.load("i8", "bits"),
             IrPatterns.bitwiseNot("i8", "bits")
@@ -379,10 +379,10 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testUnaryOperationsInReturnStatements() {
         String sourceCode = """
-            def negate_int(value: i32) -> i32:
+            def negateInt(value: i32) -> i32:
                 return -value
             
-            def invert_bool(flag: bool) -> bool:
+            def invertBool(flag: bool) -> bool:
                 return not flag
             
             def identity(num: f32) -> f32:
@@ -396,11 +396,11 @@ public class UnaryOperationsTest extends BaseTest {
             """;
         String ir = compileAndExpectSuccess(sourceCode, "unary_in_return_statements");
 
-        String negateIntFunction = extractFunction(ir, "negate_int");
-        assertNotNull(negateIntFunction, "negate_int function should be present in the IR");
+        String negateIntFunction = extractFunction(ir, "negateInt");
+        assertNotNull(negateIntFunction, "negateInt function should be present in the IR");
 
-        String invertBoolFunction = extractFunction(ir, "invert_bool");
-        assertNotNull(invertBoolFunction, "invert_bool function should be present in the IR");
+        String invertBoolFunction = extractFunction(ir, "invertBool");
+        assertNotNull(invertBoolFunction, "invertBool function should be present in the IR");
 
         String identityFunction = extractFunction(ir, "identity");
         assertNotNull(identityFunction, "identity function should be present in the IR");
@@ -439,9 +439,9 @@ public class UnaryOperationsTest extends BaseTest {
             var y: bool = false
             var z: u8 = 15
             
-            var double_neg: i32 = --x           # Should be equivalent to x
-            var double_not: bool = not not y    # Should be equivalent to y
-            var complex_chain: i32 = -+-x       # Should be equivalent to -x
+            var doubleNeg: i32 = --x           # Should be equivalent to x
+            var doubleNot: bool = not not y    # Should be equivalent to y
+            var complexChain: i32 = -+-x       # Should be equivalent to -x
             """);
         String ir = compileAndExpectSuccess(sourceCode, "chained_unary_operations");
 
@@ -452,9 +452,9 @@ public class UnaryOperationsTest extends BaseTest {
             IrPatterns.alloca("x", "i32"),
             IrPatterns.alloca("y", "i1"),
             IrPatterns.alloca("z", "i8"),
-            IrPatterns.alloca("double_neg", "i32"),
-            IrPatterns.alloca("double_not", "i1"),
-            IrPatterns.alloca("complex_chain", "i32")
+            IrPatterns.alloca("doubleNeg", "i32"),
+            IrPatterns.alloca("doubleNot", "i1"),
+            IrPatterns.alloca("complexChain", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -463,7 +463,7 @@ public class UnaryOperationsTest extends BaseTest {
             IrPatterns.unaryNeg("i32", "x"),
             IrPatterns.unaryNeg("i32", "neg_tmp"),
 
-            // not not y (double logical NOT)
+            // not not y (double logical nOT)
             IrPatterns.load("i1", "y"),
             IrPatterns.logicalNot("i1", "y"),
             IrPatterns.logicalNot("i1", "not_tmp"),
@@ -526,8 +526,8 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testBitwiseNotWithFloatingPoint() {
         String sourceCode = wrapInMainFunction("""
-            var float_val: f32 = 3.14
-            var result: f32 = ~float_val
+            var floatVal: f32 = 3.14
+            var result: f32 = ~floatVal
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "bitwise_not_float_error");
@@ -539,8 +539,8 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testLogicalNotWithNonBoolean() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var result: bool = not int_val
+            var intVal: i32 = 42
+            var result: bool = not intVal
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "logical_not_int_error");
@@ -552,8 +552,8 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testArithmeticUnaryWithNonNumeric() {
         String sourceCode = wrapInMainFunction("""
-            var bool_val: bool = true
-            var result: bool = -bool_val
+            var boolVal: bool = true
+            var result: bool = -boolVal
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "arithmetic_unary_bool_error");
@@ -565,13 +565,13 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testUnaryOperationsWithUnitType() {
         String sourceCode = """
-            def do_nothing():
+            def doNothing():
                 return
             
             def main() -> i32:
-                var result1: i32 = -do_nothing()
-                var result2: bool = not do_nothing()
-                var result3: i32 = ~do_nothing()
+                var result1: i32 = -doNothing()
+                var result2: bool = not doNothing()
+                var result3: i32 = ~doNothing()
             """;
         String errors = compileAndExpectFailure(sourceCode, "unary_with_unit_type");
 
@@ -639,9 +639,9 @@ public class UnaryOperationsTest extends BaseTest {
     @Test
     public void testUnaryOperationsWithLiterals() {
         String sourceCode = wrapInMainFunction("""
-            var neg_int: i32 = -42
-            var neg_float: f64 = -3.14
-            var not_bool: bool = not true
+            var negInt: i32 = -42
+            var negFloat: f64 = -3.14
+            var notBool: bool = not true
             var complement: u8 = ~(255 as u8)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "unary_with_literals");
@@ -650,17 +650,17 @@ public class UnaryOperationsTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("neg_int", "i32"),
-            IrPatterns.alloca("neg_float", "double"),
-            IrPatterns.alloca("not_bool", "i1"),
+            IrPatterns.alloca("negInt", "i32"),
+            IrPatterns.alloca("negFloat", "double"),
+            IrPatterns.alloca("notBool", "i1"),
             IrPatterns.alloca("complement", "i8")
         );
 
         // Literals with unary operators should be compile-time constants
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("-42", "i32", "neg_int"),
-            IrPatterns.store("-3.140000e\\+00", "double", "neg_float"),
-            IrPatterns.store("false", "i1", "not_bool")  // not true = false
+            IrPatterns.store("-42", "i32", "negInt"),
+            IrPatterns.store("-3.140000e\\+00", "double", "negFloat"),
+            IrPatterns.store("false", "i1", "notBool")  // not true = false
         );
     }
 

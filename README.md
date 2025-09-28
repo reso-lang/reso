@@ -39,22 +39,22 @@ Resources are the primary organizational unit, combining data and behavior:
 ```reso
 resource Customer {
     pub const id: i64,
-    var user_name: String,
+    var userName: String,
     const products: Vector<String>
 }:
     path:
         pub def summarize() -> String:
-            return this.id.to_string().append(": ").append(this.user_name)
+            return this.id.toString().append(": ").append(this.userName)
 
     path id:
         pub def get() -> i64: return this.id
 
-    path user_name:
+    path userName:
         pub def get() -> String:
-            return this.user_name
+            return this.userName
 
-        pub def set(new_name: String):
-            this.user_name = new_name
+        pub def set(newName: String):
+            this.userName = newName
 
     path products:
         pub def add(product: String):
@@ -100,7 +100,7 @@ def main() -> i32:
     
     # Constants
     const pi: f64 = 3.14159
-    const max_size: i32 = 100
+    const maxSize: i32 = 100
 ```
 
 ### Literals
@@ -114,23 +114,23 @@ Integer literals can be specified in decimal, hexadecimal (`0x`), octal (`0o`), 
 def main() -> i32:
     # Decimal literals
     var decimal = 42
-    var large_decimal = 1_000_000
+    var largeDecimal = 1_000_000
     
     # Hexadecimal literals (0x or 0X prefix)
-    var hex_value = 0xFF
-    var hex_large = 0x1A_2B_3C
+    var hexValue = 0xFF
+    var hexLarge = 0x1A_2B_3C
     
     # Binary literals (0b or 0B prefix)  
     var binary = 0b1010_1111
-    var binary_byte = 0b11111111
+    var binaryByte = 0b11111111
     
     # Octal literals (0o or 0O prefix)
     var octal = 0o755
-    var octal_large = 0o1_777
+    var octalLarge = 0o1_777
     
     # Negative integers
     var negative = -123
-    var negative_hex = -0xFF
+    var negativeHex = -0xFF
 ```
 
 #### Floating-Point Literals
@@ -140,19 +140,19 @@ Floating-point literals support decimal notation and scientific (exponential) no
 ```reso
 def main() -> i32:
     # Basic decimal notation
-    var simple_float = 3.14
-    var with_underscores = 1_234.567_89
+    var simpleFloat = 3.14
+    var withUnderscores = 1_234.567_89
     
     # Scientific notation
     var scientific = 1.23e4        # 12300.0
-    var negative_exp = 2.5e-3      # 0.0025
-    var capital_e = 6.022E23       # Avogadro's number
-    var positive_exp = 1.0e+6      # 1000000.0
+    var negativeExp = 2.5e-3      # 0.0025
+    var capitalE = 6.022E23       # Avogadro's number
+    var positiveExp = 1.0e+6      # 1000000.0
     
     # Edge cases
-    var just_decimal = .5          # 0.5
-    var no_fraction = 42.          # 42.0
-    var exp_only = 1e10            # 10000000000.0
+    var justDecimal = .5          # 0.5
+    var noFraction = 42.          # 42.0
+    var expOnly = 1e10            # 10000000000.0
 ```  
 
 #### String Literals
@@ -167,7 +167,7 @@ def main() -> i32:
     var empty = ""
     
     # Strings with escape sequences
-    var with_escapes = "Line 1\nLine 2\tTabbed"
+    var withEscapes = "Line 1\nLine 2\tTabbed"
     var quotes = "She said \"Hello\" to me"
     var backslash = "Path: C:\\Users\\Name"
     
@@ -214,11 +214,11 @@ def main() -> i32:
 Boolean literals are `true` and `false`:
 ```reso
 def main() -> i32:
-    var is_valid = true
-    var is_complete = false
+    var isValid = true
+    var isComplete = false
     
     # Used in conditions
-    if is_valid:
+    if isValid:
         # do something
 ```
 
@@ -246,14 +246,14 @@ def main() -> i32:
     var float64: f64 = float32 as f64     # Precision extension
     
     # Integer-float conversions
-    var int_val: i32 = 42
-    var as_float: f64 = int_val as f64    # Convert to float
-    var back_to_int: i32 = as_float as i32  # Truncates towards zero
+    var intVal: i32 = 42
+    var asFloat: f64 = intVal as f64      # Convert to float
+    var backToInt: i32 = asFloat as i32   # Truncates towards zero
     
     # Char to integer and back
-    var char_val: char = 'A'
-    var char_code: u32 = char_val as u32   # Unicode code point
-    var from_code: char = char_code as char # Back to char
+    var charVal: char = 'A'
+    var charCode: u32 = charVal as u32    # Unicode code point
+    var fromCode: char = charCode as char # Back to char
 ```
 
 ### Arithmetic Operators
@@ -275,10 +275,10 @@ def main() -> i32:
     var x: f64 = 10.5
     var y: f64 = 3.2
     
-    var float_sum = x + y     # 13.7
-    var float_div = x div y   # 3.28125 (true division)
-    var float_rem = x rem y   # 1.1 (floating-point remainder)
-    var float_mod = x mod y   # 1.1 (same as rem for positive numbers)
+    var floatSum = x + y     # 13.7
+    var floatDiv = x div y   # 3.28125 (true division)
+    var floatRem = x rem y   # 1.1 (floating-point remainder)
+    var floatMod = x mod y   # 1.1 (same as rem for positive numbers)
 ```
 
 ### Bitwise Operators
@@ -288,13 +288,13 @@ def main() -> i32:
     var a: u8 = 0b1100_1010  # 202
     var b: u8 = 0b1010_1111  # 175
     
-    var and_result = a & b    # Bitwise AND: 0b1000_1010 (138)
-    var or_result = a | b     # Bitwise OR:  0b1110_1111 (239)
-    var xor_result = a ^ b    # Bitwise XOR: 0b0110_0101 (101)
+    var andResult = a & b    # Bitwise AND: 0b1000_1010 (138)
+    var orResult = a | b     # Bitwise OR:  0b1110_1111 (239)
+    var xorResult = a ^ b    # Bitwise XOR: 0b0110_0101 (101)
     
     # Shift operations
-    var left_shift = a << 2   # Left shift: 0b0010_1000 (808, truncated to 40)
-    var right_shift = a >> 2  # Right shift: 0b0011_0010 (50)
+    var leftShift = a << 2   # Left shift: 0b0010_1000 (808, truncated to 40)
+    var rightShift = a >> 2  # Right shift: 0b0011_0010 (50)
     
     # Bitwise NOT (complement)
     var complement = ~a       # 0b0011_0101 (53)
@@ -310,16 +310,16 @@ def main() -> i32:
     var b: i32 = 20
     
     var equal = a == b        # false
-    var not_equal = a != b    # true  
+    var notEqual = a != b     # true  
     var less = a < b          # true
-    var less_equal = a <= b   # true
+    var lessEqual = a <= b    # true
     var greater = a > b       # false
-    var greater_equal = a >= b # false
+    var greaterEqual = a >= b # false
     
     # Float comparisons
     var x: f64 = 3.14
     var y: f64 = 2.71
-    var float_greater = x > y  # true
+    var floatGreater = x > y  # true
 ```
 
 ### Unary Operators
@@ -330,15 +330,15 @@ def main() -> i32:
     var positive: i32 = +42   # Identity: 42 (rarely used)
     var negative: i32 = -42   # Negation: -42
     
-    var float_neg: f64 = -3.14159  # Float negation: -3.14159
+    var floatNeg: f64 = -3.14159   # Float negation: -3.14159
     
     # Logical NOT (boolean only)
     var flag: bool = true
-    var inverted: bool = not flag  # false
+    var inverted: bool = not flag   # false
     
     # Bitwise NOT (integers only)  
-    var byte_val: u8 = 0b1010_1010   # 170
-    var complement: u8 = ~byte_val    # 0b0101_0101 (85)
+    var byteVal: u8 = 0b1010_1010    # 170
+    var complement: u8 = ~byteVal    # 0b0101_0101 (85)
 ```
 
 ### Assignment Operators
@@ -466,7 +466,7 @@ def main() -> i32:
 
 #### If-else statements:
 ```reso
-def control_flow(x: i32) -> i32:
+def controlFlow(x: i32) -> i32:
     if x > 10:
         return x * 2
     else if x > 5:
@@ -540,10 +540,10 @@ String represents UTF-8 encoded text data.
 
 - `append(other: String) -> String`: Concatenates another string and returns a new string.
 - `contains(substr: String) -> bool`: Checks if the string contains the specified substring.
-- `starts_with(prefix: String) -> bool`: Checks if the string starts with the specified prefix.
-- `ends_with(suffix: String) -> bool`: Checks if the string ends with the
+- `startsWith(prefix: String) -> bool`: Checks if the string starts with the specified prefix.
+- `endsWith(suffix: String) -> bool`: Checks if the string ends with the
 - `replace(old: String, new: String) -> String`: Replaces occurrences of a substring with another substring and returns a new string.
-- `is_empty() -> bool`: Checks if the string is empty.
+- `isEmpty() -> bool`: Checks if the string is empty.
 - `/chars.get() -> Vector<char>`: Returns a vector of characters in the string.
 - `/chars/size.get() -> usize`: Returns the number of characters in the string.
 - `/chars[index: usize].get() -> char`: Returns the character at the specified index.
@@ -552,7 +552,7 @@ String represents UTF-8 encoded text data.
 - `/bytes[index: usize].get() -> u8`: Returns the byte at the specified index.
 - `/substring.get(start: usize, end: usize) -> String`: Returns a substring starting at the specified index and ending before the specified index.
 
-Every primitive type has a `to_string()` method to convert the value to a string representation.
+Every primitive type has a `toString()` method to convert the value to a string representation.
 Furthermore, the `print()` and `println()` functions can be used to output a String to the console.
 
 ## Prerequisites
@@ -651,7 +651,7 @@ Compiles all source code, runs tests, and creates JAR files:
 ```
 
 ### Run with Default Example
-Executes the compiler with the default example file (examples/helloworld.reso):
+Executes the compiler with the default example file (examples/HelloWorld.reso):
 ```bash
 ./gradlew run
 ```
@@ -660,16 +660,16 @@ Executes the compiler with the default example file (examples/helloworld.reso):
 Compile your own Reso source files:
 ```bash
 # Single file
-./gradlew run --args="path/to/your/file.reso"
+./gradlew run --args="path/to/your/File.reso"
 
 # Multiple files
-./gradlew run --args="file1.reso file2.reso file3.reso"
+./gradlew run --args="File1.reso File2.reso File3.reso"
 
 # With output file specification
-./gradlew run --args="main.reso -o output/output.ll"
+./gradlew run --args="main.reso -o output/Output.ll"
 
 # With optimization enabled
-./gradlew run --args="main.reso -O2 -o optimized.ll"
+./gradlew run --args="Main.reso -O2 -o Optimized.ll"
 ```
 
 ### Display Help

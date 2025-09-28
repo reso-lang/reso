@@ -188,11 +188,11 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testUnitFunctionsCannotReturnValue() {
         String sourceCode = """
-            def do_something():
+            def doSomething():
                 return 42
             
             def main() -> i32:
-                do_something()
+                doSomething()
                 return 0
             """;
 
@@ -217,7 +217,7 @@ public class FunctionTest extends BaseTest {
             def tidy() -> ():
                 var y: i32 = 20
             
-            def do_nothing() -> ():
+            def doNothing() -> ():
                 return
             
             def quiet() -> ():
@@ -240,7 +240,7 @@ public class FunctionTest extends BaseTest {
             IrPatterns.returnStatement("%unit", "zeroinitializer"),
             IrPatterns.functionDefinition("tidy", "%unit"),
             IrPatterns.returnStatement("%unit", "zeroinitializer"),
-            IrPatterns.functionDefinition("do_nothing", "%unit"),
+            IrPatterns.functionDefinition("doNothing", "%unit"),
             IrPatterns.returnStatement("%unit", "zeroinitializer"),
             IrPatterns.functionDefinition("quiet", "%unit"),
             IrPatterns.returnStatement("%unit", "zeroinitializer")
@@ -290,20 +290,20 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testAllBranchesReturn() {
         String sourceCode = """
-            def safe_conditional(flag: bool) -> i32:
+            def safeConditional(flag: bool) -> i32:
                 if flag:
                     return 10
                 else:
                     return 20
             
             def main() -> i32:
-                return safe_conditional(false)
+                return safeConditional(false)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "all_branches_return");
 
-        String safeFunc = extractFunction(ir, "safe_conditional");
-        assertNotNull(safeFunc, "Should find safe_conditional function in IR");
+        String safeFunc = extractFunction(ir, "safeConditional");
+        assertNotNull(safeFunc, "Should find safeConditional function in IR");
 
         assertIrContains(safeFunc,
             IrPatterns.returnStatement("i32", "10"),
@@ -314,7 +314,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testComplexControlFlowWithReturns() {
         String sourceCode = """
-            def complex_flow(a: i32, b: i32) -> i32:
+            def complexFlow(a: i32, b: i32) -> i32:
                 if a > 0:
                     if b > 0:
                         return a + b
@@ -327,13 +327,13 @@ public class FunctionTest extends BaseTest {
                         return 0
             
             def main() -> i32:
-                return complex_flow(5, 3)
+                return complexFlow(5, 3)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "complex_control_flow");
 
-        String complexFunc = extractFunction(ir, "complex_flow");
-        assertNotNull(complexFunc, "Should find complex_flow function in IR");
+        String complexFunc = extractFunction(ir, "complexFlow");
+        assertNotNull(complexFunc, "Should find complexFlow function in IR");
 
         // Should contain multiple return statements
         assertIrContains(complexFunc,
@@ -347,31 +347,31 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testUnitFunctionDoesNotRequireExplicitReturn() {
         String sourceCode = """
-            def unit_without_return():
+            def unitWithoutReturn():
                 var x: i32 = 42
             
-            def unit_with_if_no_return(flag: bool):
+            def unitWithIfNoReturn(flag: bool):
                 if flag:
                     var y: i32 = 10
             
             def main() -> i32:
-                unit_without_return()
-                unit_with_if_no_return(true)
+                unitWithoutReturn()
+                unitWithIfNoReturn(true)
                 return 0
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "unit_no_explicit_return");
 
         assertIrContains(ir,
-            IrPatterns.functionDefinition("unit_without_return", "%unit"),
-            IrPatterns.functionDefinition("unit_with_if_no_return", "%unit")
+            IrPatterns.functionDefinition("unitWithoutReturn", "%unit"),
+            IrPatterns.functionDefinition("unitWithIfNoReturn", "%unit")
         );
     }
 
     @Test
     public void testReturnInWhileLoop() {
         String sourceCode = """
-            def find_first(start: i32, target: i32) -> i32:
+            def findFirst(start: i32, target: i32) -> i32:
                 var current: i32 = start
                 while current < 100:
                     if current == target:
@@ -380,13 +380,13 @@ public class FunctionTest extends BaseTest {
                 return -1
             
             def main() -> i32:
-                return find_first(10, 15)
+                return findFirst(10, 15)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "return_in_while");
 
-        String findFirstFunc = extractFunction(ir, "find_first");
-        assertNotNull(findFirstFunc, "Should find find_first function in IR");
+        String findFirstFunc = extractFunction(ir, "findFirst");
+        assertNotNull(findFirstFunc, "Should find findFirst function in IR");
 
         assertIrContains(findFirstFunc,
             IrPatterns.alloca("current", "i32"),
@@ -401,7 +401,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testReturnInWhileLoopWithoutFinalReturn() {
         String sourceCode = """
-            def search_loop(limit: i32) -> i32:
+            def searchLoop(limit: i32) -> i32:
                 var i: i32 = 0
                 while i < limit:
                     if i == 5:
@@ -410,7 +410,7 @@ public class FunctionTest extends BaseTest {
                 # Missing final return - should cause error
             
             def main() -> i32:
-                return search_loop(10)
+                return searchLoop(10)
             """;
 
         String errors = compileAndExpectFailure(sourceCode, "while_missing_return");
@@ -421,7 +421,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testMultipleReturnsInWhileLoop() {
         String sourceCode = """
-            def complex_while(max: i32) -> i32:
+            def complexWhile(max: i32) -> i32:
                 var count: i32 = 0
                 while count < max:
                     if count rem 2 == 0:
@@ -434,13 +434,13 @@ public class FunctionTest extends BaseTest {
                 return count
             
             def main() -> i32:
-                return complex_while(20)
+                return complexWhile(20)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "multiple_returns_while");
 
-        String complexFunc = extractFunction(ir, "complex_while");
-        assertNotNull(complexFunc, "Should find complex_while function in IR");
+        String complexFunc = extractFunction(ir, "complexWhile");
+        assertNotNull(complexFunc, "Should find complexWhile function in IR");
 
         assertIrContains(complexFunc,
             IrPatterns.srem("i32", "count", "2"),
@@ -454,17 +454,17 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testReturnWithTernaryExpression() {
         String sourceCode = """
-            def max_value(a: i32, b: i32) -> i32:
+            def maxValue(a: i32, b: i32) -> i32:
                 return a if a > b else b if b > a else 0
             
             def main() -> i32:
-                return max_value(10, 20)
+                return maxValue(10, 20)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "return_ternary");
 
-        String maxFunc = extractFunction(ir, "max_value");
-        assertNotNull(maxFunc, "Should find max_value function in IR");
+        String maxFunc = extractFunction(ir, "maxValue");
+        assertNotNull(maxFunc, "Should find maxValue function in IR");
 
         assertIrContains(maxFunc,
             IrPatterns.icmp("sgt", "i32", "a", "b"),
@@ -498,7 +498,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testUnreachable_codeAfterReturnInWhileLoop() {
         String sourceCode = """
-            def unreachable_while() -> i32:
+            def unreachableWhile() -> i32:
                 var i: i32 = 0
                 while i < 10:
                     return i
@@ -506,7 +506,7 @@ public class FunctionTest extends BaseTest {
                 return -1
             
             def main() -> i32:
-                return unreachable_while()
+                return unreachableWhile()
             """;
 
         String warnings = compileAndExpectWarnings(sourceCode, "unreachable_in_while");
@@ -517,7 +517,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testUnreachable_codeAfterAllBranchesReturn() {
         String sourceCode = """
-            def unreachable_after_if(flag: bool) -> i32:
+            def unreachableAfterIf(flag: bool) -> i32:
                 if flag:
                     return 10
                 else:
@@ -526,7 +526,7 @@ public class FunctionTest extends BaseTest {
                 return unused
             
             def main() -> i32:
-                return unreachable_after_if(true)
+                return unreachableAfterIf(true)
             """;
 
         String warnings = compileAndExpectWarnings(sourceCode, "unreachable_after_if");
@@ -538,7 +538,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testReachableCodeAfterPartialReturn() {
         String sourceCode = """
-            def reachable_code(flag: bool) -> i32:
+            def reachableCode(flag: bool) -> i32:
                 if flag:
                     return 10
                 # This code is reachable when flag is false
@@ -546,13 +546,13 @@ public class FunctionTest extends BaseTest {
                 return result
             
             def main() -> i32:
-                return reachable_code(false)
+                return reachableCode(false)
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "reachable_after_partial_return");
 
-        String reachableFunc = extractFunction(ir, "reachable_code");
-        assertNotNull(reachableFunc, "Should find reachable_code function in IR");
+        String reachableFunc = extractFunction(ir, "reachableCode");
+        assertNotNull(reachableFunc, "Should find reachableCode function in IR");
 
         assertIrContains(reachableFunc,
             IrPatterns.alloca("result", "i32"),
@@ -563,7 +563,7 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testUnreachable_codeAfterElse() {
         String sourceCode = """
-            def complex_flow(a: i32, b: i32) -> i32:
+            def complexFlow(a: i32, b: i32) -> i32:
                 if a > 0:
                     if b > 0:
                         return a + b
@@ -577,7 +577,7 @@ public class FunctionTest extends BaseTest {
                 return -1  # This should be unreachable
             
             def main() -> i32:
-                return complex_flow(5, 3)
+                return complexFlow(5, 3)
             """;
 
         String warnings = compileAndExpectWarnings(sourceCode, "unreachable_after_else");
@@ -693,11 +693,11 @@ public class FunctionTest extends BaseTest {
         }
 
         String sourceCode = String.format("""
-            def test_func(%s) -> i32:
+            def testFunc(%s) -> i32:
                 return 0
             
             def main() -> i32:
-                return test_func(%s)
+                return testFunc(%s)
             """, params, callArgs);
 
         String ir = compileAndExpectSuccess(sourceCode, "params_" + paramTypes.replace(",", "_"));
@@ -766,30 +766,30 @@ public class FunctionTest extends BaseTest {
     @Test
     public void testMutuallyRecursiveFunctions() {
         String sourceCode = """
-            def is_even(n: i32) -> bool:
+            def isEven(n: i32) -> bool:
                 if n == 0:
                     return true
                 else:
-                    return is_odd(n - 1)
+                    return isOdd(n - 1)
             
-            def is_odd(n: i32) -> bool:
+            def isOdd(n: i32) -> bool:
                 if n == 0:
                     return false
                 else:
-                    return is_even(n - 1)
+                    return isEven(n - 1)
             
             def main() -> i32:
-                var result: bool = is_even(4)
+                var result: bool = isEven(4)
                 return 0
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "mutually_recursive");
 
         assertIrContains(ir,
-            IrPatterns.functionDefinition("is_even", "i1"),
-            IrPatterns.functionDefinition("is_odd", "i1"),
-            IrPatterns.functionCall("is_odd", "i1", List.of(Map.entry("i32", "sub"))),
-            IrPatterns.functionCall("is_even", "i1", List.of(Map.entry("i32", "sub")))
+            IrPatterns.functionDefinition("isEven", "i1"),
+            IrPatterns.functionDefinition("isOdd", "i1"),
+            IrPatterns.functionCall("isOdd", "i1", List.of(Map.entry("i32", "sub"))),
+            IrPatterns.functionCall("isEven", "i1", List.of(Map.entry("i32", "sub")))
         );
     }
 }

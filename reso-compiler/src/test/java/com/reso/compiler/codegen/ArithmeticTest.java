@@ -538,9 +538,9 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testIncompatibleTypeError() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 10
-            var float_val: f64 = 5.5
-            var result: i32 = int_val + float_val
+            var intVal: i32 = 10
+            var floatVal: f64 = 5.5
+            var result: i32 = intVal + floatVal
             """);
         String errors = compileAndExpectFailure(sourceCode, "incompatible_types");
 
@@ -662,15 +662,15 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testUnitTypeError() {
         String sourceCode = """
-            def unit_a():
+            def unitA():
                 return
-            def unit_b():
+            def unitB():
                 return
             
             def main() -> i32:
-                unit_a() + unit_b()
+                unitA() + unitB()
             """;
-        String errors = compileAndExpectFailure(sourceCode, "void_type_error");
+        String errors = compileAndExpectFailure(sourceCode, "unit_type_error");
 
         assertTrue(errors.contains(
                 "ERROR: Cannot perform arithmetic operation '+' on non-numeric types")
@@ -875,9 +875,9 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testDetailedIncompatibleTypeError() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 10
-            var float_val: f64 = 5.5
-            var result: i32 = int_val + float_val
+            var intVal: i32 = 10
+            var floatVal: f64 = 5.5
+            var result: i32 = intVal + floatVal
             """);
         String errors = compileAndExpectFailure(sourceCode, "detailed_incompatible_types");
 
@@ -966,9 +966,9 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testCompoundAssignmentTypeError() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 10
-            var float_val: f64 = 5.5
-            int_val += float_val
+            var intVal: i32 = 10
+            var floatVal: f64 = 5.5
+            intVal += floatVal
             """);
         String errors = compileAndExpectFailure(sourceCode, "compound_assignment_type_error");
 
@@ -1043,11 +1043,11 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testArithmeticOperationAsExpressionStatement() {
         String sourceCode = """
-            def get_value() -> i32:
+            def getValue() -> i32:
                 return 42
             
             def main() -> i32:
-                get_value() + 10
+                getValue() + 10
             """;
         String ir = compileAndExpectSuccess(sourceCode, "arithmetic_expression_statements");
 
@@ -1056,22 +1056,22 @@ public class ArithmeticTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.add("i32", "get_value", "10")
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.add("i32", "getValue", "10")
         );
     }
 
     @Test
     public void testNestedArithmeticExpressionsAsStatement() {
         String sourceCode = """
-            def get_a() -> i32:
+            def getA() -> i32:
                 return 10
             
-            def get_b() -> i32:
+            def getB() -> i32:
                 return 20
             
             def main() -> i32:
-                (get_a() + get_b()) * (get_a() - get_b())
+                (getA() + getB()) * (getA() - getB())
             """;
         String ir = compileAndExpectSuccess(sourceCode, "nested_arithmetic_expression_statements");
 
@@ -1079,12 +1079,12 @@ public class ArithmeticTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_a", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_b", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_a", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_b", "i32", Collections.emptyList()),
-            IrPatterns.add("i32", "get_a", "get_b"),
-            IrPatterns.sub("i32", "get_a", "get_b"),
+            IrPatterns.functionCall("getA", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getB", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getA", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getB", "i32", Collections.emptyList()),
+            IrPatterns.add("i32", "getA", "getB"),
+            IrPatterns.sub("i32", "getA", "getB"),
             IrPatterns.mul("i32", "add", "sub")
         );
     }
@@ -1092,11 +1092,11 @@ public class ArithmeticTest extends BaseTest {
     @Test
     public void testUnaryExpressionAsStatement() {
         String sourceCode = """
-            def get_value() -> i32:
+            def getValue() -> i32:
                 return 42
             
             def main() -> i32:
-                -get_value()
+                -getValue()
             """;
         String ir = compileAndExpectSuccess(sourceCode, "unary_expression_statements");
 
@@ -1104,8 +1104,8 @@ public class ArithmeticTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.sub("i32", "0", "get_value") // Unary negation as subtraction from zero
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.sub("i32", "0", "getValue") // Unary negation as subtraction from zero
         );
     }
 

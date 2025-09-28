@@ -5,118 +5,118 @@ def main() -> i32:
     println("=== Simple Assignment ===")
     
     var x: i32 = 10                     # Initial assignment
-    println("Initial x: ".append(x.to_string()))
+    println("Initial x: ".append(x.toString()))
     
     x = 20                              # Simple reassignment
-    println("After x = 20: ".append(x.to_string()))
+    println("After x = 20: ".append(x.toString()))
     
     x = x + 5                           # Assignment with expression
-    println("After x = x + 5: ".append(x.to_string()))
+    println("After x = x + 5: ".append(x.toString()))
     
     # Compound Assignment Operators
     println("=== Arithmetic Compound Assignment ===")
     
     # Addition assignment (+=)
     var a: i32 = 10
-    println("Starting with a = ".append(a.to_string()))
+    println("Starting with a = ".append(a.toString()))
     
     a += 5                              # a = + 5
-    println("After a += 5: ".append(a.to_string()))
+    println("After a += 5: ".append(a.toString()))
     
     # Subtraction assignment (-=)
     var b: i32 = 50
-    println("Starting with b = ".append(b.to_string()))
+    println("Starting with b = ".append(b.toString()))
     
     b -= 10                             # b = b - 10
-    println("After b -= 10: ".append(b.to_string()))
+    println("After b -= 10: ".append(b.toString()))
     
     # Multiplication assignment (*=)
     var c: i32 = 4
-    println("Starting with c = ".append(c.to_string()))
+    println("Starting with c = ".append(c.toString()))
     
     c *= 3                              # c = c * 3
-    println("After c *= 3: ".append(c.to_string()))
+    println("After c *= 3: ".append(c.toString()))
     
     # Division assignment (div=)
     var d: i32 = 100
-    println("Starting with d = ".append(d.to_string()))
+    println("Starting with d = ".append(d.toString()))
     
     d div= 4                            # d = d div 4
-    println("After d div= 4: ".append(d.to_string()))
+    println("After d div= 4: ".append(d.toString()))
     
     # Remainder assignment (rem=)
     var e: i32 = 17
-    println("Starting with e = ".append(e.to_string()))
+    println("Starting with e = ".append(e.toString()))
     
     e rem= 5                            # e = e rem 5
-    println("After e rem= 5: ".append(e.to_string()))
+    println("After e rem= 5: ".append(e.toString()))
     
     # Modulo assignment (mod=)
     var f: i32 = -17
-    println("Starting with f = ".append(f.to_string()))
+    println("Starting with f = ".append(f.toString()))
     
     f mod= 5                            # f = f mod 5
-    println("After f mod= 5: ".append(f.to_string()))
+    println("After f mod= 5: ".append(f.toString()))
     
     # Bitwise Compound Assignment
     println("=== Bitwise Compound Assignment ===")
     
     # Bitwise AND assignment (&=)
     var bits1: u8 = 0b1111_0000         # 240
-    println("Starting with bits1 = ".append(bits1.to_string())
+    println("Starting with bits1 = ".append(bits1.toString())
         .append(" (binary: 11110000)"))
     
     bits1 &= 0b1010_1010                # bits1 = bits1 & 0b1010_1010
-    println("After bits1 &= 10101010: ".append(bits1.to_string())
+    println("After bits1 &= 10101010: ".append(bits1.toString())
         .append(" (binary: 10100000)"))
     
     # Bitwise OR assignment (|=)
     var bits2: u8 = 0b0000_1111         # 15
-    println("Starting with bits2 = ".append(bits2.to_string())
+    println("Starting with bits2 = ".append(bits2.toString())
         .append(" (binary: 00001111)"))
     
     bits2 |= 0b1010_0000                # bits2 = bits2 | 0b1010_0000
-    println("After bits2 |= 10100000: ".append(bits2.to_string())
+    println("After bits2 |= 10100000: ".append(bits2.toString())
         .append(" (binary: 10101111)"))
     
     # Bitwise XOR assignment (^=)
     var bits3: u8 = 0b1100_1100         # 204
-    println("Starting with bits3 = ".append(bits3.to_string())
+    println("Starting with bits3 = ".append(bits3.toString())
         .append(" (binary: 11001100)"))
     
     bits3 ^= 0b1010_1010                # bits3 = bits3 ^ 0b1010_1010
-    println("After bits3 ^= 10101010: ".append(bits3.to_string())
+    println("After bits3 ^= 10101010: ".append(bits3.toString())
         .append(" (binary: 01100110)"))
     
     # Left shift assignment (<<=)
-    var shift_left: u8 = 0b0000_1010    # 10
-    println("Starting with shift_left = ".append(shift_left.to_string())
+    var shiftLeft: u8 = 0b0000_1010    # 10
+    println("Starting with shiftLeft = ".append(shiftLeft.toString())
         .append(" (binary: 00001010)"))
     
-    shift_left <<= 2                    # shift_left = shift_left << 2
-    println("After shift_left <<= 2: ".append(shift_left.to_string())
+    shiftLeft <<= 2                    # shiftLeft = shiftLeft << 2
+    println("After shiftLeft <<= 2: ".append(shiftLeft.toString())
         .append(" (binary: 00101000)"))
     
     # Right shift assignment (>>=)
-    var shift_right: u8 = 0b1000_0000   # 128
-    println("Starting with shift_right = ".append(shift_right.to_string())
+    var shiftRight: u8 = 0b1000_0000   # 128
+    println("Starting with shiftRight = ".append(shiftRight.toString())
         .append(" (binary: 10000000)"))
     
-    shift_right >>= 3                   # shift_right = shift_right >> 3
-    println("After shift_right >>= 3: ".append(shift_right.to_string())
+    shiftRight >>= 3                   # shiftRight = shiftRight >> 3
+    println("After shiftRight >>= 3: ".append(shiftRight.toString())
         .append(" (binary: 00010000)"))
     
     # Floating-Point Assignment
     println("=== Floating-Point Assignment ===")
     
-    var float_val: f64 = 10.5
-    println("Starting with float_val = ".append(float_val.to_string()))
+    var floatVal: f64 = 10.5
+    println("Starting with floatVal = ".append(floatVal.toString()))
     
-    float_val += 2.3                    # float_val = float_val.append(2.3
-    println("After float_val += 2.3: ".append(float_val.to_string()))
+    floatVal += 2.3                    # floatVal = floatVal.append(2.3
+    println("After floatVal += 2.3: ".append(floatVal.toString()))
     
-    float_val *= 1.5                    # float_val = float_val * 1.5
-    println("After float_val *= 1.5: ".append(float_val.to_string()))
+    floatVal *= 1.5                    # floatVal = floatVal * 1.5
+    println("After floatVal *= 1.5: ".append(floatVal.toString()))
     
-    float_val div= 2.0                  # float_val = float_val div 2.0
-    println("After float_val div= 2.0: ".append(float_val.to_string()))
+    floatVal div= 2.0                  # floatVal = floatVal div 2.0
+    println("After floatVal div= 2.0: ".append(floatVal.toString()))

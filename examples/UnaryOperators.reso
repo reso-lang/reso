@@ -1,0 +1,87 @@
+def main() -> i32:
+    println("=== Unary Operators in Reso ===")
+    
+    # Arithmetic Unary Operators
+    println("=== Arithmetic Unary Operators ===")
+    
+    # Unary plus (+) - Identity operator
+    var positiveInt: i32 = +42
+    var positiveFloat: f64 = +3.14159
+    
+    println("Unary plus on integer: +".append((42).toString())
+        .append(" = ")
+        .append(positiveInt.toString()))
+    println("Unary plus on float: +".append(3.14159.toString())
+        .append(" = ")
+        .append(positiveFloat.toString()))
+    
+    # Unary minus (-) - Negation operator
+    var original: i32 = 42
+    var negated: i32 = -original       # -42
+    var doubleNegated: i32 = -negated # 42 (back to original)
+    
+    println("Original value: ".append(original.toString()))
+    println("Negated: -".append(original.toString())
+        .append(" = ")
+        .append(negated.toString()))
+    println("Double negated: -(-".append(original.toString())
+        .append(") = ")
+        .append(doubleNegated.toString()))
+    
+    # Negation with floating-point numbers
+    var floatOrig: f64 = 3.14159
+    var floatNeg: f64 = -floatOrig   # -3.14159
+    
+    println("Float original: ".append(floatOrig.toString()))
+    println("Float negated: ".append(floatNeg.toString()))
+
+    # Logical NOT Operator
+    println("=== Logical NOT Operator ===")
+    
+    # Logical NOT only works with boolean values
+    var trueVal: bool = true
+    var falseVal: bool = false
+    
+    var notTrue = not trueVal        # false
+    var notFalse = not falseVal      # true
+    var doubleNot = not not trueVal  # true (back to original)
+    
+    println("Original boolean: ".append(trueVal.toString()))
+    println("not true: ".append(notTrue.toString()))
+    println("not false: ".append(notFalse.toString()))
+    println("not not true: ".append(doubleNot.toString()))
+    
+    # Using logical NOT in expressions
+    var isValid: bool = true
+    var isComplete: bool = false
+    
+    if not isComplete:
+        println("Task is not complete")
+    
+    if not (isValid and isComplete):
+        println("Either not valid or not complete (or both)")
+    
+    # Bitwise NOT Operator
+    println("=== Bitwise NOT Operator ===")
+    
+    # Bitwise NOT works with integer types only
+    var byteVal: u8 = 0b1010_1010      # 170 in decimal
+    var complement: u8 = ~byteVal      # 0b0101_0101 = 85 in decimal
+    
+    println("Original byte: ".append(byteVal.toString())
+        .append(" (binary: 10101010)"))
+    println("Bitwise NOT: ".append(complement.toString())
+        .append(" (binary: 01010101)"))
+    
+    # Bitwise NOT with different integer types
+    var int16Val: u16 = 0xFF00         # 65280
+    var int16Not: u16 = ~int16Val     # 0x00FF = 255
+    
+    println("u16 original: ".append(int16Val.toString()))
+    println("u16 bitwise NOT: ".append(int16Not.toString()))
+    
+    var int32Val: u32 = 0xF0F0F0F0     # 4042322160
+    var int32Not: u32 = ~int32Val     # 0x0F0F0F0F = 252645135
+    
+    println("u32 original: ".append(int32Val.toString()))
+    println("u32 bitwise NOT: ".append(int32Not.toString()))

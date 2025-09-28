@@ -29,11 +29,11 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var a: i32 = 15
             var b: i32 = 7
-            var and_result: i32 = a & b
-            var or_result: i32 = a | b
-            var xor_result: i32 = a ^ b
-            var left_shift: i32 = a << 2
-            var right_shift: i32 = a >> 2
+            var andResult: i32 = a & b
+            var orResult: i32 = a | b
+            var xorResult: i32 = a ^ b
+            var leftShift: i32 = a << 2
+            var rightShift: i32 = a >> 2
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_signed_bitwise");
 
@@ -44,11 +44,11 @@ public class BitwiseTest extends BaseTest {
             // Variable allocations
             IrPatterns.alloca("a", "i32"),
             IrPatterns.alloca("b", "i32"),
-            IrPatterns.alloca("and_result", "i32"),
-            IrPatterns.alloca("or_result", "i32"),
-            IrPatterns.alloca("xor_result", "i32"),
-            IrPatterns.alloca("left_shift", "i32"),
-            IrPatterns.alloca("right_shift", "i32")
+            IrPatterns.alloca("andResult", "i32"),
+            IrPatterns.alloca("orResult", "i32"),
+            IrPatterns.alloca("xorResult", "i32"),
+            IrPatterns.alloca("leftShift", "i32"),
+            IrPatterns.alloca("rightShift", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -70,11 +70,11 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var a: u32 = 240
             var b: u32 = 15
-            var and_result: u32 = a & b
-            var or_result: u32 = a | b
-            var xor_result: u32 = a ^ b
-            var left_shift: u32 = b << 3
-            var right_shift: u32 = a >> 4
+            var andResult: u32 = a & b
+            var orResult: u32 = a | b
+            var xorResult: u32 = a ^ b
+            var leftShift: u32 = b << 3
+            var rightShift: u32 = a >> 4
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_unsigned_bitwise");
 
@@ -85,11 +85,11 @@ public class BitwiseTest extends BaseTest {
             // Variable allocations
             IrPatterns.alloca("a", "i32"),
             IrPatterns.alloca("b", "i32"),
-            IrPatterns.alloca("and_result", "i32"),
-            IrPatterns.alloca("or_result", "i32"),
-            IrPatterns.alloca("xor_result", "i32"),
-            IrPatterns.alloca("left_shift", "i32"),
-            IrPatterns.alloca("right_shift", "i32")
+            IrPatterns.alloca("andResult", "i32"),
+            IrPatterns.alloca("orResult", "i32"),
+            IrPatterns.alloca("xorResult", "i32"),
+            IrPatterns.alloca("leftShift", "i32"),
+            IrPatterns.alloca("rightShift", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -313,14 +313,14 @@ public class BitwiseTest extends BaseTest {
     @Test
     public void testBitwiseOperationWithUnitType() {
         String sourceCode = """
-            def unit_a():
+            def unitA():
                 return ()
             
-            def unit_b():
+            def unitB():
                 return ()
             
             def main() -> i32:
-                unit_a() | unit_b()
+                unitA() | unitB()
             """;
         String errors = compileAndExpectFailure(sourceCode, "unit_type_bitwise");
 
@@ -425,11 +425,11 @@ public class BitwiseTest extends BaseTest {
     public void testBitwiseOperationsWithTwoLiterals() {
         String sourceCode = wrapInMainFunction("""
             # Bitwise operations with literal values
-            var and_result: i8 = 15 & 7
-            var or_result = 8 | 4
-            var xor_result = 255 ^ 128
-            var shift_left: i16 = 5 << 2
-            var shift_right: i64 = 80 >> 3
+            var andResult: i8 = 15 & 7
+            var orResult = 8 | 4
+            var xorResult = 255 ^ 128
+            var shiftLeft: i16 = 5 << 2
+            var shiftRight: i64 = 80 >> 3
             """);
         String ir = compileAndExpectSuccess(sourceCode, "bitwise_two_literals");
 
@@ -437,20 +437,20 @@ public class BitwiseTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("and_result", "i8"),
-            IrPatterns.alloca("or_result", "i32"),
-            IrPatterns.alloca("xor_result", "i32"),
-            IrPatterns.alloca("shift_left", "i16"),
-            IrPatterns.alloca("shift_right", "i64")
+            IrPatterns.alloca("andResult", "i8"),
+            IrPatterns.alloca("orResult", "i32"),
+            IrPatterns.alloca("xorResult", "i32"),
+            IrPatterns.alloca("shiftLeft", "i16"),
+            IrPatterns.alloca("shiftRight", "i64")
         );
 
         // These operations should be computed at compile time
         assertIrContains(mainFunc,
-            IrPatterns.store("7", "i8", "and_result"),      // 15 & 7 = 7
-            IrPatterns.store("12", "i32", "or_result"),     // 8 | 4 = 12
-            IrPatterns.store("127", "i32", "xor_result"),   // 255 ^ 128 = 127
-            IrPatterns.store("20", "i16", "shift_left"),    // 5 << 2 = 20
-            IrPatterns.store("10", "i64", "shift_right")    // 80 >> 3 = 10
+            IrPatterns.store("7", "i8", "andResult"),      // 15 & 7 = 7
+            IrPatterns.store("12", "i32", "orResult"),     // 8 | 4 = 12
+            IrPatterns.store("127", "i32", "xorResult"),   // 255 ^ 128 = 127
+            IrPatterns.store("20", "i16", "shiftLeft"),    // 5 << 2 = 20
+            IrPatterns.store("10", "i64", "shiftRight")    // 80 >> 3 = 10
         );
     }
 
@@ -498,9 +498,9 @@ public class BitwiseTest extends BaseTest {
                                                                  String llvmShiftAmount) {
         String sourceCode = wrapInMainFunction("""
             var value: %s = 100 as %s
-            var shift_amount: %s = 3 as %s
-            var left_result: %s = value << shift_amount
-            var right_result: %s = value >> shift_amount
+            var shiftAmount: %s = 3 as %s
+            var leftResult: %s = value << shiftAmount
+            var rightResult: %s = value >> shiftAmount
             """.formatted(valueType, valueType, shiftType, shiftType, valueType, valueType));
         String ir = compileAndExpectSuccess(sourceCode,
             "shift_types_" + valueType.toLowerCase() + "_" + shiftType.toLowerCase());
@@ -510,9 +510,9 @@ public class BitwiseTest extends BaseTest {
 
         assertIrContains(mainFunc,
             IrPatterns.alloca("value", llvmValueType),
-            IrPatterns.alloca("shift_amount", llvmShiftType),
-            IrPatterns.alloca("left_result", llvmValueType),
-            IrPatterns.alloca("right_result", llvmValueType)
+            IrPatterns.alloca("shiftAmount", llvmShiftType),
+            IrPatterns.alloca("leftResult", llvmValueType),
+            IrPatterns.alloca("rightResult", llvmValueType)
         );
 
         // Verify shift operations are generated
@@ -531,8 +531,8 @@ public class BitwiseTest extends BaseTest {
     static Stream<Arguments> shiftOperationTypeCombinations() {
         return Stream.of(
             // Same type combinations
-            Arguments.of("i32", "i32", "i32", "i32", "shift_amount"),
-            Arguments.of("u32", "u32", "i32", "i32", "shift_amount"),
+            Arguments.of("i32", "i32", "i32", "i32", "shiftAmount"),
+            Arguments.of("u32", "u32", "i32", "i32", "shiftAmount"),
 
             // Different integer types for shift amount
             Arguments.of("i32", "i8", "i32", "i8", "sext"),
@@ -540,7 +540,7 @@ public class BitwiseTest extends BaseTest {
             Arguments.of("i32", "i64", "i32", "i64", "trunc"),
             Arguments.of("i32", "u8", "i32", "i8", "zext"),
             Arguments.of("i32", "u16", "i32", "i16", "zext"),
-            Arguments.of("i32", "u32", "i32", "i32", "shift_amount"),
+            Arguments.of("i32", "u32", "i32", "i32", "shiftAmount"),
             Arguments.of("i32", "u64", "i32", "i64", "trunc"),
 
             Arguments.of("u64", "i8", "i64", "i8", "sext"),
@@ -558,8 +558,8 @@ public class BitwiseTest extends BaseTest {
                                                                String invalidShiftType) {
         String sourceCode = wrapInMainFunction("""
             var value: %s = %s(100)
-            var shift_amount: %s = %s
-            var result: %s = value << shift_amount
+            var shiftAmount: %s = %s
+            var result: %s = value << shiftAmount
             """.formatted(valueType, valueType, invalidShiftType,
             getNonIntegerValue(invalidShiftType), valueType));
         String errors = compileAndExpectFailure(sourceCode,
@@ -682,8 +682,8 @@ public class BitwiseTest extends BaseTest {
     public void testBitwiseOperationsInVariableInitialization() {
         String sourceCode = wrapInMainFunction("""
             var base: i16 = 42
-            var shifted_left: i16 = base << 2
-            var shifted_right: i16 = base >> 1
+            var shiftedLeft: i16 = base << 2
+            var shiftedRight: i16 = base >> 1
             var masked: i16 = base & 15
             var combined: i16 = base | 128
             var flipped: i16 = base ^ 255
@@ -695,8 +695,8 @@ public class BitwiseTest extends BaseTest {
 
         assertIrContains(mainFunc,
             IrPatterns.alloca("base", "i16"),
-            IrPatterns.alloca("shifted_left", "i16"),
-            IrPatterns.alloca("shifted_right", "i16"),
+            IrPatterns.alloca("shiftedLeft", "i16"),
+            IrPatterns.alloca("shiftedRight", "i16"),
             IrPatterns.alloca("masked", "i16"),
             IrPatterns.alloca("combined", "i16"),
             IrPatterns.alloca("flipped", "i16")
@@ -749,7 +749,7 @@ public class BitwiseTest extends BaseTest {
     @Test
     public void testBitwiseOperationsAsFunctionArguments() {
         String sourceCode = """
-            def compute_mask(value: i32, mask: i32) -> i32:
+            def computeMask(value: i32, mask: i32) -> i32:
                 return value & mask
             
             def main() -> i32:
@@ -757,8 +757,8 @@ public class BitwiseTest extends BaseTest {
                 var filter: i32 = 15
             
                 # Pass bitwise operation results as arguments
-                var result1: i32 = compute_mask(data | 16, filter << 1)
-                var result2: i32 = compute_mask(data ^ 128, filter >> 1)
+                var result1: i32 = computeMask(data | 16, filter << 1)
+                var result2: i32 = computeMask(data ^ 128, filter >> 1)
             
                 return result1 + result2
             """;
@@ -777,43 +777,43 @@ public class BitwiseTest extends BaseTest {
         );
 
         // Verify function calls are generated
-        assertIrContains(mainFunc, "call i32 @compute_mask");
+        assertIrContains(mainFunc, "call i32 @computeMask");
     }
 
     @Test
     public void testBitwiseOperationsInReturnStatements() {
         String sourceCode = """
-            def get_masked_value(value: i32, mask: i32) -> i32:
+            def getMaskedValue(value: i32, mask: i32) -> i32:
                 return value & mask
             
-            def get_combined_flags(flag1: i32, flag2: i32) -> i32:
+            def getCombinedFlags(flag1: i32, flag2: i32) -> i32:
                 return flag1 | flag2
             
-            def get_toggled_bits(value: i32, toggle: i32) -> i32:
+            def getToggledBits(value: i32, toggle: i32) -> i32:
                 return value ^ toggle
             
-            def get_shifted_value(value: i32, shift_amount: i32) -> i32:
-                return value << shift_amount
+            def getShiftedValue(value: i32, shiftAmount: i32) -> i32:
+                return value << shiftAmount
             
             def main() -> i32:
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "bitwise_in_returns");
 
-        String getMaskedFunc = extractFunction(ir, "get_masked_value");
-        String getCombinedFunc = extractFunction(ir, "get_combined_flags");
-        String getToggledFunc = extractFunction(ir, "get_toggled_bits");
-        String getShiftedFunc = extractFunction(ir, "get_shifted_value");
+        String getMaskedFunc = extractFunction(ir, "getMaskedValue");
+        String getCombinedFunc = extractFunction(ir, "getCombinedFlags");
+        String getToggledFunc = extractFunction(ir, "getToggledBits");
+        String getShiftedFunc = extractFunction(ir, "getShiftedValue");
 
-        assertNotNull(getMaskedFunc, "Should find get_masked_value function");
-        assertNotNull(getCombinedFunc, "Should find get_combined_flags function");
-        assertNotNull(getToggledFunc, "Should find get_toggled_bits function");
-        assertNotNull(getShiftedFunc, "Should find get_shifted_value function");
+        assertNotNull(getMaskedFunc, "Should find getMaskedValue function");
+        assertNotNull(getCombinedFunc, "Should find getCombinedFlags function");
+        assertNotNull(getToggledFunc, "Should find getToggledBits function");
+        assertNotNull(getShiftedFunc, "Should find getShiftedValue function");
 
         assertIrContains(getMaskedFunc, IrPatterns.bitwiseAnd("i32", "value", "mask"));
         assertIrContains(getCombinedFunc, IrPatterns.bitwiseOr("i32", "flag1", "flag2"));
         assertIrContains(getToggledFunc, IrPatterns.bitwiseXor("i32", "value", "toggle"));
-        assertIrContains(getShiftedFunc, IrPatterns.leftShift("i32", "value", "shift_amount"));
+        assertIrContains(getShiftedFunc, IrPatterns.leftShift("i32", "value", "shiftAmount"));
     }
 
     // ============================================================================
@@ -887,16 +887,16 @@ public class BitwiseTest extends BaseTest {
     @Test
     public void testBitwiseOperationsAsExpressionStatements() {
         String sourceCode = """
-            def get_value() -> i32:
+            def getValue() -> i32:
                 return 15
             
-            def get_shift() -> i32:
+            def getShift() -> i32:
                 return 2
             
             def main() -> i32:
-                get_value() & 7
-                get_value() >> get_shift()
-                ~get_value()
+                getValue() & 7
+                getValue() >> getShift()
+                ~getValue()
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "bitwise_expression_statements");
@@ -905,27 +905,27 @@ public class BitwiseTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.bitwiseAnd("i32", "get_value", "7"),
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_shift", "i32", Collections.emptyList()),
-            IrPatterns.arithmeticRightShift("i32", "get_value", "get_shift"),
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.bitwiseNot("i32", "get_value")
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.bitwiseAnd("i32", "getValue", "7"),
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getShift", "i32", Collections.emptyList()),
+            IrPatterns.arithmeticRightShift("i32", "getValue", "getShift"),
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.bitwiseNot("i32", "getValue")
         );
     }
 
     @Test
     public void testComplexBitwiseExpressionsAsStatement() {
         String sourceCode = """
-            def get_mask() -> i32:
+            def getMask() -> i32:
                 return 255
             
-            def get_value() -> i32:
+            def getValue() -> i32:
                 return 42
             
             def main() -> i32:
-                (get_value() & get_mask()) | (~get_value() ^ get_mask())
+                (getValue() & getMask()) | (~getValue() ^ getMask())
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "complex_bitwise_expression_statements");
@@ -934,13 +934,13 @@ public class BitwiseTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_mask", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_value", "i32", Collections.emptyList()),
-            IrPatterns.functionCall("get_mask", "i32", Collections.emptyList()),
-            IrPatterns.bitwiseAnd("i32", "get_value", "get_mask"),
-            IrPatterns.bitwiseNot("i32", "get_value"),
-            IrPatterns.bitwiseXor("i32", "bitnot", "get_mask"),
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getMask", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getValue", "i32", Collections.emptyList()),
+            IrPatterns.functionCall("getMask", "i32", Collections.emptyList()),
+            IrPatterns.bitwiseAnd("i32", "getValue", "getMask"),
+            IrPatterns.bitwiseNot("i32", "getValue"),
+            IrPatterns.bitwiseXor("i32", "bitnot", "getMask"),
             IrPatterns.bitwiseOr("i32", "bitand", "bitxor")
         );
     }

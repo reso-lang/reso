@@ -104,7 +104,7 @@ public class ParserTest {
     @Test
     public void testWhileLoop() {
         String code = """
-            def count_down(start: i32) -> i32:
+            def countDown(start: i32) -> i32:
                 var count: i32 = start
                 while count > 0:
                     count = count - 1
@@ -117,7 +117,7 @@ public class ParserTest {
     @Test
     public void testBreakContinue() {
         String code = """
-            def process_numbers(max: i32) -> i32:
+            def processNumbers(max: i32) -> i32:
                 var sum: i32 = 0
                 var i: i32 = 0
                 while i < max:
@@ -146,7 +146,7 @@ public class ParserTest {
     @Test
     public void testBitwiseOperations() {
         String code = """
-            def bitwise_ops(a: i32, b: i32) -> i32:
+            def bitwiseOps(a: i32, b: i32) -> i32:
                 var result: i32 = 0
                 result = a & b
                 result = result | (a ^ b)
@@ -162,7 +162,7 @@ public class ParserTest {
     @Test
     public void testLogicalOperations() {
         String code = """
-            def logical_ops(a: bool, b: bool, c: bool) -> bool:
+            def logicalOps(a: bool, b: bool, c: bool) -> bool:
                 var result: bool = false
                 result = a and b
                 result = result or c
@@ -176,7 +176,7 @@ public class ParserTest {
     @Test
     public void testCompoundAssignments() {
         String code = """
-            def compound_assign(a: i32) -> i32:
+            def compoundAssign(a: i32) -> i32:
                 var x: i32 = a
                 x += 5
                 x -= 2
@@ -321,7 +321,7 @@ public class ParserTest {
     @Test
     public void testUnaryOperators() {
         String code = """
-            def unary_ops() -> i32:
+            def unaryOps() -> i32:
                 var a: i32 = 42
                 var b: i32 = -a
                 var c: i32 = +a
@@ -337,7 +337,7 @@ public class ParserTest {
     @Test
     public void testSyntaxError() {
         String code = """
-            def syntax_error() -> i32:
+            def syntaxError() -> i32:
                 var x: i32 = 10
                 var y: i32 = 20
                 return x + * y  # Syntax error: unexpected *
@@ -349,7 +349,7 @@ public class ParserTest {
     @Test
     public void testIndentation() {
         String code = """
-            def indentation_test() -> i32:
+            def indentationTest() -> i32:
                 var x: i32 = 10
               var y: i32 = 20  # Wrong indentation
                 return x + y
@@ -400,7 +400,7 @@ public class ParserTest {
     @Test
     public void testSimpleTernaryOperator() {
         String code = """
-            def test_ternary(x: i32) -> i32:
+            def testTernary(x: i32) -> i32:
                 var result: i32 = 10 if x > 5 else 0
                 return result
             """;
@@ -414,7 +414,7 @@ public class ParserTest {
     @Test
     public void testNestedTernaryOperator() {
         String code = """
-            def test_nested_ternary(x: i32, y: i32) -> i32:
+            def testNestedTernary(x: i32, y: i32) -> i32:
                 var result: i32 = x if x > 0 else y if y > 0 else 0
                 return result
             """;
@@ -428,7 +428,7 @@ public class ParserTest {
             def helper(x: i32) -> i32:
                 return x * 2
             
-            def test_ternary_in_expressions(a: i32, b: i32, flag: bool) -> i32:
+            def testTernaryInExpressions(a: i32, b: i32, flag: bool) -> i32:
                 var result1: i32 = (a if flag else b) + 10
                 var result2: i32 = a * (5 if b > 0 else 1)
                 var result3: i32 = (a + b) if (a > b) else (a - b)

@@ -45,16 +45,16 @@ def main() -> i32:
     println("=== Nested If Statements ===")
     
     var age: i32 = 25
-    var has_license: bool = true
-    var has_car: bool = false
+    var hasLicense: bool = true
+    var hasCar: bool = false
     
     if age >= 18:
         println("You are an adult")
         
-        if has_license:
+        if hasLicense:
             println("You can legally drive")
             
-            if has_car:
+            if hasCar:
                 println("You can drive your own car")
             else:
                 println("You need to borrow or rent a car")
@@ -68,12 +68,12 @@ def main() -> i32:
     
     var number: i32 = 15
     var parity = "even" if (number rem 2) == 0 else "odd"
-    println("The number ".append(number.to_string())
+    println("The number ".append(number.toString())
         .append(" is ")
         .append(parity))
     
-    var max_value = 100 if 100 > 50 else 50
-    println("Maximum value: ".append(max_value.to_string()))
+    var maxValue = 100 if 100 > 50 else 50
+    println("Maximum value: ".append(maxValue.toString()))
     
     # More complex ternary expressions
     var status = "positive" if number > 0 else ("zero" if number == 0 else "negative")
@@ -86,29 +86,29 @@ def main() -> i32:
     println("Counting from 1 to 5:")
     
     while counter <= 5:
-        println("Count: ".append(counter.to_string()))
+        println("Count: ".append(counter.toString()))
         counter += 1
     
-    println("Counter after loop: ".append(counter.to_string()))
+    println("Counter after loop: ".append(counter.toString()))
     
     # Break Statement
     println("=== Break Statement ===")
     
-    var search_target: i32 = 7
-    var search_counter: i32 = 1
+    var searchTarget: i32 = 7
+    var searchCounter: i32 = 1
     var found: bool = false
     
-    println("Searching for ".append(search_target.to_string()).append(":"))
+    println("Searching for ".append(searchTarget.toString()).append(":"))
     
-    while search_counter <= 10:
-        println("Checking: ".append(search_counter.to_string()))
+    while searchCounter <= 10:
+        println("Checking: ".append(searchCounter.toString()))
         
-        if search_counter == search_target:
+        if searchCounter == searchTarget:
             println("Found target!")
             found = true
             break  # Exit the loop immediately
         
-        search_counter += 1
+        searchCounter += 1
     
     if not found:
         println("Target not found")
@@ -125,4 +125,4 @@ def main() -> i32:
         if (j rem 2) == 0:
             continue  # Skip the rest of the iteration for even numbers
         
-        println("Odd number: ".append(j.to_string()))
+        println("Odd number: ".append(j.toString()))

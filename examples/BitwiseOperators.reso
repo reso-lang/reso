@@ -1,0 +1,53 @@
+def main() -> i32:
+    println("=== Bitwise Operators in Reso ===")
+    
+    # Basic Bitwise Operations
+    println("=== Basic Bitwise Operations ===")
+    
+    var a: u8 = 0b1100_1010             # 202 in decimal
+    var b: u8 = 0b1010_1111             # 175 in decimal
+    
+    println("a = ".append(a.toString()).append(" (binary: 11001010)"))
+    println("b = ".append(b.toString()).append(" (binary: 10101111)"))
+    
+    # Bitwise AND (&)
+    var andResult = a & b              # 0b1000_1010 = 138
+    println("a & b = ".append(andResult.toString()).append(" (binary: 10001010)"))
+    
+    # Bitwise OR (|)
+    var orResult = a | b               # 0b1110_1111 = 239
+    println("a | b = ".append(orResult.toString()).append(" (binary: 11101111)"))
+    
+    # Bitwise XOR (^)
+    var xorResult = a ^ b              # 0b0110_0101 = 101
+    println("a ^ b = ".append(xorResult.toString()).append(" (binary: 01100101)"))
+    
+    # Bitwise NOT (~)
+    var notA = ~a                      # 0b0011_0101 = 53
+    var notB = ~b                      # 0b0101_0000 = 80
+    println("~a = ".append(notA.toString()).append(" (binary: 00110101)"))
+    println("~b = ".append(notB.toString()).append(" (binary: 01010000)"))
+    
+    # Shift Operations
+    println("=== Shift Operations ===")
+    
+    var value: u8 = 0b0001_1100         # 28 in decimal
+    println("Original value: ".append(value.toString()).append(" (binary: 00011100)"))
+    
+    # Left shift (<<)
+    var leftshift_1 = value << 1       # 0b0011_1000 = 56
+    var leftshift_2 = value << 2       # 0b0111_0000 = 112
+    var leftshift_3 = value << 3       # 0b1110_0000 = 224
+    
+    println("value << 1 = ".append(leftshift_1.toString()).append(" (binary: 00111000)"))
+    println("value << 2 = ".append(leftshift_2.toString()).append(" (binary: 01110000)"))
+    println("value << 3 = ".append(leftshift_3.toString()).append(" (binary: 11100000)"))
+    
+    # Right shift (>>)
+    var rightshift_1 = value >> 1      # 0b0000_1110 = 14
+    var rightshift_2 = value >> 2      # 0b0000_0111 = 7
+    var rightshift_3 = value >> 3      # 0b0000_0011 = 3
+    
+    println("value >> 1 = ".append(rightshift_1.toString()).append(" (binary: 00001110)"))
+    println("value >> 2 = ".append(rightshift_2.toString()).append(" (binary: 00000111)"))
+    println("value >> 3 = ".append(rightshift_3.toString()).append(" (binary: 00000011)"))

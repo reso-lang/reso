@@ -110,7 +110,7 @@ public class TypeConversionTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var signed: i32 = -42
             var unsigned: u32 = signed as u32
-            var back_to_signed: i32 = unsigned as i32
+            var backToSigned: i32 = unsigned as i32
             """);
         String ir = compileAndExpectSuccess(sourceCode, "signed_unsigned_conversion");
 
@@ -120,7 +120,7 @@ public class TypeConversionTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("signed", "i32"),
             IrPatterns.alloca("unsigned", "i32"),
-            IrPatterns.alloca("back_to_signed", "i32")
+            IrPatterns.alloca("backToSigned", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
@@ -137,10 +137,10 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testSignedIntegerToFloat() {
         String sourceCode = wrapInMainFunction("""
-            var int8_val: i8 = -42
-            var int32_val: i32 = 1000
-            var float32_from8: f32 = int8_val as f32
-            var float64_from32: f64 = int32_val as f64
+            var int8Val: i8 = -42
+            var int32Val: i32 = 1000
+            var float32From8: f32 = int8Val as f32
+            var float64From32: f64 = int32Val as f64
             """);
         String ir = compileAndExpectSuccess(sourceCode, "signed_int_to_float");
 
@@ -148,27 +148,27 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int8_val", "i8"),
-            IrPatterns.alloca("int32_val", "i32"),
-            IrPatterns.alloca("float32_from8", "float"),
-            IrPatterns.alloca("float64_from32", "double")
+            IrPatterns.alloca("int8Val", "i8"),
+            IrPatterns.alloca("int32Val", "i32"),
+            IrPatterns.alloca("float32From8", "float"),
+            IrPatterns.alloca("float64From32", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("-42", "i8", "int8_val"),
-            IrPatterns.store("1000", "i32", "int32_val"),
-            IrPatterns.sitofp("i8", "int8_val", "float"),      // Signed int to float
-            IrPatterns.sitofp("i32", "int32_val", "double")     // Signed int to double
+            IrPatterns.store("-42", "i8", "int8Val"),
+            IrPatterns.store("1000", "i32", "int32Val"),
+            IrPatterns.sitofp("i8", "int8Val", "float"),      // Signed int to float
+            IrPatterns.sitofp("i32", "int32Val", "double")     // Signed int to double
         );
     }
 
     @Test
     public void testUnsignedIntegerToFloat() {
         String sourceCode = wrapInMainFunction("""
-            var uint8_val: u8 = 200
-            var uint32_val: u32 = 3000000000
-            var float32_from8: f32 = uint8_val as f32
-            var float64_from32: f64 = uint32_val as f64
+            var uint8Val: u8 = 200
+            var uint32Val: u32 = 3000000000
+            var float32From8: f32 = uint8Val as f32
+            var float64From32: f64 = uint32Val as f64
             """);
         String ir = compileAndExpectSuccess(sourceCode, "unsigned_int_to_float");
 
@@ -176,17 +176,17 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("uint8_val", "i8"),
-            IrPatterns.alloca("uint32_val", "i32"),
-            IrPatterns.alloca("float32_from8", "float"),
-            IrPatterns.alloca("float64_from32", "double")
+            IrPatterns.alloca("uint8Val", "i8"),
+            IrPatterns.alloca("uint32Val", "i32"),
+            IrPatterns.alloca("float32From8", "float"),
+            IrPatterns.alloca("float64From32", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("-56", "i8", "uint8_val"),
-            IrPatterns.store("-1294967296", "i32", "uint32_val"),
-            IrPatterns.uitofp("i8", "uint8_val", "float"),      // Unsigned int to float
-            IrPatterns.uitofp("i32", "uint32_val", "double")    // Unsigned int to double
+            IrPatterns.store("-56", "i8", "uint8Val"),
+            IrPatterns.store("-1294967296", "i32", "uint32Val"),
+            IrPatterns.uitofp("i8", "uint8Val", "float"),      // Unsigned int to float
+            IrPatterns.uitofp("i32", "uint32Val", "double")    // Unsigned int to double
         );
     }
 
@@ -197,10 +197,10 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testFloatToSignedInteger() {
         String sourceCode = wrapInMainFunction("""
-            var float32_val: f32 = 42.7
-            var float64_val: f64 = -1000.9
-            var int8_from32: i8 = float32_val as i8
-            var int32_from64: i32 = float64_val as i32
+            var float32Val: f32 = 42.7
+            var float64Val: f64 = -1000.9
+            var int8From32: i8 = float32Val as i8
+            var int32From64: i32 = float64Val as i32
             """);
         String ir = compileAndExpectSuccess(sourceCode, "float_to_signed_int");
 
@@ -208,27 +208,27 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("float32_val", "float"),
-            IrPatterns.alloca("float64_val", "double"),
-            IrPatterns.alloca("int8_from32", "i8"),
-            IrPatterns.alloca("int32_from64", "i32")
+            IrPatterns.alloca("float32Val", "float"),
+            IrPatterns.alloca("float64Val", "double"),
+            IrPatterns.alloca("int8From32", "i8"),
+            IrPatterns.alloca("int32From64", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x40455999A0000000", "float", "float32_val"),
-            IrPatterns.store("-1.000900e\\+03", "double", "float64_val"),
-            IrPatterns.fptosi("float", "float32_val", "i8"),      // Float to signed int
-            IrPatterns.fptosi("double", "float64_val", "i32")     // Double to signed int
+            IrPatterns.store("0x40455999A0000000", "float", "float32Val"),
+            IrPatterns.store("-1.000900e\\+03", "double", "float64Val"),
+            IrPatterns.fptosi("float", "float32Val", "i8"),      // Float to signed int
+            IrPatterns.fptosi("double", "float64Val", "i32")     // Double to signed int
         );
     }
 
     @Test
     public void testFloatToUnsignedInteger() {
         String sourceCode = wrapInMainFunction("""
-            var float32_val: f32 = 200.5
-            var float64_val: f64 = 3000000000.0
-            var uint8_from32: u8 = float32_val as u8
-            var uint32_from64: u32 = float64_val as u32
+            var float32Val: f32 = 200.5
+            var float64Val: f64 = 3000000000.0
+            var uint8From32: u8 = float32Val as u8
+            var uint32From64: u32 = float64Val as u32
             """);
         String ir = compileAndExpectSuccess(sourceCode, "float_to_unsigned_int");
 
@@ -236,17 +236,17 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("float32_val", "float"),
-            IrPatterns.alloca("float64_val", "double"),
-            IrPatterns.alloca("uint8_from32", "i8"),
-            IrPatterns.alloca("uint32_from64", "i32")
+            IrPatterns.alloca("float32Val", "float"),
+            IrPatterns.alloca("float64Val", "double"),
+            IrPatterns.alloca("uint8From32", "i8"),
+            IrPatterns.alloca("uint32From64", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("2.005000e\\+02", "float", "float32_val"),
-            IrPatterns.store("3.000000e\\+09", "double", "float64_val"),
-            IrPatterns.fptoui("float", "float32_val", "i8"),      // Float to unsigned int
-            IrPatterns.fptoui("double", "float64_val", "i32")     // Double to unsigned int
+            IrPatterns.store("2.005000e\\+02", "float", "float32Val"),
+            IrPatterns.store("3.000000e\\+09", "double", "float64Val"),
+            IrPatterns.fptoui("float", "float32Val", "i8"),      // Float to unsigned int
+            IrPatterns.fptoui("double", "float64Val", "i32")     // Double to unsigned int
         );
     }
 
@@ -257,8 +257,8 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testFloatWidening() {
         String sourceCode = wrapInMainFunction("""
-            var float32_val: f32 = 3.14
-            var float64_val: f64 = float32_val as f64
+            var float32Val: f32 = 3.14
+            var float64Val: f64 = float32Val as f64
             """);
         String ir = compileAndExpectSuccess(sourceCode, "float_widening");
 
@@ -266,21 +266,21 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("float32_val", "float"),
-            IrPatterns.alloca("float64_val", "double")
+            IrPatterns.alloca("float32Val", "float"),
+            IrPatterns.alloca("float64Val", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x40091EB860000000", "float", "float32_val"),
-            IrPatterns.fpext("float", "float32_val", "double")    // f32 -> f64 (extend)
+            IrPatterns.store("0x40091EB860000000", "float", "float32Val"),
+            IrPatterns.fpext("float", "float32Val", "double")    // f32 -> f64 (extend)
         );
     }
 
     @Test
     public void testFloatNarrowing() {
         String sourceCode = wrapInMainFunction("""
-            var float64_val: f64 = 3.141592653589793
-            var float32_val: f32 = float64_val as f32
+            var float64Val: f64 = 3.141592653589793
+            var float32Val: f32 = float64Val as f32
             """);
         String ir = compileAndExpectSuccess(sourceCode, "float_narrowing");
 
@@ -288,13 +288,13 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("float64_val", "double"),
-            IrPatterns.alloca("float32_val", "float")
+            IrPatterns.alloca("float64Val", "double"),
+            IrPatterns.alloca("float32Val", "float")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x400921FB54442D18", "double", "float64_val"),
-            IrPatterns.fptrunc("double", "float64_val", "float")  // f64 -> f32 (truncate)
+            IrPatterns.store("0x400921FB54442D18", "double", "float64Val"),
+            IrPatterns.fptrunc("double", "float64Val", "float")  // f64 -> f32 (truncate)
         );
     }
 
@@ -305,11 +305,11 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testCharToInteger() {
         String sourceCode = wrapInMainFunction("""
-            var char_val: char = 'A'
-            var int8_val: i8 = char_val as i8
-            var uint16_val: u16 = char_val as u16
-            var int32_val: i32 = char_val as i32
-            var int64_val: i64 = char_val as i64
+            var charVal: char = 'A'
+            var int8Val: i8 = charVal as i8
+            var uint16Val: u16 = charVal as u16
+            var int32Val: i32 = charVal as i32
+            var int64Val: i64 = charVal as i64
             """);
         String ir = compileAndExpectSuccess(sourceCode, "char_to_integer");
 
@@ -317,34 +317,34 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("char_val", "i32"),     // char is i32 in LLVM
-            IrPatterns.alloca("int8_val", "i8"),
-            IrPatterns.alloca("int32_val", "i32"),
-            IrPatterns.alloca("uint16_val", "i16"),
-            IrPatterns.alloca("int64_val", "i64")
+            IrPatterns.alloca("charVal", "i32"),     // char is i32 in lLVM
+            IrPatterns.alloca("int8Val", "i8"),
+            IrPatterns.alloca("int32Val", "i32"),
+            IrPatterns.alloca("uint16Val", "i16"),
+            IrPatterns.alloca("int64Val", "i64")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("65", "i32", "char_val"), // 'A' = 65
-            IrPatterns.trunc("i32", "char_val", "i8"),           // char -> i8 (truncate)
-            IrPatterns.load("i32", "char_val"),
+            IrPatterns.store("65", "i32", "charVal"), // 'A' = 65
+            IrPatterns.trunc("i32", "charVal", "i8"),           // char -> i8 (truncate)
+            IrPatterns.load("i32", "charVal"),
             // char -> i32 (same size)
-            IrPatterns.trunc("i32", "char_val", "i16"),            // char -> u16 (truncate)
-            IrPatterns.zext("i32", "char_val", "i64")             // char -> i64 (zero extend)
+            IrPatterns.trunc("i32", "charVal", "i16"),            // char -> u16 (truncate)
+            IrPatterns.zext("i32", "charVal", "i64")             // char -> i64 (zero extend)
         );
     }
 
     @Test
     public void testIntegerToChar() {
         String sourceCode = wrapInMainFunction("""
-            var int8_val: i8 = 65
-            var int32_val: i32 = 97
-            var uint16_val: u16 = 48
-            var int64_val: i64 = 1000
-            var char8: char = int8_val as char
-            var char32: char = int32_val as char
-            var char16: char = uint16_val as char
-            var char64: char = int64_val as char
+            var int8Val: i8 = 65
+            var int32Val: i32 = 97
+            var uint16Val: u16 = 48
+            var int64Val: i64 = 1000
+            var char8: char = int8Val as char
+            var char32: char = int32Val as char
+            var char16: char = uint16Val as char
+            var char64: char = int64Val as char
             """);
         String ir = compileAndExpectSuccess(sourceCode, "integer_to_char");
 
@@ -352,34 +352,34 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("int8_val", "i8"),
-            IrPatterns.alloca("int32_val", "i32"),
-            IrPatterns.alloca("uint16_val", "i16"),
-            IrPatterns.alloca("int64_val", "i64"),
+            IrPatterns.alloca("int8Val", "i8"),
+            IrPatterns.alloca("int32Val", "i32"),
+            IrPatterns.alloca("uint16Val", "i16"),
+            IrPatterns.alloca("int64Val", "i64"),
             IrPatterns.alloca("char8", "i32"),
             IrPatterns.alloca("char32", "i32"),
             IrPatterns.alloca("char16", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("65", "i8", "int8_val"),   // 'A'
-            IrPatterns.store("97", "i32", "int32_val"), // 'a'
-            IrPatterns.store("48", "i16", "uint16_val"), // '0'
-            IrPatterns.store("1000", "i64", "int64_val"), // 1000
-            IrPatterns.sext("i8", "int8_val", "i32"),             // i8 -> char (sign extend)
-            IrPatterns.load("i32", "int32_val"),
+            IrPatterns.store("65", "i8", "int8Val"),   // 'A'
+            IrPatterns.store("97", "i32", "int32Val"), // 'a'
+            IrPatterns.store("48", "i16", "uint16Val"), // '0'
+            IrPatterns.store("1000", "i64", "int64Val"), // 1000
+            IrPatterns.sext("i8", "int8Val", "i32"),             // i8 -> char (sign extend)
+            IrPatterns.load("i32", "int32Val"),
             // i32 -> char (same size)
-            IrPatterns.zext("i16", "uint16_val", "i32"),           // u16 -> char (zero extend)
-            IrPatterns.trunc("i64", "int64_val", "i32")            // i64 -> char (truncate)
+            IrPatterns.zext("i16", "uint16Val", "i32"),           // u16 -> char (zero extend)
+            IrPatterns.trunc("i64", "int64Val", "i32")            // i64 -> char (truncate)
         );
     }
 
     @Test
     public void testCharToFloat() {
         String sourceCode = wrapInMainFunction("""
-            var char_val: char = 'X'
-            var float32_val: f32 = char_val as f32
-            var float64_val: f64 = char_val as f64
+            var charVal: char = 'X'
+            var float32Val: f32 = charVal as f32
+            var float64Val: f64 = charVal as f64
             """);
         String ir = compileAndExpectSuccess(sourceCode, "char_to_float");
 
@@ -387,25 +387,25 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("char_val", "i32"),
-            IrPatterns.alloca("float32_val", "float"),
-            IrPatterns.alloca("float64_val", "double")
+            IrPatterns.alloca("charVal", "i32"),
+            IrPatterns.alloca("float32Val", "float"),
+            IrPatterns.alloca("float64Val", "double")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("88", "i32", "char_val"), // 'X' = 88
-            IrPatterns.uitofp("i32", "char_val", "float"),        // char -> f32 (unsigned)
-            IrPatterns.uitofp("i32", "char_val", "double")        // char -> f64 (unsigned)
+            IrPatterns.store("88", "i32", "charVal"), // 'X' = 88
+            IrPatterns.uitofp("i32", "charVal", "float"),        // char -> f32 (unsigned)
+            IrPatterns.uitofp("i32", "charVal", "double")        // char -> f64 (unsigned)
         );
     }
 
     @Test
     public void testFloatToChar() {
         String sourceCode = wrapInMainFunction("""
-            var float32_val: f32 = 65.7
-            var float64_val: f64 = 90.1
-            var char_from32: char = float32_val as char
-            var char_from64: char = float64_val as char
+            var float32Val: f32 = 65.7
+            var float64Val: f64 = 90.1
+            var charFrom32: char = float32Val as char
+            var charFrom64: char = float64Val as char
             """);
         String ir = compileAndExpectSuccess(sourceCode, "float_to_char");
 
@@ -413,16 +413,16 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("float32_val", "float"),
-            IrPatterns.alloca("float64_val", "double"),
-            IrPatterns.alloca("char_from32", "i32"),
-            IrPatterns.alloca("char_from64", "i32")
+            IrPatterns.alloca("float32Val", "float"),
+            IrPatterns.alloca("float64Val", "double"),
+            IrPatterns.alloca("charFrom32", "i32"),
+            IrPatterns.alloca("charFrom64", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0x40506CCCC0000000", "float", "float32_val"),
-            IrPatterns.fptoui("float", "float32_val", "i32"),
-            IrPatterns.fptoui("double", "float64_val", "i32")
+            IrPatterns.store("0x40506CCCC0000000", "float", "float32Val"),
+            IrPatterns.fptoui("float", "float32Val", "i32"),
+            IrPatterns.fptoui("double", "float64Val", "i32")
         );
     }
 
@@ -434,10 +434,10 @@ public class TypeConversionTest extends BaseTest {
     public void testComplexConversionChain() {
         String sourceCode = wrapInMainFunction("""
             var original: i32 = 1000
-            var as_float: f64 = original as f64
-            var back_to_int: i16 = as_float as i16
-            var as_char: char = back_to_int as char
-            var final_int: u8 = as_char as u8
+            var asFloat: f64 = original as f64
+            var backToInt: i16 = asFloat as i16
+            var asChar: char = backToInt as char
+            var finalInt: u8 = asChar as u8
             """);
         String ir = compileAndExpectSuccess(sourceCode, "complex_conversion_chain");
 
@@ -446,18 +446,18 @@ public class TypeConversionTest extends BaseTest {
 
         assertIrContains(mainFunc,
             IrPatterns.alloca("original", "i32"),
-            IrPatterns.alloca("as_float", "double"),
-            IrPatterns.alloca("back_to_int", "i16"),
-            IrPatterns.alloca("as_char", "i32"),
-            IrPatterns.alloca("final_int", "i8")
+            IrPatterns.alloca("asFloat", "double"),
+            IrPatterns.alloca("backToInt", "i16"),
+            IrPatterns.alloca("asChar", "i32"),
+            IrPatterns.alloca("finalInt", "i8")
         );
 
         assertIrContainsInOrder(mainFunc,
             IrPatterns.store("1000", "i32", "original"),
             IrPatterns.sitofp("i32", "original", "double"),     // i32 -> f64
-            IrPatterns.fptosi("double", "as_float", "i16"),      // f64 -> i16
-            IrPatterns.sext("i16", "back_to_int", "i32"),       // i16 -> char
-            IrPatterns.trunc("i32", "as_char", "i8")            // char -> u8
+            IrPatterns.fptosi("double", "asFloat", "i16"),      // f64 -> i16
+            IrPatterns.sext("i16", "backToInt", "i32"),       // i16 -> char
+            IrPatterns.trunc("i32", "asChar", "i8")            // char -> u8
         );
     }
 
@@ -547,8 +547,8 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testInvalidBooleanConversions() {
         String sourceCode = wrapInMainFunction("""
-            var bool_val: bool = true
-            var int_val: i32 = bool_val as i32  # Should fail
+            var boolVal: bool = true
+            var intVal: i32 = boolVal as i32  # Should fail
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "invalid_bool_conversion");
@@ -559,11 +559,11 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testInvalidUnitConversion() {
         String sourceCode = """
-            def do_nothing():
+            def doNothing():
                 return
             
             def main() -> i32:
-                var int_val: i32 = do_nothing() as i32  # Should fail
+                var intVal: i32 = doNothing() as i32  # Should fail
             """;
 
         String errors = compileAndExpectFailure(sourceCode, "invalid_unit_conversion");
@@ -574,8 +574,8 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testInvalidStringConversions() {
         String sourceCode = wrapInMainFunction("""
-            var string_val: String = "hello"
-            var int_val: i32 = string_val as i32  # Should fail
+            var stringVal: String = "hello"
+            var intVal: i32 = stringVal as i32  # Should fail
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "invalid_string_conversion");
@@ -586,8 +586,8 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testInvalidConversionToBool() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var bool_val: bool = bool(int_val)  # Should fail
+            var intVal: i32 = 42
+            var boolVal: bool = bool(intVal)  # Should fail
             """);
 
         String errors = compileAndExpectFailure(sourceCode, "invalid_conversion_to_bool");
@@ -598,11 +598,11 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testInvalidConversionToString() {
         String sourceCode = wrapInMainFunction("""
-            var int_val: i32 = 42
-            var string_val: String = String(int_val)  # Should fail
+            var intVal: i32 = 42
+            var stringVal: String = String(intVal)  # Should fail
             """);
 
-        String errors = compileAndExpectFailure(sourceCode, "invalid_conversion_to_string");
+        String errors = compileAndExpectFailure(sourceCode, "invalid_conversion_toString");
         assertFalse(errors.isEmpty(),
             "Should report error for integer to string conversion");
     }
@@ -614,10 +614,10 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testZeroConversions() {
         String sourceCode = wrapInMainFunction("""
-            var zero_int: i32 = 0
-            var zero_float: f64 = zero_int as f64
-            var back_to_int: i8 = zero_float as i8
-            var zero_char: char = back_to_int as char
+            var zeroInt: i32 = 0
+            var zeroFloat: f64 = zeroInt as f64
+            var backToInt: i8 = zeroFloat as i8
+            var zeroChar: char = backToInt as char
             """);
         String ir = compileAndExpectSuccess(sourceCode, "zero_conversions");
 
@@ -625,19 +625,19 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("0", "i32", "zero_int"),
-            IrPatterns.sitofp("i32", "zero_int", "double"),
-            IrPatterns.fptosi("double", "zero_float", "i8"),
-            IrPatterns.sext("i8", "back_to_int", "i32")
+            IrPatterns.store("0", "i32", "zeroInt"),
+            IrPatterns.sitofp("i32", "zeroInt", "double"),
+            IrPatterns.fptosi("double", "zeroFloat", "i8"),
+            IrPatterns.sext("i8", "backToInt", "i32")
         );
     }
 
     @Test
     public void testNegativeNumberConversions() {
         String sourceCode = wrapInMainFunction("""
-            var neg_int: i32 = -100
-            var neg_float: f64 = neg_int as f64
-            var back_to_small_int: i8 = neg_float as i8
+            var negInt: i32 = -100
+            var negFloat: f64 = negInt as f64
+            var backToSmallInt: i8 = negFloat as i8
             """);
         String ir = compileAndExpectSuccess(sourceCode, "negative_conversions");
 
@@ -645,9 +645,9 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("-100", "i32", "neg_int"),
-            IrPatterns.sitofp("i32", "neg_int", "double"),
-            IrPatterns.fptosi("double", "neg_float", "i8")
+            IrPatterns.store("-100", "i32", "negInt"),
+            IrPatterns.sitofp("i32", "negInt", "double"),
+            IrPatterns.fptosi("double", "negFloat", "i8")
         );
     }
 
@@ -658,9 +658,9 @@ public class TypeConversionTest extends BaseTest {
     @Test
     public void testLiteralConversions() {
         String sourceCode = wrapInMainFunction("""
-            var conversion_from_literal: i8 = 123 as i8
-            var float_from_literal: f32 = 253 as f32
-            var char_from_literal: char = 65.8 as char
+            var conversionFromLiteral: i8 = 123 as i8
+            var floatFromLiteral: f32 = 253 as f32
+            var charFromLiteral: char = 65.8 as char
             """);
         String ir = compileAndExpectSuccess(sourceCode, "literal_conversions");
 
@@ -668,15 +668,15 @@ public class TypeConversionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("conversion_from_literal", "i8"),
-            IrPatterns.alloca("float_from_literal", "float"),
-            IrPatterns.alloca("char_from_literal", "i32")
+            IrPatterns.alloca("conversionFromLiteral", "i8"),
+            IrPatterns.alloca("floatFromLiteral", "float"),
+            IrPatterns.alloca("charFromLiteral", "i32")
         );
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.store("123", "i8", "conversion_from_literal"),
-            IrPatterns.store("2.530000e\\+02", "float", "float_from_literal"),
-            IrPatterns.store("65", "i32", "char_from_literal")       // 'A'
+            IrPatterns.store("123", "i8", "conversionFromLiteral"),
+            IrPatterns.store("2.530000e\\+02", "float", "floatFromLiteral"),
+            IrPatterns.store("65", "i32", "charFromLiteral")       // 'A'
         );
     }
 }

@@ -135,12 +135,12 @@ public class FunctionCallTest extends BaseTest {
     @Test
     public void testFunctionCallInIfCondition() {
         String sourceCode = """
-            def is_positive(n: i32) -> bool:
+            def isPositive(n: i32) -> bool:
                 return n > 0
             
             def main() -> i32:
                 var x: i32 = 10
-                if is_positive(x):
+                if isPositive(x):
                     return 1
                 else:
                     return 0
@@ -153,21 +153,21 @@ public class FunctionCallTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("x", "i32"),
             IrPatterns.load("i32", "x"),
-            IrPatterns.functionCall("is_positive", "i1", List.of(Map.entry("i32", "x")))
+            IrPatterns.functionCall("isPositive", "i1", List.of(Map.entry("i32", "x")))
         );
     }
 
     @Test
     public void testFunctionCallInWhileCondition() {
         String sourceCode = """
-            def has_next() -> bool:
+            def hasNext() -> bool:
                 return true
             
             def process():
                 return
             
             def main() -> i32:
-                while has_next():
+                while hasNext():
                     process()
                 return 0
             """;
@@ -177,7 +177,7 @@ public class FunctionCallTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.functionCall("has_next", "i1", List.of()),
+            IrPatterns.functionCall("hasNext", "i1", List.of()),
             IrPatterns.functionCall("process", "%unit", List.of())
         );
     }
@@ -310,14 +310,14 @@ public class FunctionCallTest extends BaseTest {
     @Test
     public void testUnitFunctionCalls() {
         String sourceCode = """
-            def print_message(a: ()):
+            def printMessage(a: ()):
                 return ()
             
             def setup(config: i32) -> ():
                 return
             
             def main() -> i32:
-                var a = print_message(())
+                var a = printMessage(())
                 var b : () = setup(42)
                 a = setup(100)
                 return 0
@@ -330,9 +330,9 @@ public class FunctionCallTest extends BaseTest {
         assertIrContainsInOrder(mainFunc,
             IrPatterns.alloca("b", "%unit"),
             IrPatterns.alloca("a", "%unit"),
-            IrPatterns.functionCall("print_message", "%unit",
+            IrPatterns.functionCall("printMessage", "%unit",
                 List.of(Map.entry("%unit", "zeroinitializer"))),
-            IrPatterns.store("%print_message_result", "%unit", "a"),
+            IrPatterns.store("%printMessage_result", "%unit", "a"),
             IrPatterns.functionCall("setup", "%unit", List.of(Map.entry("i32", "42"))),
             IrPatterns.store("%setup_result", "%unit", "b"),
             IrPatterns.functionCall("setup", "%unit", List.of(Map.entry("i32", "100"))),
@@ -348,12 +348,12 @@ public class FunctionCallTest extends BaseTest {
     @MethodSource("incompatibleArguments")
     public void testIncompatibleArgumentsIn(String paramType, String argType, String argValue) {
         String sourceCode = String.format("""
-            def test_func(param: %s) -> %s:
+            def testFunc(param: %s) -> %s:
                 return param
             
             def main() -> i32:
                 var arg: %s = %s
-                var result: %s = test_func(arg)
+                var result: %s = testFunc(arg)
                 return 0
             """, paramType, paramType, argType, argValue, paramType);
 
@@ -395,12 +395,12 @@ public class FunctionCallTest extends BaseTest {
     public void testUndefinedFunctionCall() {
         String sourceCode = """
             def main() -> i32:
-                var result: i32 = undefined_function(42)
+                var result: i32 = undefinedFunction(42)
                 return result
             """;
         String errors = compileAndExpectFailure(sourceCode, "undefined_function");
 
-        assertTrue(errors.contains("Function not defined: undefined_function"),
+        assertTrue(errors.contains("Function not defined: undefinedFunction"),
             "Should report undefined function error");
     }
 
@@ -430,11 +430,11 @@ public class FunctionCallTest extends BaseTest {
         }
 
         String sourceCode = String.format("""
-            def two_arg_function(a: i32, b: i32) -> i32:
+            def twoArgFunction(a: i32, b: i32) -> i32:
                 return a + b
             
             def main() -> i32:
-                var result: i32 = two_arg_function(%s)
+                var result: i32 = twoArgFunction(%s)
                 return result
             """, args);
 

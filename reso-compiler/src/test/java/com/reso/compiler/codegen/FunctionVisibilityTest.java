@@ -23,58 +23,58 @@ public class FunctionVisibilityTest extends BaseTest {
     @Test
     public void testDefaultFunctionVisibilityIsFileprivate() {
         String sourceCode = """
-            def helper_function() -> i32:
+            def helperFunction() -> i32:
                 return 42
             
             def main() -> i32:
-                return helper_function()  # Should work - same file
+                return helperFunction()  # Should work - same file
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "default_function_visibility");
 
-        assertIrContains(ir, IrPatterns.functionDefinition("helper_function", "i32"));
+        assertIrContains(ir, IrPatterns.functionDefinition("helperFunction", "i32"));
         assertIrContains(ir,
-            IrPatterns.functionCall("helper_function", "i32", Collections.emptyList()));
+            IrPatterns.functionCall("helperFunction", "i32", Collections.emptyList()));
     }
 
     @Test
     public void testExplicitPublicFunctionVisibility() {
         String sourceCode = """
-            pub def public_function() -> i32:
+            pub def publicFunction() -> i32:
                 return 42
             
             def main() -> i32:
-                return public_function()
+                return publicFunction()
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "explicit_public_function_visibility");
 
-        assertIrContains(ir, IrPatterns.functionDefinition("public_function", "i32"));
+        assertIrContains(ir, IrPatterns.functionDefinition("publicFunction", "i32"));
         assertIrContains(ir,
-            IrPatterns.functionCall("public_function", "i32", Collections.emptyList()));
+            IrPatterns.functionCall("publicFunction", "i32", Collections.emptyList()));
     }
 
     @Test
     public void testMixedFunctionVisibilities() {
         String sourceCode = """
-            def private_helper() -> i32:
+            def privateHelper() -> i32:
                 return 10
             
-            pub def public_function() -> i32:
-                return private_helper() + 32  # Should work - same file
+            pub def publicFunction() -> i32:
+                return privateHelper() + 32  # Should work - same file
             
             def main() -> i32:
-                return public_function()
+                return publicFunction()
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "mixed_function_visibilities");
 
-        assertIrContains(ir, IrPatterns.functionDefinition("private_helper", "i32"));
-        assertIrContains(ir, IrPatterns.functionDefinition("public_function", "i32"));
+        assertIrContains(ir, IrPatterns.functionDefinition("privateHelper", "i32"));
+        assertIrContains(ir, IrPatterns.functionDefinition("publicFunction", "i32"));
         assertIrContains(ir,
-            IrPatterns.functionCall("private_helper", "i32", Collections.emptyList()));
+            IrPatterns.functionCall("privateHelper", "i32", Collections.emptyList()));
         assertIrContains(ir,
-            IrPatterns.functionCall("public_function", "i32", Collections.emptyList()));
+            IrPatterns.functionCall("publicFunction", "i32", Collections.emptyList()));
     }
 
     // ============================================================================
@@ -114,26 +114,26 @@ public class FunctionVisibilityTest extends BaseTest {
     public void testPublicFunctionWithPrivateHelper() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("utils.reso", """
-                def validate_input(x: i32) -> bool:  # Private helper
+                def validateInput(x: i32) -> bool:  # Private helper
                     return x >= 0
                 
-                pub def safe_divide(a: i32, b: i32) -> i32:  # Public API
-                    if validate_input(a) and validate_input(b) and b != 0:
+                pub def safeDivide(a: i32, b: i32) -> i32:  # Public aPI
+                    if validateInput(a) and validateInput(b) and b != 0:
                         return a div b
                     return -1
                 """)
             .addFile("main.reso", """
                 def main() -> i32:
-                    return safe_divide(10, 2)  # Should work - public function
+                    return safeDivide(10, 2)  # Should work - public function
                 """)
             .build();
 
         String ir = compileMultipleFilesAndExpectSuccess(sourceFiles,
             "public_function_with_private_helper");
 
-        assertIrContains(ir, IrPatterns.functionDefinition("validate_input", "i1"));
-        assertIrContains(ir, IrPatterns.functionDefinition("safe_divide", "i32"));
-        assertIrContains(ir, IrPatterns.functionCall("safe_divide", "i32",
+        assertIrContains(ir, IrPatterns.functionDefinition("validateInput", "i1"));
+        assertIrContains(ir, IrPatterns.functionDefinition("safeDivide", "i32"));
+        assertIrContains(ir, IrPatterns.functionCall("safeDivide", "i32",
             List.of(Map.entry("i32", "10"), Map.entry("i32", "2"))));
     }
 
@@ -145,13 +145,13 @@ public class FunctionVisibilityTest extends BaseTest {
                     return x * x
                 """)
             .addFile("string_utils.reso", """
-                pub def get_length(c: char) -> i32:
+                pub def getLength(c: char) -> i32:
                     return 42  # Simplified for test
                 """)
             .addFile("main.reso", """
                 def main() -> i32:
                     var squared: i32 = square(5)
-                    var length: i32 = get_length('A')
+                    var length: i32 = getLength('A')
                     return squared + length
                 """)
             .build();
@@ -160,11 +160,11 @@ public class FunctionVisibilityTest extends BaseTest {
             "multiple_public_functions_across_files");
 
         assertIrContains(ir, IrPatterns.functionDefinition("square", "i32"));
-        assertIrContains(ir, IrPatterns.functionDefinition("get_length", "i32"));
+        assertIrContains(ir, IrPatterns.functionDefinition("getLength", "i32"));
         assertIrContains(ir,
             IrPatterns.functionCall("square", "i32", List.of(Map.entry("i32", "5"))));
         assertIrContains(ir,
-            IrPatterns.functionCall("get_length", "i32", List.of(Map.entry("i32", "65"))));
+            IrPatterns.functionCall("getLength", "i32", List.of(Map.entry("i32", "65"))));
     }
 
     // ============================================================================
@@ -175,12 +175,12 @@ public class FunctionVisibilityTest extends BaseTest {
     public void testPrivateFunctionCrossFileAccessError() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("utils.reso", """
-                def private_helper() -> i32:  # Fileprivate function
+                def privateHelper() -> i32:  # Fileprivate function
                     return 42
                 """)
             .addFile("main.reso", """
                 def main() -> i32:
-                    return private_helper()  # Should fail - private function
+                    return privateHelper()  # Should fail - private function
                 """)
             .build();
 
@@ -188,7 +188,7 @@ public class FunctionVisibilityTest extends BaseTest {
             "private_function_cross_file_access_error");
 
         assertTrue(errors.contains(
-                "Function 'private_helper' with fileprivate visibility is not accessible"),
+                "Function 'privateHelper' with fileprivate visibility is not accessible"),
             "Expected visibility error for accessing private function across files");
     }
 
@@ -196,16 +196,16 @@ public class FunctionVisibilityTest extends BaseTest {
     public void testMixedVisibilityAccessError() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
-                def internal_function() -> i32:  # Private
+                def internalFunction() -> i32:  # Private
                     return 10
                 
-                pub def public_function() -> i32:  # Public
-                    return internal_function() + 32
+                pub def publicFunction() -> i32:  # Public
+                    return internalFunction() + 32
                 """)
             .addFile("main.reso", """
                 def main() -> i32:
-                    var result1: i32 = public_function()    # Should work
-                    var result2: i32 = internal_function()  # Should fail
+                    var result1: i32 = publicFunction()    # Should work
+                    var result2: i32 = internalFunction()  # Should fail
                     return result1 + result2
                 """)
             .build();
@@ -214,7 +214,7 @@ public class FunctionVisibilityTest extends BaseTest {
             compileMultipleFilesAndExpectFailure(sourceFiles, "mixed_visibility_access_error");
 
         assertTrue(errors.contains(
-                "Function 'internal_function' with fileprivate visibility is not accessible"),
+                "Function 'internalFunction' with fileprivate visibility is not accessible"),
             "Expected visibility error for accessing private function across files");
     }
 }

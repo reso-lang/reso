@@ -60,11 +60,11 @@ public class ResourceVisibilityTest extends BaseTest {
     @Test
     public void testMixedFieldVisibilities() {
         String sourceCode = """
-            resource MixedResource{pub const public_field: i32, var private_field: i32}
+            resource MixedResource{pub const publicField: i32, var privateField: i32}
             
             def main() -> i32:
                 var res: MixedResource = MixedResource{42, 24}
-                return res.public_field + res.private_field  # Should work - same file
+                return res.publicField + res.privateField  # Should work - same file
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "mixed_field_visibilities");
@@ -73,8 +73,8 @@ public class ResourceVisibilityTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContainsInOrder(mainFunc,
-            IrPatterns.fieldAccess("public_field", "MixedResource_struct", "res", 0),
-            IrPatterns.fieldAccess("private_field", "MixedResource_struct", "res", 1)
+            IrPatterns.fieldAccess("publicField", "MixedResource_struct", "res", 0),
+            IrPatterns.fieldAccess("privateField", "MixedResource_struct", "res", 1)
         );
     }
 
@@ -124,11 +124,11 @@ public class ResourceVisibilityTest extends BaseTest {
     @Test
     public void testMixedFieldsFileprivateInitializer() {
         String sourceCode = """
-            resource MixedFieldsResource{pub var public_field: i32, var private_field: String}  # Mixed = fileprivate
+            resource MixedFieldsResource{pub var publicField: i32, var privateField: String}  # Mixed = fileprivate
             
             def main() -> i32:
                 var res: MixedFieldsResource = MixedFieldsResource{42, "secret"}
-                return res.public_field
+                return res.publicField
             """;
 
         String ir = compileAndExpectSuccess(sourceCode, "mixed_fields_fileprivate_initializer");
@@ -212,7 +212,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testMixedResourceInitializerCrossFileFails() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
-                resource MixedLibraryResource{pub var public_data: i32, var private_data: String}  # Mixed = fileprivate
+                resource MixedLibraryResource{pub var publicData: i32, var privateData: String}  # Mixed = fileprivate
                 """)
             .addFile("main.reso", """
                 def main() -> i32:
@@ -232,7 +232,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testPublicFieldAccessCrossFile() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
-                resource CrossFileResource{pub var public_field: i32, var private_field: String}
+                resource CrossFileResource{pub var publicField: i32, var privateField: String}
                 
                 pub def create() -> CrossFileResource:
                     return CrossFileResource{42, "secret"}
@@ -240,7 +240,7 @@ public class ResourceVisibilityTest extends BaseTest {
             .addFile("main.reso", """
                 def main() -> i32:
                     var res = create()
-                    return res.public_field  # Should work - public field
+                    return res.publicField  # Should work - public field
                 """)
             .build();
 
@@ -251,14 +251,14 @@ public class ResourceVisibilityTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.fieldAccess("public_field", "CrossFileResource_struct", "res", 0));
+            IrPatterns.fieldAccess("publicField", "CrossFileResource_struct", "res", 0));
     }
 
     @Test
     public void testFileprivateFieldAccessCrossFileFails() {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
-                resource CrossFileResource{pub var public_field: i32, var private_field: String}
+                resource CrossFileResource{pub var publicField: i32, var privateField: String}
                 
                 pub def create() -> CrossFileResource:
                     return CrossFileResource{42, "secret"}
@@ -266,14 +266,14 @@ public class ResourceVisibilityTest extends BaseTest {
             .addFile("main.reso", """
                 def tryToAccessPrivate() -> String:
                     var res: CrossFileResource = create()
-                    return res.private_field  # Should fail - fileprivate field
+                    return res.privateField  # Should fail - fileprivate field
                 """)
             .build();
 
         String errors = compileMultipleFilesAndExpectFailure(sourceFiles,
             "fileprivate_field_access_cross_file_fails");
 
-        assertTrue(errors.contains("private_field") && errors.contains("not accessible"),
+        assertTrue(errors.contains("privateField") && errors.contains("not accessible"),
             "Should report inaccessible fileprivate field: " + errors);
     }
 }

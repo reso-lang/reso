@@ -1,0 +1,43 @@
+def main() -> i32:
+    # Signed integer types
+    var byteVal: i8 = 127           # 8-bit signed (-128 to 127)
+    var shortVal: i16 = 32767       # 16-bit signed (-32,768 to 32,767)
+    var intVal: i32 = 2147483647    # 32-bit signed (-2^31 to 2^31-1)
+    var longVal: i64 = 9223372036854775807  # 64-bit signed
+    var sizeVal: isize = 1000       # Pointer-sized signed integer
+
+    # Unsigned integer types
+    var ubyteVal: u8 = 255          # 8-bit unsigned (0 to 255)
+    var ushortVal: u16 = 65535      # 16-bit unsigned (0 to 65,535)
+    var uintVal: u32 = 4294967295   # 32-bit unsigned (0 to 2^32-1)
+    var ulongVal: u64 = 18446744073709551615  # 64-bit unsigned
+    var usizeVal: usize = 2000      # Pointer-sized unsigned integer
+
+    # Floating-point types
+    var floatVal: f32 = 3.14159     # 32-bit iEEE 754 floating-point
+    var doubleVal: f64 = 2.718281828459045  # 64-bit iEEE 754 floating-point
+
+    # Boolean type
+    var boolVal: bool = true        # Boolean value (true or false)
+    var boolFalse: bool = false
+
+    # Character type
+    var charVal: char = 'A'         # Unicode scalar value (32-bit)
+
+    # Print some values to
+    println("Signed integers:")
+    println("i8: ".append(byteVal.toString()))
+    println("i32: ".append(intVal.toString()))
+    println("i64: ".append(longVal.toString()))
+
+    println("Unsigned integers:")
+    println("u8: ".append(ubyteVal.toString()))
+    println("u32: ".append(uintVal.toString()))
+
+    println("Floating-point:")
+    println("f32: ".append(floatVal.toString()))
+    println("f64: ".append(doubleVal.toString()))
+
+    println("Boolean and Character:")
+    println("bool: ".append(boolVal.toString()))
+    println("char: ".append(charVal.toString()))

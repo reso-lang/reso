@@ -1,0 +1,60 @@
+def main() -> i32:
+    println("=== Arithmetic Operators in Reso ===")
+
+    # Integer Arithmetic
+    println("=== Integer Arithmetic ===")
+
+    var a: i32 = 15
+    var b: i32 = 4
+
+    # Basic arithmetic operations
+    var sum = a + b                     # Addition: 19
+    var difference = a - b              # Subtraction: 11
+    var product = a * b                 # Multiplication: 60
+    var quotient = a div b              # Division: 3 (truncated towards zero)
+    var remainder = a rem b             # Remainder: 3 (sign of dividend)
+    var modulus = a mod b               # Modulo: 3 (always non-negative)
+
+    println("a = ".append(a.toString()).append(", b = ").append(b.toString()))
+    println("Addition (a + b): ".append(sum.toString()))
+    println("Subtraction (a - b): ".append(difference.toString()))
+    println("Multiplication (a * b): ".append(product.toString()))
+    println("Division (a div b): ".append(quotient.toString()))
+    println("Remainder (a rem b): ".append(remainder.toString()))
+    println("Modulo (a mod b): ".append(modulus.toString()))
+
+    # Negative number examples
+    println("=== Negative Number Examples ===")
+
+    var negA: i32 = -15
+    var negB: i32 = 4
+
+    var negQuotient = negA div negB  # -3 (truncated towards zero)
+    var negRemainder = negA rem negB # -3 (sign follows dividend)
+    var negModulus = negA mod negB   # 1 (always non-negative)
+
+    println("negA = ".append(negA.toString()).append(", negB = ").append(negB.toString()))
+    println("Division (negA div negB): ".append(negQuotient.toString()))
+    println("Remainder (negA rem negB): ".append(negRemainder.toString()))
+    println("Modulo (negA mod negB): ".append(negModulus.toString()))
+
+    # Floating-Point Arithmetic
+    println("=== Floating-Point Arithmetic ===")
+
+    var x: f64 = 10.5
+    var y: f64 = 3.2
+
+    var floatSum = x + y               # 13.7
+    var floatDiff = x - y              # 7.3
+    var floatProduct = x * y           # 33.6
+    var floatDivision = x div y        # 3.28125 (true division)
+    var floatRemainder = x rem y       # 1.1 (floating-point remainder)
+    var floatModulus = x mod y         # 1.1 (same as rem for positive numbers)
+
+    println("x = ".append(x.toString()).append(", y = ").append(y.toString()))
+    println("Addition (x + y): ".append(floatSum.toString()))
+    println("Subtraction (x - y): ".append(floatDiff.toString()))
+    println("Multiplication (x * y): ".append(floatProduct.toString()))
+    println("Division (x div y): ".append(floatDivision.toString()))
+    println("Remainder (x rem y): ".append(floatRemainder.toString()))
+    println("Modulo (x mod y): ".append(floatModulus.toString()))

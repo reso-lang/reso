@@ -97,12 +97,12 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testShortCircuitWithFunctionCalls() {
         String sourceCode = """
-            def side_effect() -> bool:
+            def sideEffect() -> bool:
                 return true
             
             def main() -> i32:
-                var should_not_call: bool = false
-                var result: bool = should_not_call and side_effect()
+                var shouldNotCall: bool = false
+                var result: bool = shouldNotCall and sideEffect()
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "short_circuit_function_calls");
@@ -111,9 +111,9 @@ public class LogicalExpressionTest extends BaseTest {
         assertNotNull(main, "Should have main function");
 
         assertIrContains(main,
-            IrPatterns.conditionalBranch("should_not_call", "eval_right", "merge"),
-            IrPatterns.phi("i1", "logical_result", "false", "entry", "%side_effect", "eval_right"),
-            IrPatterns.functionCall("side_effect", "i1", List.of())
+            IrPatterns.conditionalBranch("shouldNotCall", "eval_right", "merge"),
+            IrPatterns.phi("i1", "logical_result", "false", "entry", "%sideEffect", "eval_right"),
+            IrPatterns.functionCall("sideEffect", "i1", List.of())
         );
     }
 
@@ -147,8 +147,8 @@ public class LogicalExpressionTest extends BaseTest {
     public void testLogicalExpressionInWhileCondition() {
         String sourceCode = wrapInMainFunction("""
             var running: bool = true
-            var has_data: bool = false
-            while running and has_data:
+            var hasData: bool = false
+            while running and hasData:
                 running = false
             """);
         String ir = compileAndExpectSuccess(sourceCode, "logical_in_while_condition");
@@ -158,7 +158,7 @@ public class LogicalExpressionTest extends BaseTest {
 
         assertIrContains(mainFunc,
             IrPatterns.alloca("running", "i1"),
-            IrPatterns.alloca("has_data", "i1")
+            IrPatterns.alloca("hasData", "i1")
         );
 
         assertIrContains(mainFunc,
@@ -200,10 +200,10 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testLogicalExpressionInVariableInitialization() {
         String sourceCode = wrapInMainFunction("""
-            var is_valid: bool = true
-            var is_enabled: bool = false
-            var can_proceed: bool = is_valid and is_enabled
-            var should_retry: bool = not is_valid or is_enabled
+            var isValid: bool = true
+            var isEnabled: bool = false
+            var canProceed: bool = isValid and isEnabled
+            var shouldRetry: bool = not isValid or isEnabled
             """);
         String ir = compileAndExpectSuccess(sourceCode, "logical_in_variable_init");
 
@@ -211,15 +211,15 @@ public class LogicalExpressionTest extends BaseTest {
         assertNotNull(mainFunc, "Main function should be present in the IR");
 
         assertIrContains(mainFunc,
-            IrPatterns.alloca("is_valid", "i1"),
-            IrPatterns.alloca("is_enabled", "i1"),
-            IrPatterns.alloca("can_proceed", "i1"),
-            IrPatterns.alloca("should_retry", "i1")
+            IrPatterns.alloca("isValid", "i1"),
+            IrPatterns.alloca("isEnabled", "i1"),
+            IrPatterns.alloca("canProceed", "i1"),
+            IrPatterns.alloca("shouldRetry", "i1")
         );
 
         assertIrContains(mainFunc,
-            IrPatterns.phi("i1", "logical_result", "false", "entry", "%is_enabled", "eval_right"),
-            IrPatterns.phi("i1", "logical_result", "true", "merge", "%is_enabled", "eval_right")
+            IrPatterns.phi("i1", "logical_result", "false", "entry", "%isEnabled", "eval_right"),
+            IrPatterns.phi("i1", "logical_result", "true", "merge", "%isEnabled", "eval_right")
         );
     }
 
@@ -257,7 +257,7 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testLogicalExpressionAsFunctionArgument() {
         String sourceCode = """
-            def process_flag(flag: bool) -> i32:
+            def processFlag(flag: bool) -> i32:
                 if flag:
                     return 1
                 return 0
@@ -265,8 +265,8 @@ public class LogicalExpressionTest extends BaseTest {
             def main() -> i32:
                 var condition1: bool = true
                 var condition2: bool = false
-                var result1: i32 = process_flag(condition1 and condition2)
-                var result2: i32 = process_flag(condition1 or condition2)
+                var result1: i32 = processFlag(condition1 and condition2)
+                var result2: i32 = processFlag(condition1 or condition2)
                 return result1 + result2
             """;
         String ir = compileAndExpectSuccess(sourceCode, "logical_as_function_argument");
@@ -283,10 +283,10 @@ public class LogicalExpressionTest extends BaseTest {
 
         assertIrContainsInOrder(mainFunc,
             IrPatterns.phi("i1", "logical_result", "false", "entry", "%condition2", "eval_right"),
-            IrPatterns.functionCall("process_flag", "i32",
+            IrPatterns.functionCall("processFlag", "i32",
                 List.of(Map.entry("i1", "logical_result"))),
             IrPatterns.phi("i1", "logical_result", "true", "merge", "%condition2", "eval_right"),
-            IrPatterns.functionCall("process_flag", "i32",
+            IrPatterns.functionCall("processFlag", "i32",
                 List.of(Map.entry("i1", "logical_result")))
         );
     }
@@ -298,25 +298,25 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testLogicalExpressionInReturnStatement() {
         String sourceCode = """
-            def check_conditions(a: bool, b: bool) -> bool:
+            def checkConditions(a: bool, b: bool) -> bool:
                 return a and b
             
-            def validate_inputs(x: bool, y: bool, z: bool) -> bool:
+            def validateInputs(x: bool, y: bool, z: bool) -> bool:
                 return x or (y and z)
             
             def main() -> i32:
-                var result1: bool = check_conditions(true, false)
-                var result2: bool = validate_inputs(false, true, true)
+                var result1: bool = checkConditions(true, false)
+                var result2: bool = validateInputs(false, true, true)
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "logical_in_return");
 
         // Verify that logical expressions are properly evaluated in return statements
-        String checkConditionsFunc = extractFunction(ir, "check_conditions");
-        String validateInputsFunc = extractFunction(ir, "validate_inputs");
+        String checkConditionsFunc = extractFunction(ir, "checkConditions");
+        String validateInputsFunc = extractFunction(ir, "validateInputs");
 
-        assertNotNull(checkConditionsFunc, "Should have check_conditions function");
-        assertNotNull(validateInputsFunc, "Should have validate_inputs function");
+        assertNotNull(checkConditionsFunc, "Should have checkConditions function");
+        assertNotNull(validateInputsFunc, "Should have validateInputs function");
 
         assertIrContains(checkConditionsFunc,
             IrPatterns.phi("i1", "logical_result", "false", "entry", "%b", "eval_right"));
@@ -443,9 +443,9 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testLogicalExpressionOutsideFunction() {
         String sourceCode = """
-            var global_flag1: bool = true
-            var global_flag2: bool = false
-            var global_result: bool = global_flag1 and global_flag2
+            var globalFlag1: bool = true
+            var globalFlag2: bool = false
+            var globalResult: bool = globalFlag1 and globalFlag2
             """;
         String errors = compileAndExpectFailure(sourceCode, "logical_outside_function");
 
@@ -456,11 +456,11 @@ public class LogicalExpressionTest extends BaseTest {
     @Test
     public void testLogicalExpressionWithUnitTypes() {
         String sourceCode = """
-            def do_nothing():
+            def doNothing():
                 return
             
             def main() -> i32:
-                var result: bool = do_nothing() and do_nothing()
+                var result: bool = doNothing() and doNothing()
             """;
         String errors = compileAndExpectFailure(sourceCode, "logical_with_unit");
 

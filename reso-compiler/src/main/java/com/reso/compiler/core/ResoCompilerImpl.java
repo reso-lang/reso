@@ -301,7 +301,7 @@ public class ResoCompilerImpl implements ResoCompiler {
 
     private List<CompilationUnit> getBuiltinCompilationUnits() {
         List<String> builtinSources = List.of(
-            "/builtin/string.reso"
+            "/builtin/String.reso"
         );
 
         return builtinSources.stream()

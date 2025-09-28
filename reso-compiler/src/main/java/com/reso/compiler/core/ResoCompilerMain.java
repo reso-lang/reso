@@ -86,7 +86,7 @@ public class ResoCompilerMain {
         if (args.length == 0) {
             // Default behavior: compile sample file
             return new CompilerArguments(
-                List.of("examples/helloworld.reso"),
+                List.of("examples/HelloWorld.reso"),
                 null,
                 true,
                 2,

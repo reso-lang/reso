@@ -1,0 +1,142 @@
+def main() -> i32:
+    println("=== Comparison Operators in Reso ===")
+
+    # Integer Comparisons
+    println("=== Integer Comparisons ===")
+
+    var a: i32 = 10
+    var b: i32 = 20
+    var c: i32 = 10
+
+    println("a = ".append(a.toString())
+        .append(", b = ")
+        .append(b.toString())
+        .append(", c = ")
+        .append(c.toString()))
+
+    # Equality operators (work with all types)
+    var equalAb = a == b               # false
+    var equalAc = a == c               # true
+    var notEqualAb = a != b           # true
+    var notEqualAc = a != c           # false
+
+    println("a == b: ".append(equalAb.toString()))
+    println("a == c: ".append(equalAc.toString()))
+    println("a != b: ".append(notEqualAb.toString()))
+    println("a != c: ".append(notEqualAc.toString()))
+
+    # Ordering operators (only for integers and floats)
+    var less = a < b                    # true
+    var lessEqualAb = a <= b          # true
+    var lessEqualAc = a <= c          # true
+    var greater = a > b                 # false
+    var greaterEqualAb = a >= b       # false
+    var greaterEqualAc = a >= c       # true
+
+    println("a < b: ".append(less.toString()))
+    println("a <= b: ".append(lessEqualAb.toString()))
+    println("a <= c: ".append(lessEqualAc.toString()))
+    println("a > b: ".append(greater.toString()))
+    println("a >= b: ".append(greaterEqualAb.toString()))
+    println("a >= c: ".append(greaterEqualAc.toString()))
+
+    # Floating-Point Comparisons
+    println("=== Floating-Point Comparisons ===")
+
+    var x: f64 = 3.14
+    var y: f64 = 2.71
+    var z: f64 = 3.14
+
+    println("x = ".append(x.toString())
+        .append(", y = ")
+        .append(y.toString())
+        .append(", z = ")
+        .append(z.toString()))
+
+    var floatEqual = x == z            # true
+    var floatNotEqual = x != y        # true
+    var floatGreater = x > y           # true
+    var floatLess = x < y              # false
+    var floatGreaterEqual = x >= z    # true
+    var floatLessEqual = y <= x       # true
+
+    println("x == z: ".append(floatEqual.toString()))
+    println("x != y: ".append(floatNotEqual.toString()))
+    println("x > y: ".append(floatGreater.toString()))
+    println("x < y: ".append(floatLess.toString()))
+    println("x >= z: ".append(floatGreaterEqual.toString()))
+    println("y <= x: ".append(floatLessEqual.toString()))
+
+    # Boolean Comparisons
+    println("=== Boolean Comparisons ===")
+
+    var bool1: bool = true
+    var bool2: bool = false
+    var bool3: bool = true
+
+    println("bool1 = ".append(bool1.toString())
+        .append(", bool2 = ")
+        .append(bool2.toString())
+        .append(", bool3 = ")
+        .append(bool3.toString()))
+
+    var boolEqual = bool1 == bool3     # true
+    var boolNotEqual = bool1 != bool2 # true
+
+    println("bool1 == bool3: ".append(boolEqual.toString()))
+    println("bool1 != bool2: ".append(boolNotEqual.toString()))
+
+    # Note: Ordering operators (< > <= >=) don't work with booleans
+    # var invalid = bool1 < bool2      # This would be an error
+
+    # Character Comparisons
+    println("=== Character Comparisons ===")
+
+    var char1: char = 'A'               # Unicode 65
+    var char2: char = 'B'               # Unicode 66
+    var char3: char = 'A'               # Unicode 65
+
+    println("char1 = '".append(char1.toString())
+        .append("', char2 = '")
+        .append(char2.toString())
+        .append("', char3 = '")
+        .append(char3.toString())
+        .append("'"))
+
+    var charEqual = char1 == char3     # true
+    var charNotEqual = char1 != char2 # true
+
+    println("char1 == char3: ".append(charEqual.toString()))
+    println("char1 != char2: ".append(charNotEqual.toString()))
+
+    # String Comparisons
+    println("=== String Comparisons ===")
+
+    var str1 = "Hello"
+    var str2 = "World"
+    var str3 = "Hello"
+
+    println("str1 = \"".append(str1.append("\", str2 = \""))
+        .append(str2.append("\", str3 = \""))
+        .append(str3.append("\"")))
+
+    var strEqual = str1 == str3        # false (because str1 and str3 are different instances)
+    var strNotEqual = str1 != str2    # true
+
+    println("str1 == str3: ".append(strEqual.toString()))
+    println("str1 != str2: ".append(strNotEqual.toString()))
+
+    # Null Comparisons
+    println("=== Null Comparisons ===")
+
+    var ptr1: String = null
+    var ptr2: String = "Hello"
+    var ptr3: String = null
+
+    var nullEqual = ptr1 == ptr3       # true (both null)
+    var nullNotEqual = ptr1 != ptr2   # true (null vs string)
+    var stringNotNull = ptr2 != null  # true
+
+    println("null == null: ".append(nullEqual.toString()))
+    println("null != \"Hello\": ".append(nullNotEqual.toString()))
+    println("\"Hello\" != null: ".append(stringNotNull.toString()))

@@ -1,18 +1,18 @@
 # Define a Customer resource with fields and path-based methods
 resource Customer {
     pub const id: i64,              # Public immutable field
-    var user_name: String,          # Private mutable field
+    var userName: String,          # Private mutable field
     const products: Vector<String>  # Private immutable field
 }:
     # Root path methods (no path prefix)
     path:
         # Public method accessible from outside the file
         pub def summarize() -> String:
-            return this.id.to_string().append(": ").append(this.user_name)
+            return this.id.toString().append(": ").append(this.userName)
         
         # File-private method
         def validate() -> bool:
-            return not this.user_name.is_empty()
+            return not this.userName.isEmpty()
 
     # Path for accessing the ID
     path id:
@@ -20,13 +20,13 @@ resource Customer {
             return this.id
 
     # Path for user name operations
-    path user_name:
+    path userName:
         pub def get() -> String:
-            return this.user_name
+            return this.userName
 
-        pub def set(new_name: String):
-            if not new_name.is_empty():
-                this.user_name = new_name
+        pub def set(newName: String):
+            if not newName.isEmpty():
+                this.userName = newName
 
     # Path for products collection
     path products:
@@ -46,7 +46,7 @@ resource Customer {
 
 # Define an Account resource
 resource Account {
-    pub const account_number: String,
+    pub const accountNumber: String,
     var balance: f64
 }:
     path balance:
@@ -68,28 +68,28 @@ def main() -> i32:
     var customer = Customer {1, "Alice Johnson", Vector()}
     
     # Use path-based method calls
-    customer/user_name.set("Alice Smith")
+    customer/userName.set("Alice Smith")
     customer/products.add("Laptop")
     customer/products.add("Mouse")
     customer/products.add("Keyboard")
     
     # Access data through paths
     println("Customer Summary: ".append(customer.summarize()))
-    println("Customer ID: ".append(customer/id.get().to_string()))
-    println("Customer Name: ".append(customer/user_name.get()))
-    println("Product Count: ".append(customer/products.count().to_string()))
+    println("Customer ID: ".append(customer/id.get().toString()))
+    println("Customer Name: ".append(customer/userName.get()))
+    println("Product Count: ".append(customer/products.count().toString()))
     println("First Product: ".append(customer/products[0].get()))
     
     # Create and use an account
-    var account = Account {"ACC-12345", 1000.0}
+    var account = Account {"aCC-12345", 1000.0}
     
-    println("Initial Balance: ".append(account/balance.get().to_string()))
+    println("Initial Balance: ".append(account/balance.get().toString()))
     
     account/balance.deposit(250.0)
-    println("After Deposit: ".append(account/balance.get().to_string()))
+    println("After Deposit: ".append(account/balance.get().toString()))
     
     var success = account/balance.withdraw(150.0)
     if success:
-        println("Withdrawal successful. New Balance: ".append(account/balance.get().to_string()))
+        println("Withdrawal successful. New Balance: ".append(account/balance.get().toString()))
     else:
         println("Withdrawal failed!")

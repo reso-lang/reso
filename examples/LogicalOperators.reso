@@ -1,0 +1,44 @@
+def main() -> i32:
+    println("=== Logical Operators in Reso ===")
+    println("Note: Logical operators work only with boolean values")
+    
+    # Basic Logical Operations
+    println("=== Basic Logical Operations ===")
+    
+    var trueVal: bool = true
+    var falseVal: bool = false
+    
+    println("trueVal = ".append(trueVal.toString()))
+    println("falseVal = ".append(falseVal.toString()))
+    
+    # Logical AND (and)
+    var andTrueTrue = trueVal and trueVal       # true and true = true
+    var andTrueFalse = trueVal and falseVal     # true and false = false
+    var andFalseTrue = falseVal and trueVal     # false and true = false
+    var andFalseFalse = falseVal and falseVal   # false and false = false
+    
+    println("=== Logical AND (and) ===")
+    println("true and true = ".append(andTrueTrue.toString()))
+    println("true and false = ".append(andTrueFalse.toString()))
+    println("false and true = ".append(andFalseTrue.toString()))
+    println("false and false = ".append(andFalseFalse.toString()))
+    
+    # Logical OR (or)
+    var orTrueTrue = trueVal or trueVal         # true or true = true
+    var orTrueFalse = trueVal or falseVal       # true or false = true
+    var orFalseTrue = falseVal or trueVal       # false or true = true
+    var orFalseFalse = falseVal or falseVal     # false or false = false
+    
+    println("=== Logical OR (or) ===")
+    println("true or true = ".append(orTrueTrue.toString()))
+    println("true or false = ".append(orTrueFalse.toString()))
+    println("false or true = ".append(orFalseTrue.toString()))
+    println("false or false = ".append(orFalseFalse.toString()))
+    
+    # Logical NOT (not) - Unary operator
+    var notTrue = not trueVal                     # not true = false
+    var notFalse = not falseVal                   # not false = true
+    
+    println("=== Logical NOT (not) ===")
+    println("not true = ".append(notTrue.toString()))
+    println("not false = ".append(notFalse.toString()))

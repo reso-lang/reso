@@ -354,13 +354,13 @@ public class IfConditionTest extends BaseTest {
     @Test
     public void testIfWithFunctionCallCondition() {
         String sourceCode = """
-            def is_positive(n: i32) -> bool:
+            def isPositive(n: i32) -> bool:
                 return n > 0
             
             def main() -> i32:
                 var x: i32 = 10
                 var result: i32 = 0
-                if is_positive(x):
+                if isPositive(x):
                     result = 1
                 else:
                     result = -1
@@ -374,8 +374,8 @@ public class IfConditionTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("x", "i32"),
             IrPatterns.alloca("result", "i32"),
-            IrPatterns.functionCall("is_positive", "i1", List.of(Map.entry("i32", "x"))),
-            IrPatterns.conditionalBranch("is_positive_result", "if_then", "else")
+            IrPatterns.functionCall("isPositive", "i1", List.of(Map.entry("i32", "x"))),
+            IrPatterns.conditionalBranch("isPositive_result", "if_then", "else")
         );
     }
 
@@ -516,8 +516,8 @@ public class IfConditionTest extends BaseTest {
             var x: i32 = 10
             if x > 5:
                 var x: i32 = 20  # Shadows outer x
-                var inner_result: i32 = x  # Should use inner x (20)
-            var outer_result: i32 = x  # Should use outer x (10)
+                var innerResult: i32 = x  # Should use inner x (20)
+            var outerResult: i32 = x  # Should use outer x (10)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "if_variable_shadowing");
 
@@ -527,12 +527,12 @@ public class IfConditionTest extends BaseTest {
         assertIrContains(mainFunc,
             IrPatterns.alloca("x", "i32"),
             IrPatterns.alloca("x1", "i32"),
-            IrPatterns.alloca("outer_result", "i32"),
-            IrPatterns.alloca("inner_result", "i32"),
+            IrPatterns.alloca("outerResult", "i32"),
+            IrPatterns.alloca("innerResult", "i32"),
             IrPatterns.store("10", "i32", "x"),
             IrPatterns.store("20", "i32", "x"),
-            IrPatterns.store("x", "i32", "inner_result"),
-            IrPatterns.store("x", "i32", "outer_result")
+            IrPatterns.store("x", "i32", "innerResult"),
+            IrPatterns.store("x", "i32", "outerResult")
         );
     }
 
