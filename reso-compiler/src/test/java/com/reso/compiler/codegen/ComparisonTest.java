@@ -166,14 +166,14 @@ public class ComparisonTest extends BaseTest {
             var y: i32 = 5
             if x > y:
                 var z: i32 = 1
-                            
+            
             var a: f64 = 3.14
             var b: f64 = 2.0
             if a <= b:
                 var c: f64 = 0.0
             else:
                 var d: f64 = 1.0
-                            
+            
             var p: u16 = 100
             var q: u16 = 200
             if p != q:
@@ -207,12 +207,12 @@ public class ComparisonTest extends BaseTest {
             var limit: i32 = 10
             while counter < limit:
                 counter = counter + 1
-                            
+            
             var value: f32 = 1.0
             var threshold: f32 = 100.0
             while value <= threshold:
                 value = value * 2.0
-                            
+            
             var unsigned_counter: u8 = 255
             while unsigned_counter >= 1:
                 unsigned_counter = unsigned_counter - 1
@@ -244,11 +244,11 @@ public class ComparisonTest extends BaseTest {
             var b: i32 = 20
             var is_greater = a > b
             var is_equal: bool = a == b
-                            
+            
             var x: f64 = 3.14159
             var y: f64 = 2.71828
             var comparison: bool = x >= y
-                            
+            
             var p: u32 = 100
             var q: u32 = 50
             var result: bool = p != q
@@ -285,15 +285,15 @@ public class ComparisonTest extends BaseTest {
             var a: i32 = 15
             var b: i32 = 25
             var result: bool = false
-                            
+            
             result = a < b
             result = a >= b
             result = a != b
-                            
+            
             var x: f32 = 1.5
             var y: f32 = 2.5
             var float_result: bool = false
-                            
+            
             float_result = x <= y
             float_result = x == y
             """);
@@ -325,13 +325,13 @@ public class ComparisonTest extends BaseTest {
         String sourceCode = """
             def compare_ints(a: i32, b: i32) -> bool:
                 return a > b
-                            
+            
             def compare_floats(x: f64, y: f64) -> bool:
                 return x <= y
-                            
+            
             def compare_unsigned(p: u16, q: u16) -> bool:
                 return p != q
-                            
+            
             def main() -> i32:
                 var result1: bool = compare_ints(10, 5)
                 var result2: bool = compare_floats(3.14, 2.71)
@@ -374,7 +374,7 @@ public class ComparisonTest extends BaseTest {
             var result2: bool = x == 10
             var result3: bool = 15 < x
             var result4: bool = 20 != x
-                            
+            
             var y: f64 = 3.14
             var result5: bool = y >= 3.0
             var result6: bool = y < 4.0
@@ -709,10 +709,10 @@ public class ComparisonTest extends BaseTest {
         String sourceCode = """
             def unit_a():
                 return ()
-                            
+            
             def unit_b() -> ():
                 return
-                            
+            
             def main() -> i32:
                 var equal = unit_a() == unit_b()
                 var not_equal = unit_a() != unit_b()
@@ -771,7 +771,7 @@ public class ComparisonTest extends BaseTest {
             var x: i32 = 10
             var y: i32 = 20
             var z: i32 = 30
-                            
+            
             if (x < y) and (y < z):
                 var temp: i32 = x + y
                 if temp > z:
@@ -802,10 +802,10 @@ public class ComparisonTest extends BaseTest {
         String sourceCode = """
             def get_left() -> i32:
                 return 10
-                            
+            
             def get_right() -> i32:
                 return 20
-                            
+            
             def main() -> i32:
                 get_left() > get_right()
                 get_left() != 3

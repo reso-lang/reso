@@ -99,7 +99,7 @@ public class LogicalExpressionTest extends BaseTest {
         String sourceCode = """
             def side_effect() -> bool:
                 return true
-                            
+            
             def main() -> i32:
                 var should_not_call: bool = false
                 var result: bool = should_not_call and side_effect()
@@ -175,7 +175,7 @@ public class LogicalExpressionTest extends BaseTest {
             var b: bool = false
             var c: bool = true
             var d: bool = false
-                            
+            
             if (a and b) or (c and d):
                 var result: i32 = 42
             """);
@@ -229,7 +229,7 @@ public class LogicalExpressionTest extends BaseTest {
             var flag1: bool = true
             var flag2: bool = false
             var result: bool = false
-                            
+            
             result = flag1 and flag2
             result = flag1 or flag2
             """);
@@ -261,7 +261,7 @@ public class LogicalExpressionTest extends BaseTest {
                 if flag:
                     return 1
                 return 0
-                            
+            
             def main() -> i32:
                 var condition1: bool = true
                 var condition2: bool = false
@@ -300,10 +300,10 @@ public class LogicalExpressionTest extends BaseTest {
         String sourceCode = """
             def check_conditions(a: bool, b: bool) -> bool:
                 return a and b
-                            
+            
             def validate_inputs(x: bool, y: bool, z: bool) -> bool:
                 return x or (y and z)
-                            
+            
             def main() -> i32:
                 var result1: bool = check_conditions(true, false)
                 var result2: bool = validate_inputs(false, true, true)
@@ -458,7 +458,7 @@ public class LogicalExpressionTest extends BaseTest {
         String sourceCode = """
             def do_nothing():
                 return
-                            
+            
             def main() -> i32:
                 var result: bool = do_nothing() and do_nothing()
             """;

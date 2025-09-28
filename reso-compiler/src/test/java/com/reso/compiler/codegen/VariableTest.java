@@ -49,7 +49,7 @@ public class VariableTest extends BaseTest {
             var a: i32 = 1
             var b: i32 = 2
             var c: i32 = 3
-                            
+            
             a = b
             b = c
             c = a
@@ -80,7 +80,7 @@ public class VariableTest extends BaseTest {
             var a: i32 = 10
             var b: i32 = 20
             var c: i32 = 30
-                            
+            
             # Chain assignments: c = b = a
             b = a
             c = b
@@ -1011,7 +1011,7 @@ public class VariableTest extends BaseTest {
                 var a: i32 = 5
                 var b: i32 = 10
                 return a + b
-                            
+            
             def main() -> i32:
                 return calculate()
             """;
@@ -1037,7 +1037,7 @@ public class VariableTest extends BaseTest {
             def outer() -> i32:
                 var x: i32 = 10
                 return x
-                            
+            
             def main() -> i32:
                 var x: i32 = 20
                 return x
@@ -1067,7 +1067,7 @@ public class VariableTest extends BaseTest {
                     var x: i32 = 20  # Shadows outer x
                     return x
                 return x
-                            
+            
             def main() -> i32:
                 return outer()
             """;
@@ -1099,7 +1099,7 @@ public class VariableTest extends BaseTest {
                     var temp: i32 = 20  # Different temp variable
                     result = temp
                 return result
-                            
+            
             def main() -> i32:
                 return test()
             """;

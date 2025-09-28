@@ -167,7 +167,7 @@ public class ArithmeticTest extends BaseTest {
             var y: i32 = 5
             if (x + y) > 12:
                 var z: i32 = x * y
-                            
+            
             var a = 3.14
             var b = 2.0
             if (a * b) < 10.0:
@@ -285,7 +285,7 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def calculate(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 var y: i32 = 5
@@ -319,11 +319,11 @@ public class ArithmeticTest extends BaseTest {
             var int8a: i8 = 10
             var int8b: i8 = 5
             var int8result: i8 = int8a + int8b
-                            
+            
             var uint16a: u16 = 100
             var uint16b: u16 = 50
             var uint16result: u16 = uint16a - uint16b
-                            
+            
             var float32a: f32 = 3.14
             var float32b: f32 = 2.0
             var float32result: f32 = float32a * float32b
@@ -408,7 +408,7 @@ public class ArithmeticTest extends BaseTest {
             var quotient: isize = a div b
             var remainder: isize = a rem b
             var modulus: isize = a mod b
-                            
+            
             var c: usize = 10
             var d: usize = 3
             var uquotient: usize = c div d
@@ -666,7 +666,7 @@ public class ArithmeticTest extends BaseTest {
                 return
             def unit_b():
                 return
-                            
+            
             def main() -> i32:
                 unit_a() + unit_b()
             """;
@@ -985,10 +985,10 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def add(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def multiply(a: i32, b: i32) -> i32:
                 return a * b
-                            
+            
             def main() -> i32:
                 var x: i32 = 5
                 var y: i32 = 3
@@ -1025,7 +1025,7 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def calculate(a: i32, b: i32, c: i32) -> i32:
                 return a * b + c
-                            
+            
             def main() -> i32:
                 var result: i32 = calculate(5, 3, 2)
             """;
@@ -1045,7 +1045,7 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def get_value() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 get_value() + 10
             """;
@@ -1066,10 +1066,10 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def get_a() -> i32:
                 return 10
-                            
+            
             def get_b() -> i32:
                 return 20
-                            
+            
             def main() -> i32:
                 (get_a() + get_b()) * (get_a() - get_b())
             """;
@@ -1094,7 +1094,7 @@ public class ArithmeticTest extends BaseTest {
         String sourceCode = """
             def get_value() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 -get_value()
             """;

@@ -25,7 +25,7 @@ public class FunctionVisibilityTest extends BaseTest {
         String sourceCode = """
             def helper_function() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 return helper_function()  # Should work - same file
             """;
@@ -42,7 +42,7 @@ public class FunctionVisibilityTest extends BaseTest {
         String sourceCode = """
             pub def public_function() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 return public_function()
             """;
@@ -59,10 +59,10 @@ public class FunctionVisibilityTest extends BaseTest {
         String sourceCode = """
             def private_helper() -> i32:
                 return 10
-                            
+            
             pub def public_function() -> i32:
                 return private_helper() + 32  # Should work - same file
-                            
+            
             def main() -> i32:
                 return public_function()
             """;
@@ -87,7 +87,7 @@ public class FunctionVisibilityTest extends BaseTest {
             .addFile("math.reso", """
                 pub def add(a: i32, b: i32) -> i32:
                     return a + b
-                                        
+                
                 pub def multiply(a: i32, b: i32) -> i32:
                     return a * b
                 """)
@@ -116,7 +116,7 @@ public class FunctionVisibilityTest extends BaseTest {
             .addFile("utils.reso", """
                 def validate_input(x: i32) -> bool:  # Private helper
                     return x >= 0
-                                        
+                
                 pub def safe_divide(a: i32, b: i32) -> i32:  # Public API
                     if validate_input(a) and validate_input(b) and b != 0:
                         return a div b
@@ -198,7 +198,7 @@ public class FunctionVisibilityTest extends BaseTest {
             .addFile("library.reso", """
                 def internal_function() -> i32:  # Private
                     return 10
-                                        
+                
                 pub def public_function() -> i32:  # Public
                     return internal_function() + 32
                 """)

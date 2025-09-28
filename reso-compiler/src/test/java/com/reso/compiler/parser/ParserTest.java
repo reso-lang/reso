@@ -78,7 +78,7 @@ public class ParserTest {
         // Statements outside functions are not allowed
         String code = """
             var x: i32 = 10
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -201,19 +201,19 @@ public class ParserTest {
             resource User{
                 var name: String,
                 const email: String}:
-                            
+            
                 path:
                     def get() -> String:
                         return this.name.append(this.email)
-                            
+            
                 path name:
                     def get() -> String:
                         return this.name
-                            
+            
                 path profile:
                     def get() -> String:
                         return "Profile of " + this.name
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -230,19 +230,19 @@ public class ParserTest {
             resource User{
                 pub var name: String,
                 pub const email: String}:
-                            
+            
                 path:
                     def get() -> String:
                         return this.name.append(this.email)
-                            
+            
                 path name:
                     def get() -> String:
                         return this.name
-                            
+            
                 path profile:
                     pub def get() -> String:
                         return "Profile of " + this.name
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -295,7 +295,7 @@ public class ParserTest {
             def outer(x: i32) -> i32:
                 def inner(y: i32) -> i32:
                     return y * 2
-                            
+            
                 return inner(x) + 5
             """;
         // Nested functions are not allowed in Reso based on the grammar
@@ -364,13 +364,13 @@ public class ParserTest {
         String code = """
             def add(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def subtract(a: i32, b: i32) -> i32:
                 return a - b
-                            
+            
             def multiply(a: i32, b: i32) -> i32:
                 return a * b
-                            
+            
             def main() -> i32:
                 var a: i32 = add(5, 3)
                 var b: i32 = subtract(10, 4)
@@ -427,7 +427,7 @@ public class ParserTest {
         String code = """
             def helper(x: i32) -> i32:
                 return x * 2
-                            
+            
             def test_ternary_in_expressions(a: i32, b: i32, flag: bool) -> i32:
                 var result1: i32 = (a if flag else b) + 10
                 var result2: i32 = a * (5 if b > 0 else 1)

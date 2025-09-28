@@ -356,7 +356,7 @@ public class IfConditionTest extends BaseTest {
         String sourceCode = """
             def is_positive(n: i32) -> bool:
                 return n > 0
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 var result: i32 = 0
@@ -384,10 +384,10 @@ public class IfConditionTest extends BaseTest {
         String sourceCode = """
             def increment(n: i32) -> i32:
                 return n + 1
-                            
+            
             def decrement(n: i32) -> i32:
                 return n - 1
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 var result: i32 = 0
@@ -652,7 +652,7 @@ public class IfConditionTest extends BaseTest {
                     return 1
                 else:
                     return 0
-                            
+            
             def main() -> i32:
                 return test(15)
             """;

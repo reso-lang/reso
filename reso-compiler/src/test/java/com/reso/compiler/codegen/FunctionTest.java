@@ -32,7 +32,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode1 = """
             def main() -> i32:
                 return helper()
-                            
+            
             def helper() -> i32:
                 return 42
             """;
@@ -40,7 +40,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode2 = """
             def helper() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 return helper()
             """;
@@ -72,13 +72,13 @@ public class FunctionTest extends BaseTest {
                 var b: i32 = second()
                 var c: i32 = third()
                 return a + b + c
-                            
+            
             def third() -> i32:
                 return 30
-                            
+            
             def first() -> i32:
                 return 10
-                            
+            
             def second() -> i32:
                 return 20
             """;
@@ -104,7 +104,7 @@ public class FunctionTest extends BaseTest {
     public void testFunctionWithSimpleStatement() {
         String sourceCode = """
             def calculate(x: i32, y: i32) -> i32: return x + y
-                            
+            
             def main() -> i32:
                 return calculate(10, 20)
             """;
@@ -128,7 +128,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def calculate(x: i32, y: i32) -> i32:
                 return x + y
-                            
+            
             def main() -> i32:
                 return calculate(10, 20)
             """;
@@ -164,7 +164,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = String.format("""
             def test() -> %s:
                 return %s
-                            
+            
             def main() -> i32:
                 var result: %s = test()
                 return 0
@@ -190,7 +190,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def do_something():
                 return 42
-                            
+            
             def main() -> i32:
                 do_something()
                 return 0
@@ -207,22 +207,22 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def setup():
                 var x: i32 = 10
-                            
+            
             def cleanup():
                 return
-                            
+            
             def another() -> ():
                 return ()
-                            
+            
             def tidy() -> ():
                 var y: i32 = 20
-                            
+            
             def do_nothing() -> ():
                 return
-                            
+            
             def quiet() -> ():
                 return ()
-                            
+            
             def main() -> i32:
                 setup()
                 cleanup()
@@ -252,7 +252,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def logMessage(msg: ()):
                 return
-                            
+            
             def main() -> i32:
                 logMessage(())
                 return 0
@@ -277,7 +277,7 @@ public class FunctionTest extends BaseTest {
                 if flag:
                     return 10
                 # Missing return in else path
-                            
+            
             def main() -> i32:
                 return conditional(true)
             """;
@@ -295,7 +295,7 @@ public class FunctionTest extends BaseTest {
                     return 10
                 else:
                     return 20
-                            
+            
             def main() -> i32:
                 return safe_conditional(false)
             """;
@@ -325,7 +325,7 @@ public class FunctionTest extends BaseTest {
                         return b - a
                     else:
                         return 0
-                            
+            
             def main() -> i32:
                 return complex_flow(5, 3)
             """;
@@ -349,11 +349,11 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def unit_without_return():
                 var x: i32 = 42
-                            
+            
             def unit_with_if_no_return(flag: bool):
                 if flag:
                     var y: i32 = 10
-                            
+            
             def main() -> i32:
                 unit_without_return()
                 unit_with_if_no_return(true)
@@ -378,7 +378,7 @@ public class FunctionTest extends BaseTest {
                         return current
                     current = current + 1
                 return -1
-                            
+            
             def main() -> i32:
                 return find_first(10, 15)
             """;
@@ -408,7 +408,7 @@ public class FunctionTest extends BaseTest {
                         return i
                     i = i + 1
                 # Missing final return - should cause error
-                            
+            
             def main() -> i32:
                 return search_loop(10)
             """;
@@ -432,7 +432,7 @@ public class FunctionTest extends BaseTest {
                             return count * 2
                     count = count + 1
                 return count
-                            
+            
             def main() -> i32:
                 return complex_while(20)
             """;
@@ -456,7 +456,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def max_value(a: i32, b: i32) -> i32:
                 return a if a > b else b if b > a else 0
-                            
+            
             def main() -> i32:
                 return max_value(10, 20)
             """;
@@ -484,7 +484,7 @@ public class FunctionTest extends BaseTest {
                 return 42
                 var x: i32 = 10  # This should be unreachable
                 return x
-                            
+            
             def main() -> i32:
                 return unreachable()
             """;
@@ -504,7 +504,7 @@ public class FunctionTest extends BaseTest {
                     return i
                     i = i + 1  # This should be unreachable
                 return -1
-                            
+            
             def main() -> i32:
                 return unreachable_while()
             """;
@@ -524,7 +524,7 @@ public class FunctionTest extends BaseTest {
                     return 20
                 var unused: i32 = 30  # This should be unreachable
                 return unused
-                            
+            
             def main() -> i32:
                 return unreachable_after_if(true)
             """;
@@ -544,7 +544,7 @@ public class FunctionTest extends BaseTest {
                 # This code is reachable when flag is false
                 var result: i32 = 20
                 return result
-                            
+            
             def main() -> i32:
                 return reachable_code(false)
             """;
@@ -575,7 +575,7 @@ public class FunctionTest extends BaseTest {
                     else:
                         return 0
                 return -1  # This should be unreachable
-                            
+            
             def main() -> i32:
                 return complex_flow(5, 3)
             """;
@@ -695,7 +695,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = String.format("""
             def test_func(%s) -> i32:
                 return 0
-                            
+            
             def main() -> i32:
                 return test_func(%s)
             """, params, callArgs);
@@ -727,7 +727,7 @@ public class FunctionTest extends BaseTest {
         String sourceCode = """
             def empty() -> ():
                 # Empty function body
-                            
+            
             def main() -> i32:
                 empty()
                 return 0
@@ -746,7 +746,7 @@ public class FunctionTest extends BaseTest {
                     return 1
                 else:
                     return n * factorial(n - 1)
-                            
+            
             def main() -> i32:
                 return factorial(5)
             """;
@@ -771,13 +771,13 @@ public class FunctionTest extends BaseTest {
                     return true
                 else:
                     return is_odd(n - 1)
-                            
+            
             def is_odd(n: i32) -> bool:
                 if n == 0:
                     return false
                 else:
                     return is_even(n - 1)
-                            
+            
             def main() -> i32:
                 var result: bool = is_even(4)
                 return 0

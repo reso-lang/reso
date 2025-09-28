@@ -152,10 +152,10 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = """
             def get_value() -> i32:
                 return 42
-                            
+            
             def get_bool() -> bool:
                 return true
-                            
+            
             def main() -> i32:
                 -get_value()
                 +get_value()
@@ -220,7 +220,7 @@ public class UnaryOperationsTest extends BaseTest {
             var y: f32 = 2.5
             var z: bool = true
             var w: u8 = 15
-                            
+            
             x = -x
             y = +y
             z = not z
@@ -265,10 +265,10 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var flag: bool = false
             var value: i32 = 0
-                            
+            
             if not flag:
                 value = 1
-                            
+            
             if -value < 0:
                 value = 2
             """);
@@ -296,10 +296,10 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var active: bool = true
             var counter: i32 = 5
-                            
+            
             while not active:
                 counter = counter + 1
-                            
+            
             while -counter > -10:
                 counter = counter - 1
             """);
@@ -330,24 +330,24 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = """
             def process_int(value: i32) -> i32:
                 return value * 2
-                            
+            
             def process_bool(flag: bool) -> bool:
                 return flag
-                            
+            
             def process_float(num: f64) -> f64:
                 return num + 1.0
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 var flag: bool = true
                 var num: f64 = 3.14
                 var bits: u8 = 7
-                            
+            
                 var result1: i32 = process_int(-x)
                 var result2: bool = process_bool(not flag)
                 var result3: f64 = process_float(+num)
                 var result4: u8 = ~bits
-                            
+            
                 return 0
             """;
         String ir = compileAndExpectSuccess(sourceCode, "unary_as_function_args");
@@ -381,16 +381,16 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = """
             def negate_int(value: i32) -> i32:
                 return -value
-                            
+            
             def invert_bool(flag: bool) -> bool:
                 return not flag
-                            
+            
             def identity(num: f32) -> f32:
                 return +num
-                            
+            
             def complement(bits: u16) -> u16:
                 return ~bits
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -438,7 +438,7 @@ public class UnaryOperationsTest extends BaseTest {
             var x: i32 = 42
             var y: bool = false
             var z: u8 = 15
-                            
+            
             var double_neg: i32 = --x           # Should be equivalent to x
             var double_not: bool = not not y    # Should be equivalent to y
             var complex_chain: i32 = -+-x       # Should be equivalent to -x
@@ -567,7 +567,7 @@ public class UnaryOperationsTest extends BaseTest {
         String sourceCode = """
             def do_nothing():
                 return
-                            
+            
             def main() -> i32:
                 var result1: i32 = -do_nothing()
                 var result2: bool = not do_nothing()
@@ -593,7 +593,7 @@ public class UnaryOperationsTest extends BaseTest {
             var a: i32 = 10
             var b: i32 = 5
             var flag: bool = true
-                            
+            
             var complex1: i32 = +-(-a + -b) * 2
             var complex2: bool = not (flag and (a > b))
             var complex3: i32 = ~(a & b) | (a ^ b)

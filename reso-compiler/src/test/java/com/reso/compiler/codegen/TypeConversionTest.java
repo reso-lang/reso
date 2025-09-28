@@ -561,7 +561,7 @@ public class TypeConversionTest extends BaseTest {
         String sourceCode = """
             def do_nothing():
                 return
-                            
+            
             def main() -> i32:
                 var int_val: i32 = do_nothing() as i32  # Should fail
             """;

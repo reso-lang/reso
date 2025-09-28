@@ -315,10 +315,10 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = """
             def unit_a():
                 return ()
-                            
+            
             def unit_b():
                 return ()
-                            
+            
             def main() -> i32:
                 unit_a() | unit_b()
             """;
@@ -596,13 +596,13 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var flags: i32 = 12  # Binary: 1100
             var mask: i32 = 8    # Binary: 1000
-                            
+            
             if (flags & mask) != 0:
                 var result: i32 = 1
-                            
+            
             if (flags | mask) == 12:
                 var result2: i32 = 2
-                            
+            
             if (flags ^ mask) == 4:
                 var result3: i32 = 3
             """);
@@ -628,10 +628,10 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var counter: i32 = 16
             var mask: i32 = 1
-                            
+            
             while (counter & mask) == 0:
                 counter = counter >> 1
-                            
+            
             var result: i32 = counter
             """);
         String ir = compileAndExpectSuccess(sourceCode, "bitwise_in_while_conditions");
@@ -655,11 +655,11 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = wrapInMainFunction("""
             var value: u32 = 128
             var shifts: i32 = 0
-                            
+            
             while value > 0:
                 value = value >> 1  # Logical shift for unsigned
                 shifts = shifts + 1
-                            
+            
             var total_shifts: i32 = shifts
             """);
         String ir = compileAndExpectSuccess(sourceCode, "shift_operations_in_loops");
@@ -716,7 +716,7 @@ public class BitwiseTest extends BaseTest {
     public void testBitwiseOperationsInCompoundAssignments() {
         String sourceCode = wrapInMainFunction("""
             var flags: i32 = 5
-                            
+            
             flags = flags & 3    # Clear upper bits
             flags = flags | 8    # Set bit 3
             flags = flags ^ 2    # Toggle bit 1
@@ -751,15 +751,15 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = """
             def compute_mask(value: i32, mask: i32) -> i32:
                 return value & mask
-                            
+            
             def main() -> i32:
                 var data: i32 = 255
                 var filter: i32 = 15
-                            
+            
                 # Pass bitwise operation results as arguments
                 var result1: i32 = compute_mask(data | 16, filter << 1)
                 var result2: i32 = compute_mask(data ^ 128, filter >> 1)
-                            
+            
                 return result1 + result2
             """;
         String ir = compileAndExpectSuccess(sourceCode, "bitwise_as_function_args");
@@ -785,16 +785,16 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = """
             def get_masked_value(value: i32, mask: i32) -> i32:
                 return value & mask
-                            
+            
             def get_combined_flags(flag1: i32, flag2: i32) -> i32:
                 return flag1 | flag2
-                            
+            
             def get_toggled_bits(value: i32, toggle: i32) -> i32:
                 return value ^ toggle
-                            
+            
             def get_shifted_value(value: i32, shift_amount: i32) -> i32:
                 return value << shift_amount
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -827,7 +827,7 @@ public class BitwiseTest extends BaseTest {
             var b: i32 = 128
             var c: i32 = 64
             var d: i32 = 32
-                            
+            
             # Chain multiple bitwise operations
             var result1: i32 = a & b | c
             var result2: i32 = a ^ b & c
@@ -859,7 +859,7 @@ public class BitwiseTest extends BaseTest {
             var flags: i32 = 15
             var mask1: i32 = 8
             var mask2: i32 = 4
-                            
+            
             # Test operator precedence with parentheses
             var result1: i32 = flags & (mask1 | mask2)
             var result2: i32 = (flags | mask1) & mask2
@@ -889,10 +889,10 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = """
             def get_value() -> i32:
                 return 15
-                            
+            
             def get_shift() -> i32:
                 return 2
-                            
+            
             def main() -> i32:
                 get_value() & 7
                 get_value() >> get_shift()
@@ -920,10 +920,10 @@ public class BitwiseTest extends BaseTest {
         String sourceCode = """
             def get_mask() -> i32:
                 return 255
-                            
+            
             def get_value() -> i32:
                 return 42
-                            
+            
             def main() -> i32:
                 (get_value() & get_mask()) | (~get_value() ^ get_mask())
                 return 0

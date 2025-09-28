@@ -275,7 +275,7 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = """
             def calculate(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 var y: i32 = 5
@@ -308,10 +308,10 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = """
             def max(a: i32, b: i32) -> i32:
                 return a if (a > b) else b
-                            
+            
             def absolute(value: i32) -> i32:
                 return -value if (value < 0) else value
-                            
+            
             def main() -> i32:
                 var result1: i32 = max(10, 5)
                 var result2: i32 = absolute(-15)
@@ -564,10 +564,10 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = """
             def add(x: i32, y: i32) -> i32:
                 return x + y
-                            
+            
             def multiply(x: i32, y: i32) -> i32:
                 return x * y
-                            
+            
             def main() -> i32:
                 var a: i32 = 5
                 var b: i32 = 3
@@ -601,13 +601,13 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = """
             def get_true_value() -> i32:
                 return 100
-                            
+            
             def get_false_value() -> i32:
                 return 200
-                            
+            
             def get_condition() -> bool:
                 return true
-                            
+            
             def main() -> i32:
                 get_true_value() if get_condition() else get_false_value()
                 42 if true else get_false_value()
@@ -633,10 +633,10 @@ public class TernaryOperationTest extends BaseTest {
         String sourceCode = """
             def unit_a():
                 return
-                            
+            
             def unit_b() -> ():
                 return
-                            
+            
             def main() -> i32:
                 var condition: bool = true
                 unit_a() if condition else unit_b()

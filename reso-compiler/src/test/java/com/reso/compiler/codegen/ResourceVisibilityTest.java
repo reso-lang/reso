@@ -23,7 +23,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testDefaultFieldVisibilityIsFileprivate() {
         String sourceCode = """
             resource DefaultResource{var value: i32}  # Default should be fileprivate
-                                
+            
             def main() -> i32:
                 var res: DefaultResource = DefaultResource{42}
                 return res.value  # Should work - same file
@@ -42,7 +42,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testExplicitPublicFieldVisibility() {
         String sourceCode = """
             resource PublicResource{pub var value: i32}
-                            
+            
             def main() -> i32:
                 var res: PublicResource = PublicResource{42}
                 return res.value
@@ -61,7 +61,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testMixedFieldVisibilities() {
         String sourceCode = """
             resource MixedResource{pub const public_field: i32, var private_field: i32}
-                            
+            
             def main() -> i32:
                 var res: MixedResource = MixedResource{42, 24}
                 return res.public_field + res.private_field  # Should work - same file
@@ -86,7 +86,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testAllPublicFieldsPublicInitializer() {
         String sourceCode = """
             resource AllPublicResource{pub const field1: i32, pub var field2: String}
-                            
+            
             def main() -> i32:
                 var res: AllPublicResource = AllPublicResource{42, "test"}
                 return res.field1
@@ -105,7 +105,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testAllFileprivateFieldsFileprivateInitializer() {
         String sourceCode = """
             resource AllFileprivateResource{const field1: i32, var field2: String}  # Default fileprivate
-                            
+            
             def main() -> i32:
                 var res: AllFileprivateResource = AllFileprivateResource{42, "test"}
                 return 0
@@ -125,7 +125,7 @@ public class ResourceVisibilityTest extends BaseTest {
     public void testMixedFieldsFileprivateInitializer() {
         String sourceCode = """
             resource MixedFieldsResource{pub var public_field: i32, var private_field: String}  # Mixed = fileprivate
-                            
+            
             def main() -> i32:
                 var res: MixedFieldsResource = MixedFieldsResource{42, "secret"}
                 return res.public_field
@@ -233,7 +233,7 @@ public class ResourceVisibilityTest extends BaseTest {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
                 resource CrossFileResource{pub var public_field: i32, var private_field: String}
-                                        
+                
                 pub def create() -> CrossFileResource:
                     return CrossFileResource{42, "secret"}
                 """)
@@ -259,7 +259,7 @@ public class ResourceVisibilityTest extends BaseTest {
         var sourceFiles = new MultiFileBuilder()
             .addFile("library.reso", """
                 resource CrossFileResource{pub var public_field: i32, var private_field: String}
-                                        
+                
                 pub def create() -> CrossFileResource:
                     return CrossFileResource{42, "secret"}
                 """)

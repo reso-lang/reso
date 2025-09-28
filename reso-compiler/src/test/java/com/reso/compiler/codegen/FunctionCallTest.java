@@ -28,7 +28,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def add(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def main() -> i32:
                 var result: i32 = add(10, 20)
                 return result
@@ -51,7 +51,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def multiply(x: i32, y: f64) -> f64:
                 return x as f64 * y
-                            
+            
             def main() -> i32:
                 var result: f64 = multiply(2, 3.14)
                 return 0
@@ -77,7 +77,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def subtract(a: i32, b: i32) -> i32:
                 return a - b
-                            
+            
             def main() -> i32:
                 var x: i32 = 0
                 x = subtract(100, 25)
@@ -102,7 +102,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def square(n: i32) -> i32:
                 return n * n
-                            
+            
             def main() -> i32:
                 var a: i32 = square(5)
                 var b: i32 = square(7)
@@ -137,7 +137,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def is_positive(n: i32) -> bool:
                 return n > 0
-                            
+            
             def main() -> i32:
                 var x: i32 = 10
                 if is_positive(x):
@@ -162,10 +162,10 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def has_next() -> bool:
                 return true
-                            
+            
             def process():
                 return
-                            
+            
             def main() -> i32:
                 while has_next():
                     process()
@@ -191,10 +191,10 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def add(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def multiply(a: i32, b: i32) -> i32:
                 return a * b
-                            
+            
             def main() -> i32:
                 var result: i32 = multiply(add(2, 3), add(4, 5))
                 return result
@@ -219,10 +219,10 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def increment(n: i32) -> i32:
                 return n + 1
-                            
+            
             def double(n: i32) -> i32:
                 return n * 2
-                            
+            
             def main() -> i32:
                 var result: i32 = double(increment(5))
                 return result
@@ -247,7 +247,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def calculate(a: i32, b: i32) -> i32:
                 return a * b + 10
-                            
+            
             def main() -> i32:
                 return calculate(6, 7)
             """;
@@ -271,7 +271,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def operation(a: i32, b: i32, c: i32) -> i32:
                 return a + b * c
-                            
+            
             def main() -> i32:
                 var x: i32 = 2
                 var y: i32 = 3
@@ -312,10 +312,10 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def print_message(a: ()):
                 return ()
-                            
+            
             def setup(config: i32) -> ():
                 return
-                            
+            
             def main() -> i32:
                 var a = print_message(())
                 var b : () = setup(42)
@@ -350,7 +350,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = String.format("""
             def test_func(param: %s) -> %s:
                 return param
-                            
+            
             def main() -> i32:
                 var arg: %s = %s
                 var result: %s = test_func(arg)
@@ -409,7 +409,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = """
             def add(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def main() -> i32:
                 var result: i32 = add(10)  # Missing second argument
                 return result
@@ -432,7 +432,7 @@ public class FunctionCallTest extends BaseTest {
         String sourceCode = String.format("""
             def two_arg_function(a: i32, b: i32) -> i32:
                 return a + b
-                            
+            
             def main() -> i32:
                 var result: i32 = two_arg_function(%s)
                 return result
@@ -456,7 +456,7 @@ public class FunctionCallTest extends BaseTest {
                     return 1
                 else:
                     return n * factorial(n - 1)
-                            
+            
             def main() -> i32:
                 var result: i32 = factorial(5)
                 return result
@@ -483,7 +483,7 @@ public class FunctionCallTest extends BaseTest {
                     return i as f64 + f
                 else:
                     return f - i as f64
-                            
+            
             def main() -> i32:
                 var result: f64 = compute(10, 3.14, true)
                 return 0
