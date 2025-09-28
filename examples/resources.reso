@@ -40,9 +40,9 @@ resource Customer {
             return this.products
 
     # Path with parameter for accessing specific products
-    path products/{index: usize}:
+    path products[index: usize]:
         pub def get() -> String:
-            return this.products/{index}.get()
+            return this.products[index].get()
 
 # Define an Account resource
 resource Account {
@@ -78,7 +78,7 @@ def main() -> i32:
     println("Customer ID: ".append(customer/id.get().to_string()))
     println("Customer Name: ".append(customer/user_name.get()))
     println("Product Count: ".append(customer/products.count().to_string()))
-    println("First Product: ".append(customer/products/{0}.get()))
+    println("First Product: ".append(customer/products[0].get()))
     
     # Create and use an account
     var account = Account {"ACC-12345", 1000.0}

@@ -41,7 +41,7 @@ public class VectorGenerator {
     }
 
     /**
-     * Generates code for reading an element from a vector: vec/{index}.get().
+     * Generates code for reading an element from a vector: vec[index].get().
      *
      * @param type           The resource type (ResourceType)
      * @param argumentValues The arguments
@@ -151,7 +151,7 @@ public class VectorGenerator {
     }
 
     /**
-     * Generates code for writing an element to a vector: vec/{index}.set(value).
+     * Generates code for writing an element to a vector: vec[index].set(value).
      *
      * @param type           The resource type
      * @param argumentValues The arguments

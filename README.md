@@ -60,9 +60,9 @@ resource Customer {
         pub def add(product: String):
             this.products.add(product)
 
-    path products/{index: usize}:
+    path products[index: usize]:
         pub def get() -> String:
-            return this.products/{index}.get()
+            return this.products[index].get()
 ```
 
 Resources can contain:
@@ -506,8 +506,8 @@ It provides methods for adding, removing, and accessing elements.
 - `add(value: T)`: Adds an element to the end of the vector.
 - `insert(index: usize, value: T)`: Inserts an element at the specified index.
 - `remove(index: usize) -> T`: Removes and returns the element at the specified index.
-- `/{index: usize}.get() -> T`: Returns the element at the specified index.
-- `/{index: usize}.set(value: T)`: Sets the element at the specified index.
+- `[index: usize].get() -> T`: Returns the element at the specified index.
+- `[index: usize].set(value: T)`: Sets the element at the specified index.
 - `/size.get() -> usize`: Returns the current number of elements in the vector.
 - `/capacity.get() -> usize`: Returns the current allocated capacity of the vector.
 
@@ -523,8 +523,8 @@ def main() -> i32:
     numbers.add(7)
     
     # Access elements
-    var first: i32 = numbers/{0}.get()    # Get first element
-    numbers/{1}.set(99)                   # Set second element
+    var first: i32 = numbers[0].get()    # Get first element
+    numbers[1].set(99)                   # Set second element
     
     # Insert and remove
     numbers.insert(1, 55)                 # Insert 55 at index 1
@@ -546,11 +546,11 @@ String represents UTF-8 encoded text data.
 - `is_empty() -> bool`: Checks if the string is empty.
 - `/chars.get() -> Vector<char>`: Returns a vector of characters in the string.
 - `/chars/size.get() -> usize`: Returns the number of characters in the string.
-- `/chars/{index: usize}.get() -> char`: Returns the character at the specified index.
+- `/chars[index: usize].get() -> char`: Returns the character at the specified index.
 - `/bytes.get() -> Vector<u8>`: Returns a vector of bytes in the string.
 - `/bytes/size.get() -> usize`: Returns the number of bytes in the string.
-- `/bytes/{index: usize}.get() -> u8`: Returns the byte at the specified index.
-- `/substring/{start: usize}/{end: usize}.get() -> String`: Returns a substring starting at the specified index and ending before the specified index.
+- `/bytes[index: usize].get() -> u8`: Returns the byte at the specified index.
+- `/substring.get(start: usize, end: usize) -> String`: Returns a substring starting at the specified index and ending before the specified index.
 
 Every primitive type has a `to_string()` method to convert the value to a string representation.
 Furthermore, the `print()` and `println()` functions can be used to output a String to the console.

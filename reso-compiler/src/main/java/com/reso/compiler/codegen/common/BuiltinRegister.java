@@ -921,8 +921,8 @@ public final class BuiltinRegister {
     /**
      * Registers the Vector resource symbol with all its methods.
      * Vector methods:
-     * - vec/{index}.get() -> element
-     * - vec/{index}.set(value) -> unit
+     * - vec[index].get() -> element
+     * - vec[index].set(value) -> unit
      * - vec.add(element) -> unit
      * - vec.insert(index, element) -> unit
      * - vec.remove(index) -> element

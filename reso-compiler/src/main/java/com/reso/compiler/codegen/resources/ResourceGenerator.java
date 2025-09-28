@@ -100,17 +100,35 @@ public class ResourceGenerator {
 
         List<PathSegment> segments = new ArrayList<>();
 
-        if (pathContext.resourcePathSegment() == null
-            || pathContext.resourcePathSegment().isEmpty()) {
+        if (pathContext.resourceIndexer() == null
+            && pathContext.Identifier() == null) {
             return segments; // Empty list represents root path
         }
 
-        for (ResoParser.ResourcePathSegmentContext segmentCtx : pathContext.resourcePathSegment()) {
-            PathSegment segment = parsePathSegment(context, segmentCtx);
+        if (pathContext.Identifier() != null) {
+            PathSegment segment = parseIdentifierSegment(pathContext.Identifier());
             if (segment == null) {
                 return null; // Error already reported
             }
             segments.add(segment);
+        }
+
+        if (pathContext.resourceIndexer() != null) {
+            PathSegment segment = parseResourceIndexer(context, pathContext.resourceIndexer());
+            if (segment == null) {
+                return null; // Error already reported
+            }
+            segments.add(segment);
+        }
+
+        if (pathContext.resourcePathSegment() != null) {
+            for (ResoParser.ResourcePathSegmentContext segmentCtx : pathContext.resourcePathSegment()) {
+                PathSegment segment = parsePathSegment(context, segmentCtx);
+                if (segment == null) {
+                    return null; // Error already reported
+                }
+                segments.add(segment);
+            }
         }
 
         return segments;

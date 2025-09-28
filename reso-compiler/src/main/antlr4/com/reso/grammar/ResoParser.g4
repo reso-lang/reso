@@ -39,11 +39,11 @@ pass
     ;
 
 resourcePath
-    : PATH (resourcePathSegment (SLASH resourcePathSegment)*)? COLON NEWLINE INDENT resourceMethod+ DEDENT
+    : PATH ((Identifier | resourceIndexer) (resourcePathSegment)*)? COLON NEWLINE INDENT resourceMethod+ DEDENT
     ;
 
 resourcePathSegment
-    : Identifier
+    : SLASH Identifier
     | resourceIndexer
     ;
 
@@ -52,7 +52,7 @@ resourceMethod
     ;
 
 resourceIndexer
-    : LBRACE Identifier COLON type RBRACE
+    : LBRACK Identifier COLON type RBRACK
     ;
 
 type
@@ -238,12 +238,12 @@ expressionList
     ;
 
 pathAccess
-    : (SLASH pathSegment)+
+    : (pathSegment)+
     ;
 
 pathSegment
-    : Identifier
-    | LBRACE expression RBRACE
+    : SLASH Identifier
+    | LBRACK expression RBRACK
     ;
 
 // Literals

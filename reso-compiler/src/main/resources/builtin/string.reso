@@ -22,13 +22,13 @@ resource String{
             # Copy bytes from this string
             var i: usize = 0
             while i < this_size:
-                result.add(this.data/{i}.get())
+                result.add(this.data[i].get())
                 i = i + 1
 
             # Copy bytes from other string
             i = 0
             while i < other_size:
-                result.add(other.data/{i}.get())
+                result.add(other.data[i].get())
                 i = i + 1
 
             result.add(0)  # Null terminator
@@ -55,7 +55,7 @@ resource String{
                 var matches = true
                 var j: usize = 0
                 while j < substr_size:
-                    if this.data/{i + j}.get() != substr.data/{j}.get():
+                    if this.data[i + j].get() != substr.data[j].get():
                         matches = false
                         break
                     j = j + 1
@@ -84,7 +84,7 @@ resource String{
 
             var i: usize = 0
             while i < substr_size:
-                if this.data/{i}.get() != substr.data/{i}.get():
+                if this.data[i].get() != substr.data[i].get():
                     return false
                 i = i + 1
 
@@ -109,7 +109,7 @@ resource String{
             const offset = this_size - substr_size
             var i: usize = 0
             while i < substr_size:
-                if this.data/{offset + i}.get() != substr.data/{i}.get():
+                if this.data[offset + i].get() != substr.data[i].get():
                     return false
                 i = i + 1
 
@@ -136,7 +136,7 @@ resource String{
                 var matches = true
                 var j: usize = 0
                 while j < substr_size:
-                    if this.data/{i + j}.get() != substr.data/{j}.get():
+                    if this.data[i + j].get() != substr.data[j].get():
                         matches = false
                         break
                     j = j + 1
@@ -171,20 +171,20 @@ resource String{
             # Copy bytes before the matches
             var i: usize = 0
             while i < find_pos:
-                result.add(this.data/{i}.get())
+                result.add(this.data[i].get())
                 i = i + 1
 
             # Copy replacement string
             i = 0
             const new_data_size = new.data/size.get()  - 1
             while i < new_data_size:
-                result.add(new.data/{i}.get())
+                result.add(new.data[i].get())
                 i = i + 1
 
             # Copy bytes after the matches
             i = find_pos + old_size
             while i < this_size:
-                result.add(this.data/{i}.get())
+                result.add(this.data[i].get())
                 i = i + 1
 
             result.add(0)  # Null terminator
@@ -201,7 +201,7 @@ resource String{
             var i: usize = 0
 
             while i < size:
-                const byte: u32 = this.data/{i}.get() as u32
+                const byte: u32 = this.data[i].get() as u32
 
                 # Handle UTF-8 decoding
                 if byte < 128:  # ASCII (1 byte)
@@ -209,7 +209,7 @@ resource String{
                     i = i + 1
                 else if byte < 224:  # 2-byte UTF-8
                     if i + 1 < size:
-                        const byte1: u32 = this.data/{i + 1}.get() as u32
+                        const byte1: u32 = this.data[i + 1].get() as u32
                         const codepoint: u32 = ((byte - 192) * 64) + (byte1 - 128)
                         chars.add(codepoint as char)
                         i = i + 2
@@ -217,8 +217,8 @@ resource String{
                         i = i + 1  # Invalid UTF-8, skip
                 else if byte < 240:  # 3-byte UTF-8
                     if i + 2 < size:
-                        const byte1: u32 = this.data/{i + 1}.get() as u32
-                        const byte2: u32 = this.data/{i + 2}.get() as u32
+                        const byte1: u32 = this.data[i + 1].get() as u32
+                        const byte2: u32 = this.data[i + 2].get() as u32
                         const codepoint = ((byte - 224) * 4096) + ((byte1 - 128) * 64) + (byte2 - 128)
                         chars.add(codepoint as char)
                         i = i + 3
@@ -226,9 +226,9 @@ resource String{
                         i = i + 1  # Invalid UTF-8, skip
                 else:  # 4-byte UTF-8
                     if i + 3 < size:
-                        const byte1: u32 = this.data/{i + 1}.get() as u32
-                        const byte2: u32 = this.data/{i + 2}.get() as u32
-                        const byte3: u32 = this.data/{i + 3}.get() as u32
+                        const byte1: u32 = this.data[i + 1].get() as u32
+                        const byte2: u32 = this.data[i + 2].get() as u32
+                        const byte3: u32 = this.data[i + 3].get() as u32
                         const codepoint = ((byte - 240) * 262144) + ((byte1 - 128) * 4096) + ((byte2 - 128) * 64) + (byte3 - 128)
                         chars.add(codepoint as char)
                         i = i + 4
@@ -244,7 +244,7 @@ resource String{
             var i: usize = 0
 
             while i < size:
-                const byte = this.data/{i}.get()
+                const byte = this.data[i].get()
 
                 # Count UTF-8 characters
                 if byte < 128:  # ASCII (1 byte)
@@ -262,7 +262,7 @@ resource String{
 
             return char_count
 
-    path chars/{index: usize}:
+    path chars[index: usize]:
         pub def get() -> char:
             var char_index: usize = 0
             const size = this.data/size.get() - 1  # Exclude null terminator
@@ -270,31 +270,31 @@ resource String{
 
             while i < size:
                 if char_index == index:
-                    const byte: u32 = this.data/{i}.get() as u32
+                    const byte: u32 = this.data[i].get() as u32
 
                     # Decode UTF-8 character
                     if byte < 128:  # ASCII (1 byte)
                         return byte as char
                     else if byte < 224:  # 2-byte UTF-8
                         if i + 1 < size:
-                            const byte1: u32 = this.data/{i + 1}.get() as u32
+                            const byte1: u32 = this.data[i + 1].get() as u32
                             const codepoint = ((byte - 192) * 64) + (byte1 - 128)
                             return codepoint as char
                     else if byte < 240:  # 3-byte UTF-8
                         if i + 2 < size:
-                            const byte1: u32 = this.data/{i + 1}.get() as u32
-                            const byte2: u32 = this.data/{i + 2}.get() as u32
+                            const byte1: u32 = this.data[i + 1].get() as u32
+                            const byte2: u32 = this.data[i + 2].get() as u32
                             const codepoint = ((byte - 224) * 4096) + ((byte1 - 128) * 64) + (byte2 - 128)
                             return codepoint as char
                     else:  # 4-byte UTF-8
                         if i + 3 < size:
-                            const byte1: u32 = this.data/{i + 1}.get() as u32
-                            const byte2: u32 = this.data/{i + 2}.get() as u32
-                            const byte3: u32 = this.data/{i + 3}.get() as u32
+                            const byte1: u32 = this.data[i + 1].get() as u32
+                            const byte2: u32 = this.data[i + 2].get() as u32
+                            const byte3: u32 = this.data[i + 3].get() as u32
                             const codepoint = ((byte - 240) * 262144) + ((byte1 - 128) * 4096) + ((byte2 - 128) * 64) + (byte3 - 128)
                             return codepoint as char
 
-                const byte = this.data/{i}.get()
+                const byte = this.data[i].get()
 
                 # Skip to next character
                 if byte < 128:
@@ -319,13 +319,13 @@ resource String{
         pub def get() -> usize:
             return this.data/size.get() - 1  # Exclude null terminator
 
-    path bytes/{index: usize}:
+    path bytes[index: usize]:
         pub def get() -> u8:
-            return this.data/{index}.get()
+            return this.data[index].get()
 
     # Substring path
-    path substring/{start: usize}/{end: usize}:
-        pub def get() -> String:
+    path substring:
+        pub def get(start: usize, end: usize) -> String:
             const size = this.data/size.get() - 1  # Exclude null terminator
 
             # Bounds checking
@@ -336,7 +336,7 @@ resource String{
             var i: usize = start
 
             while i < end:
-                result.add(this.data/{i}.get())
+                result.add(this.data[i].get())
                 i = i + 1
 
             result.add(0)  # Null terminator

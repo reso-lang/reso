@@ -28,7 +28,7 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testEmptyResourceDefinition() {
         String sourceCode = """
             resource EmptyResource{}
-                            
+            
             def main() -> i32:
                 EmptyResource{}
             """;
@@ -44,7 +44,7 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testBasicResourceDefinitionWithConstructor() {
         String sourceCode = """
             resource User{var id: i32}
-                            
+            
             def main() -> i32:
                 User{1}
             """;
@@ -66,7 +66,7 @@ public class ResourceDefinitionTest extends BaseTest {
                 const id: i32,
                 const unit: ()
             }
-                            
+            
             def main() -> i32:
                 var price = 19.99
                 Product{"Gadget", 1.0 + price * 2.0, true, 1001, ()}
@@ -87,11 +87,11 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodWithReturnType() {
         String sourceCode = """
             resource Calculator{var value: i32}:
-                            
+            
                 path operations/value:
                     def get() -> i32:
                         return this.value
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -114,12 +114,12 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testUnitMethod() {
         String sourceCode = """
             resource Logger{var message: String}:
-                            
+            
                 path actions:
                     def reset():
                         this.message = ""
                         return
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -141,11 +141,11 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testUnitMethodWithoutExplicitReturn() {
         String sourceCode = """
             resource Storage{var data: String}:
-                            
+            
                 path operations:
                     def clear() -> ():
                         this.data = ""
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -171,14 +171,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodWithAllPathsReturning() {
         String sourceCode = """
             resource NumberProcessor{var value: i32}:
-                            
+            
                 path operations/sign:
                     def get() -> i32:
                         if this.value > 0:
                             return 1
                         else:
                             return -1
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -201,13 +201,13 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodMissingReturnPath() {
         String sourceCode = """
             resource Validator{var threshold: i32}:
-                            
+            
                 path checks:
                     def isValid(value: i32) -> bool:
                         if value > this.threshold:
                             return true
                         # Missing else branch with return
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -222,7 +222,7 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodWithComplexControlFlowReturns() {
         String sourceCode = """
             resource ComplexProcessor{var data: i32}:
-                            
+            
                 path processing/complex:
                     def process(input: i32) -> i32:
                         if input < 0:
@@ -234,7 +234,7 @@ public class ResourceDefinitionTest extends BaseTest {
                                 return 100
                             else:
                                 return input
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -264,14 +264,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testRootPathWithMethods() {
         String sourceCode = """
             resource RootPathResource{var value: i32}:
-                            
+            
                 path:
                     def get() -> i32:
                         return this.value
-                
+            
                     def set(newValue: i32) -> ():
                         this.value = newValue
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -305,14 +305,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testIdentifierPathWithMethods() {
         String sourceCode = """
             resource IdentPathResource{var id: i32}:
-                            
+            
                 path id:
                     def get() -> i32:
                         return this.id
-                            
+            
                     def set(id: i32):
                         this.id = id
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -346,14 +346,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testIndexerPathWithMethods() {
         String sourceCode = """
             resource IndexerResource{var id: i32}:
-                            
-                path {id :i32}:
+            
+                path [id :i32]:
                     def get() -> i32:
                         return this.id
-                            
+            
                     def set(index: i32):
                         this.id = id
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -391,11 +391,11 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testCombinedPathWithMethods() {
         String sourceCode = """
             resource ComboPathResource{var id: i32, var price: f64}:
-                            
-                path id/{c: char}/index/{i: i32}:
+            
+                path id[c: char]/index[i: i32]:
                     def get(f: f64) -> i32:
                         return this.id
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -425,21 +425,21 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMultiplePathsWithSameMethods() {
         String sourceCode = """
             resource MultiPath{var value: i32, const constant: i32}:
-                            
+            
                 path constant:
                     def get() -> i32:
                         return this.constant
-                            
+            
                     def double() -> i32:
                         return this.constant * 2
-                            
+            
                 path value:
                     def get() -> i32:
                         return this.value
-                            
+            
                     def double() -> i32:
                         return this.value * 2
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -458,15 +458,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testSamePathWithDifferentMethods() {
         String sourceCode = """
             resource SamePath{var value: i32}:
-                            
+            
                 path operations:
                     def get() -> i32:
                         return this.value
-                            
+            
                 path operations:
                     def set(value: i32):
                         this.value = value
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -483,15 +483,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testIndexerPathWithDifferentMethods() {
         String sourceCode = """
             resource SamePath{var value: i32}:
-                            
-                path {i: i32}:
+            
+                path [i: i32]:
                     def get() -> i32:
                         return this.value
-                            
-                path {i: i32}:
+            
+                path [i: i32]:
                     def set(value: i32):
                         this.value = value
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -508,23 +508,23 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMixedPathsAndRootMethods() {
         String sourceCode = """
             resource MixedResource{var value: i32}:
-                            
+            
                 path:
                     def get() -> i32:
                         return this.value
-                            
+            
                 path operations:
                     def double() -> i32:
                         return this.value * 2
-                            
+            
                 path:
                     def set(newValue: i32):
                         this.value = newValue
-                            
+            
                 path operations:
                     def increment():
                         this.value = this.value + 1
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -543,14 +543,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testRootPathWithDuplicateMethodNames() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
+            
                 path:
                     def get() -> i32:
                         return this.value
-                            
+            
                     def get() -> f32:  # Duplicate method name
                         return this.value as f32 * 2.0
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -565,15 +565,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testRootPathsWithDuplicateMethodNames() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
+            
                 path:
                     def get() -> i32:
                         return this.value
-                            
+            
                 path:
                     def get() -> f32:  # Duplicate method name
                         return this.value as f32 * 2.0
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -588,10 +588,10 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodWithoutPath() {
         String sourceCode = """
             resource NoPathResource{var value: i32}:
-                            
+            
                 def get() -> i32:  # Method without path
                     return this.value
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -605,14 +605,14 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testDuplicateMethodNamesInSamePath() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
+            
                 path operations/value:
                     def get() -> i32:
                         return this.value
-                            
+            
                     def get() -> i32:  # Duplicate method name
                         return this.value * 2
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -627,15 +627,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testDuplicateMethodNamesInSplitPath() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
+            
                 path operations/value:
                     def get() -> i32:
                         return this.value
-                            
+            
                 path operations/value:
                     def get() -> i32:  # Duplicate method name
                         return this.value * 2
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -650,15 +650,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testDuplicateMethodNamesInIndexerPath() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
-                path {i: i32}:
+            
+                path [i: i32]:
                     def get() -> i32:
                         return this.value
-                            
-                path {i: i32}:
+            
+                path [i: i32]:
                     def get() -> i32:  # Duplicate method name
                         return this.value * 2
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -672,15 +672,15 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testDuplicateMethodNamesInDifferentIndexerPath() {
         String sourceCode = """
             resource BadResource{var value: i32}:
-                            
-                path {i: i32}:
+            
+                path [i: i32]:
                     def get() -> i32:
                         return this.value
-                            
-                path {f: f32}:
+            
+                path [f: f32]:
                     def get() -> i32:  # Duplicate method name
                         return this.value * 2
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -698,12 +698,12 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testUnreachableCodeAfterReturn() {
         String sourceCode = """
             resource TestResource{var value: i32}:
-                            
+            
                 path operations/value:
                     def process() -> i32:
                         return this.value
                         var unreachable: i32 = 42  # Unreachable code
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -718,7 +718,7 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testUnreachableCodeInIfStatement() {
         String sourceCode = """
             resource TestResource{var value: i32}:
-                            
+            
                 path operations/value:
                     def process(flag: bool) -> i32:
                         if flag:
@@ -726,7 +726,7 @@ public class ResourceDefinitionTest extends BaseTest {
                             var unreachable: i32 = 42  # Unreachable
                         else:
                             return 0
-                            
+            
             def main() -> i32:
                 return 0
             """;
@@ -751,10 +751,10 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testMethodParameterVariations(String methodDef) {
         String sourceCode = String.format("""
             resource TestResource{var value: i32}:
-                            
+            
                 path test:
                     %s
-                            
+            
             def main() -> i32:
                 return 0
             """, methodDef);
@@ -776,19 +776,19 @@ public class ResourceDefinitionTest extends BaseTest {
     public void testResourceComposition() {
         String sourceCode = """
             resource Project{pub const person: Person, pub const address: Address}:
-                            
+            
                 path person/name:
                     pub def get() -> String:
                         return this.person.name
-                            
+            
             resource Address{pub var street: String, pub var city: String}
-                            
+            
             resource Person{pub var name: String, pub var address: Address}:
-                            
+            
                 path info/address/city:
                     def get() -> String:
                         return this.address.city
-                            
+            
             def main() -> i32:
                 return 0
             """;

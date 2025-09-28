@@ -161,7 +161,7 @@ public class VectorTest extends BaseTest {
     public void testBasicElementAccess() {
         String sourceCode = wrapInMainFunction("""
             var numbers: Vector<i32> = Vector()
-            var first: i32 = numbers/{0}.get()
+            var first: i32 = numbers[0].get()
             """);
         String ir = compileAndExpectSuccess(sourceCode, "basic_element_access");
 
@@ -190,7 +190,7 @@ public class VectorTest extends BaseTest {
     public void testElementModification() {
         String sourceCode = wrapInMainFunction("""
             var values: Vector<f64> = Vector()
-            values/{0}.set(9.9)
+            values[0].set(9.9)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "element_modification");
 
@@ -405,8 +405,8 @@ public class VectorTest extends BaseTest {
             var numbers: Vector<i32> = Vector()
             numbers.add(5)
             if numbers/size.get() > 0:
-                var first: i32 = numbers/{0}.get()
-                numbers/{1 + 3 * first as usize}.set(first * 2)
+                var first: i32 = numbers[0].get()
+                numbers[1 + 3 * first as usize].set(first * 2)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_in_if_condition");
 
@@ -479,7 +479,7 @@ public class VectorTest extends BaseTest {
                 vec.add(2)
                 vec.add(3)
                 return vec
-                            
+            
             def main() -> i32:
                 var result: Vector<i32> = create_vector()
                 var size: usize = result/size.get()
@@ -671,8 +671,8 @@ public class VectorTest extends BaseTest {
             matrix.add(row1)
             matrix.add(row2)
             var matrix_size: usize = matrix/size.get()
-            var first_row: Vector<i32> = matrix/{0}.get()
-            var first_element: i32 = first_row/{0}.get()
+            var first_row: Vector<i32> = matrix[0].get()
+            var first_element: i32 = first_row[0].get()
             """);
         String ir = compileAndExpectSuccess(sourceCode, "nested_vector_types");
 
@@ -716,8 +716,8 @@ public class VectorTest extends BaseTest {
             numbers.add(15)
             var index: usize = 1 as usize
             var multiplier: i32 = 3
-            var result: i32 = numbers/{index}.get() * multiplier + numbers/{0}.get()
-            numbers/{index}.set(result)
+            var result: i32 = numbers[index].get() * multiplier + numbers[0].get()
+            numbers[index].set(result)
             """);
         String ir = compileAndExpectSuccess(sourceCode, "vector_complex_expressions");
 
@@ -732,7 +732,7 @@ public class VectorTest extends BaseTest {
         );
 
         assertIrContainsInOrder(mainFunc,
-            // Complex expression: numbers/{index}.get() * multiplier + numbers/{0}.get()
+            // Complex expression: numbers[index].get() * multiplier + numbers[0].get()
             IrPatterns.load("ptr", "numbers"),
             IrPatterns.load(usizeType, "index"),
             IrPatterns.arrayAccess("element_ptr", "i32", "current_elements", "index_value"),
@@ -769,8 +769,8 @@ public class VectorTest extends BaseTest {
         "Vector().add(5)",
         "Vector().insert(0, 10)",
         "Vector().remove(0)",
-        "Vector()/{0}.get()",
-        "Vector()/{0}.set(42)"
+        "Vector()[0].get()",
+        "Vector()[0].set(42)"
     })
     public void testUntypedVectorOperationErrors(String vectorOperation) {
         String sourceCode = wrapInMainFunction(vectorOperation);
@@ -979,7 +979,7 @@ public class VectorTest extends BaseTest {
             var vec: Vector<%s> = Vector()
             vec.add(%s)
             vec.add(%s)
-            var sum: %s = vec/{0}.get() + vec/{1}.get()
+            var sum: %s = vec[0].get() + vec[1].get()
             """, typeName, value1, value2, typeName));
 
         String ir = compileAndExpectSuccess(sourceCode,

@@ -26,7 +26,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testBasicResourceInitializer() {
         String sourceCode = """
             resource Point{var x: i32, var y: i32}
-                            
+            
             def main() -> i32:
                 var point: Point = Point{10, 20}
                 return 0
@@ -50,7 +50,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testEmptyResourceInitializer() {
         String sourceCode = """
             resource EmptyMarker{}
-                            
+            
             def main() -> i32:
                 var marker: EmptyMarker = EmptyMarker{}
                 return 0
@@ -70,7 +70,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceInitializerWithMixedTypes() {
         String sourceCode = """
             resource User{var name: String, var age: i32, var active: bool, const unit: ()}
-                            
+            
             def main() -> i32:
                 var user: User = User{"Alice", 25, true, ()}
                 return 0
@@ -94,10 +94,10 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceInitializerInFunctionReturn() {
         String sourceCode = """
             resource Array{var x: f64, var y: f64}
-                            
+            
             def Array(x: f64, y: f64) -> Array:
                 return Array{x, y}
-                            
+            
             def main() -> i32:
                 var v: Array = Array(1.0 * 3.0, 2.0)
                 return 0
@@ -120,10 +120,10 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceInitializerInFunctionParameter() {
         String sourceCode = """
             resource Circle{var radius: f64}
-                            
+            
             def calculate_area(circle: Circle) -> f64:
                 return 3.14159 * circle.radius * circle.radius
-                            
+            
             def main() -> i32:
                 var area: f64 = calculate_area(Circle{5.0})
                 return 0
@@ -146,9 +146,9 @@ public class ResourceUsageTest extends BaseTest {
     public void testNestedResourceInitializers() {
         String sourceCode = """
             resource Address{var street: String, var city: String}
-                            
+            
             resource Person{var name: String, var address: Address}
-                            
+            
             def main() -> i32:
                 var person: Person = Person{"John", Address{"Main St", "Springfield"}}
                 return 0
@@ -173,7 +173,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceInitializerWithExpressions() {
         String sourceCode = """
             resource Calculator{var result: i32}
-                            
+            
             def main() -> i32:
                 var a: i32 = 10
                 var b: i32 = 20
@@ -212,7 +212,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testSimpleFieldAccess() {
         String sourceCode = """
             resource User{var id: i32, var age: i32, var unit: ()}
-                            
+            
             def main() -> i32:
                 var user: User = User{1, 25, ()}
                 var id: i32 = user.id
@@ -238,14 +238,14 @@ public class ResourceUsageTest extends BaseTest {
     public void testSimpleMethodCall() {
         String sourceCode = """
             resource Calculator{pub var value: i32}:
-                            
+            
                 path:
                     pub def get() -> i32:
                         return this.value
-                
+            
                     pub def increment():
                         this.value = this.value + 1
-                            
+            
             def main() -> i32:
                 var calc: Calculator = Calculator{5}
                 var result: i32 = calc.get()
@@ -276,14 +276,14 @@ public class ResourceUsageTest extends BaseTest {
     public void testSimplePathMethodAccess() {
         String sourceCode = """
             resource User{pub var id: i32, var age: i32}:
-                            
+            
                 path id:
                     def get() -> i32:
                         return this.id
-                            
+            
                     def set(newId: i32):
                         this.id = newId
-                            
+            
             def main() -> i32:
                 var user: User = User{1, 25}
                 var id: i32 = user/id.get()
@@ -311,18 +311,18 @@ public class ResourceUsageTest extends BaseTest {
     public void testIndexerPathAccess() {
         String sourceCode = """
             resource Resource{var data: i32}:
-                            
-                path index/{i: i32}:
+            
+                path index[i: i32]:
                     pub def get() -> i32:
                         return this.data + i
-                            
+            
                     def set(value: i32):
                         this.data = value - i
-                            
+            
             def main() -> i32:
                 var res: Resource = Resource{10}
-                var value: i32 = res/index/{5}.get()
-                res/index/{3}.set(20)
+                var value: i32 = res/index[5].get()
+                res/index[3].set(20)
                 return value
             """;
 
@@ -348,18 +348,18 @@ public class ResourceUsageTest extends BaseTest {
     public void testIndexerPathAccessWithUnitType() {
         String sourceCode = """
             resource Resource{var data: i32}:
-                            
-                path index/{i: ()}:
+            
+                path index[i: ()]:
                     pub def get() -> i32:
                         return this.data + 1
-                            
+            
                     def set(value: i32, j: ()):
                         this.data = value - 1
-                            
+            
             def main() -> i32:
                 var res: Resource = Resource{10}
-                var value: i32 = res/index/{()}.get()
-                res/index/{()}.set(20, ())
+                var value: i32 = res/index[()].get()
+                res/index[()].set(20, ())
                 return value
             """;
 
@@ -386,18 +386,18 @@ public class ResourceUsageTest extends BaseTest {
     public void testComplexPathWithMultipleParameters() {
         String sourceCode = """
             resource Matrix{var value: i32}:
-                            
-                path row/{r: i32}/col/{c: i32}:
+            
+                path row[r: i32]/col[c: i32]:
                     pub def get() -> i32:
                         return this.value + r * 10 + c
-                            
+            
                     pub def set(newValue: i32):
                         this.value = newValue
-                            
+            
             def main() -> i32:
                 var matrix: Matrix = Matrix{0}
-                var element: i32 = matrix/row/{2}/col/{3}.get()
-                matrix/row/{1 + 3 * element}/col/{4}.set(42)
+                var element: i32 = matrix/row[2]/col[3].get()
+                matrix/row[1 + 3 * element]/col[4].set(42)
                 return element
             """;
 
@@ -431,13 +431,13 @@ public class ResourceUsageTest extends BaseTest {
     public void testNestedResourceAccess() {
         String sourceCode = """
             resource Address{pub var street: i32, pub var city: i32}:
-                            
+            
                 path full/address:
                     pub def get() -> i32:
                         return this.street + this.city
-                            
+            
             resource Person{pub var id: i32, pub var address: Address}
-                            
+            
             def main() -> i32:
                 var addr: Address = Address{1, 54}
                 var person: Person = Person{0, addr}
@@ -464,20 +464,20 @@ public class ResourceUsageTest extends BaseTest {
     public void testChainedMethodCalls() {
         String sourceCode = """
             resource Builder{var value: i32}:
-                
+            
                 path:
                     pub def add(n: i32) -> Builder:
                         this.value = this.value + n
                         return this
-                
+            
                     pub def multiply(n: i32) -> Builder:
                         this.value = this.value * n
                         return this
-                            
+            
                 path value:
                     pub def get() -> i32:
                         return this.value
-                            
+            
             def main() -> i32:
                 var builder: Builder = Builder{5}
                 return builder.add(3).multiply(2)/value.get()
@@ -507,16 +507,16 @@ public class ResourceUsageTest extends BaseTest {
     public void testNestedPathAccess() {
         String sourceCode = """
             resource Container{pub var data: Data}
-                            
+            
             resource Data{var value: i32}:
-                            
+            
                path access:
                     pub def get() -> i32:
                         return this.value
-                            
+            
                     pub def set(newValue: i32):
                         this.value = newValue
-                            
+            
             def main() -> i32:
                 var data: Data = Data{10}
                 var container: Container = Container{data}
@@ -550,7 +550,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testSimpleFieldAssignment() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32, var unit: ()}
-                            
+            
             def main() -> i32:
                 var user: User = User{1, 25, ()}
                 user.id = 2
@@ -578,7 +578,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testNullFieldAssignment() {
         String sourceCode = """
             resource User{pub var id: i32, pub var friend: User}
-                            
+            
             def main() -> i32:
                 var user: User = User{1, User{2, null}}
                 user.friend = null
@@ -599,13 +599,13 @@ public class ResourceUsageTest extends BaseTest {
     public void testNestedFieldAssignment() {
         String sourceCode = """
             resource Address{pub var street: i32, pub var city: i32}
-                            
+            
             resource Person{pub var id: i32, pub var address: Address}:
-                            
+            
                 path address:
                     pub def get() -> Address:
                         return this.address
-                            
+            
             def main() -> i32:
                 var addr: Address = Address{1, 25}
                 var person: Person = Person{0, addr}
@@ -635,7 +635,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testFieldAssignmentWithExpressions() {
         String sourceCode = """
             resource Counter{pub var value: i32}
-                            
+            
             def main() -> i32:
                 var counter: Counter = Counter{5}
                 counter.value = counter.value + 10
@@ -666,11 +666,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceUsageInLoops() {
         String sourceCode = """
             resource Counter{pub var value: i32}:
-                            
+            
                 path:
                     pub def increment():
                         this.value = this.value + 1
-                            
+            
             def main() -> i32:
                 var counter: Counter = Counter{0}
                 var i: i32 = 0
@@ -700,15 +700,15 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceUsageInConditions() {
         String sourceCode = """
             resource Validator{pub var threshold: i32}:
-                            
+            
                 path:
                     pub def is_valid(value: i32) -> bool:
                         return value > this.threshold
-                            
+            
             def main() -> i32:
                 var validator: Validator = Validator{50}
                 var testValue: i32 = 75
-                            
+            
                 if validator.is_valid(testValue):
                     return 1
                 else:
@@ -733,7 +733,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testTernaryFieldAccess() {
         String sourceCode = """
             resource Config{pub var mode: i32}
-                            
+            
             def main() -> i32:
                 var config_a: Config = Config{1}
                 var config_b: Config = Config{2}
@@ -757,11 +757,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testTernaryMethodCall() {
         String sourceCode = """
             resource Service{var id: i32}:
-                            
+            
                 path id:
                     pub def get() -> i32:
                         return this.id
-                            
+            
             def main() -> i32:
                 var service_a: Service = Service{10}
                 var service_b: Service = Service{20}
@@ -789,11 +789,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testMethodWithNoArguments() {
         String sourceCode = """
             resource Simple{var value: i32}:
-                            
+            
                 path value:
                     pub def get() -> i32:
                         return this.value
-                            
+            
             def main() -> i32:
                 var simple: Simple = Simple{42}
                 return simple/value.get()
@@ -833,7 +833,7 @@ public class ResourceUsageTest extends BaseTest {
                     path:
                         pub def calculate(%s) -> i32:
                             return %s
-                                        
+                
                 def main() -> i32:
                     var calc: MultiParam = MultiParam{1}
                     return calc.calculate(%s)
@@ -856,11 +856,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testMethodWithMixedArgumentTypes() {
         String sourceCode = """
             resource TypeMixer{var data: i32}:
-                
+            
                 path types:
                     pub def mix(int_val: i32, float_val: f64, bool_val: bool, char_val: char) -> i32:
                         return char_val as i32 if bool_val else float_val as i32 + int_val
-                            
+            
             def main() -> i32:
                 var mixer: TypeMixer = TypeMixer{0}
                 var result = mixer/types.mix(42, 3.14, true, 'C')
@@ -886,17 +886,17 @@ public class ResourceUsageTest extends BaseTest {
     public void testMethodWithComplexExpressionArguments() {
         String sourceCode = """
             resource MathProcessor{var factor: i32}:
-                            
+            
                 path:
                     pub def process(a: i32, b: i32, c: f64) -> f64:
                         return (this.factor * a + b) as f64 * c
-                            
+            
             def main() -> i32:
                 var processor: MathProcessor = MathProcessor{2}
                 var x: i32 = 10
                 var y: i32 = 5
                 var z: f64 = 1.5
-                            
+            
                 # Complex expressions as arguments
                 var result: f64 = processor.process(x + 3, y * 2, z div 2.0 + 1.0)
                 return 0
@@ -929,7 +929,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testCompareResources() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}
-                            
+            
             def main() -> i32:
                 var user_a: User = User{1, 25}
                 var user_b: User = User{2, 30}
@@ -957,7 +957,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testNullAssignment() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}
-                            
+            
             def main() -> i32:
                 var user: User = null
             """;
@@ -977,7 +977,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testNullTernary() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}
-                            
+            
             def main() -> i32:
                 var user: User = User{1, 25}
                 var is_user: bool = true
@@ -999,11 +999,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testNullAsMethodArgument() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}:
-                            
+            
                 path age:
                     pub def update(user: User):
                         this.age = user.age
-                            
+            
             def main() -> i32:
                 var user: User = User{1, 25}
                 user/age.update(null)  # Passing null as argument
@@ -1026,10 +1026,10 @@ public class ResourceUsageTest extends BaseTest {
     public void testNullAsFunctionArgument() {
         String sourceCode = """
             resource User{pub var id: i32, pub var age: i32}
-                            
+            
             def process_user(user: User) -> i32:
                 return user.age if user != null else -1
-                            
+            
             def main() -> i32:
                 return process_user(null)
             """;
@@ -1049,15 +1049,15 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceAsMethodArgument() {
         String sourceCode = """
             resource Point{pub var x: i32, pub var y: i32}
-                            
+            
             resource Calculator{var id: i32}:
-                            
+            
                 path:
                     pub def distance(p1: Point, p2: Point) -> f64:
                         var dx: i32 = p1.x - p2.x
                         var dy: i32 = p1.y - p2.y
                         return (dx * dx + dy * dy) as f64
-                            
+            
             def main() -> i32:
                 var calc: Calculator = Calculator{1}
                 var point1: Point = Point{0, 0}
@@ -1083,14 +1083,14 @@ public class ResourceUsageTest extends BaseTest {
     public void testResourceMethodReturningResource() {
         String sourceCode = """
             resource Factory{var counter: i32}:
-                            
+            
                 path product:
                     pub def create(id: i32) -> Product:
                         this.counter = this.counter + id
                         return Product{this.counter}
-                            
+            
             resource Product{pub var id: i32}
-                            
+            
             def main() -> i32:
                 var factory: Factory = Factory{0}
                 var product: Product = factory/product.create(1)
@@ -1115,14 +1115,14 @@ public class ResourceUsageTest extends BaseTest {
     public void testRecursiveResourceMethodCall() {
         String sourceCode = """
             resource Counter{var value: i32}:
-                            
+            
                 path:
                     pub def fibonacci(n: i32) -> i32:
                         if n <= 1:
                             return n
                         else:
                             return this.fibonacci(n - 1) + this.fibonacci(n - 2)
-                            
+            
             def main() -> i32:
                 var counter: Counter = Counter{0}
                 return counter.fibonacci(10)
@@ -1166,11 +1166,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testInvalidMethodArgumentCount() {
         String sourceCode = """
             resource TestResource{var data: i32}:
-                
+            
                 path:
                     pub def calculate(a: i32, b: i32) -> i32:
                         return a + b + this.data
-                            
+            
             def main() -> i32:
                 var res: TestResource = TestResource{5}
                 return res.calculate(10)  # Missing second argument
@@ -1186,11 +1186,11 @@ public class ResourceUsageTest extends BaseTest {
     public void testInvalidMethodArgumentType() {
         String sourceCode = """
             resource TestResource{var data: i32}:
-                            
+            
                 path:
                     pub def calculate(a: i32, b: i32) -> i32:
                         return a + b + this.data
-                            
+            
             def main() -> i32:
                 var res: TestResource = TestResource{5}
                 return res.calculate(10, 2.0)  # Wrong type for second argument
@@ -1205,7 +1205,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testAccessNonExistentField() {
         String sourceCode = """
             resource TestResource{pub var data: i32}
-                            
+            
             def main() -> i32:
                 var res: TestResource = TestResource{5}
                 return res.non_existent_field  # Field doesn't exist
@@ -1221,7 +1221,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testCallNonExistentMethod() {
         String sourceCode = """
             resource TestResource{var data: i32}
-                            
+            
             def main() -> i32:
                 var res: TestResource = TestResource{5}
                 return res.non_existent_method()  # Method doesn't exist
@@ -1237,9 +1237,9 @@ public class ResourceUsageTest extends BaseTest {
     public void testComparisonOfDifferentArrayTypes() {
         String sourceCode = """
             resource ResourceA{var data: i32}
-                            
+            
             resource ResourceB{var data: i32}
-                            
+            
             def main() -> i32:
                 var res_a = ResourceA{5}
                 var res_b = ResourceB{5}
@@ -1256,7 +1256,7 @@ public class ResourceUsageTest extends BaseTest {
     public void testAssignNullToIntField() {
         String sourceCode = """
             resource TestResource{pub var data: i32}
-                            
+            
             def main() -> i32:
                 var res: TestResource = TestResource{5}
                 res.data = null  # Invalid assignment
